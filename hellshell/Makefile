@@ -6,7 +6,7 @@
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 13:41:38 by ovan-rhe      ########   odam.nl          #
+#    Updated: 2023/06/20 13:50:45 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ_DIR		= obj
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-HEADERS		= -I include -I libft/include
+HEADERS		= -I include
 
 ####	LIBS 		####
 LIBFT		= libft
