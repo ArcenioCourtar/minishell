@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/10 18:27:17 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/02/16 15:33:31 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+void	ft_bzero(void *s, size_t n)
 {
-	ft_printf("Hello\n");
-	return (0);
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		*((char *)s + i) = 0;
+		i++;
+	}
 }

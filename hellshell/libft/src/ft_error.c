@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_error.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/04/05 14:49:29 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/05/08 16:58:07 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+void	ft_error(int errnum, const char *error_msg)
 {
-	ft_printf("Hello\n");
-	return (0);
+	ft_printf("\033[31;1merror: \033[0m");
+	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
+	write(STDERR_FILENO, "\n", 1);
+	exit(errnum);
 }

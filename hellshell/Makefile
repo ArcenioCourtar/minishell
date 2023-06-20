@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    Makefile template                                  :+:    :+:             #
+#    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 13:26:02 by ovan-rhe      ########   odam.nl          #
+#    Updated: 2023/06/20 13:41:38 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,11 @@ OBJ_DIR		= obj
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
+HEADERS		= -I include -I libft/include
+
 ####	LIBS 		####
-HEADERS		= -I include
-# LIB		=
-# LIBS		= -L <location> -l<name>
+LIBFT		= libft
+LIBS		= -L libft -lft
 
 #### 	COMPILING 	####
 CC		= gcc
@@ -33,15 +34,13 @@ FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
 
-all: tmp $(NAME)
+all: lib tmp $(NAME)
 
-# all: lib tmp $(NAME)
-
-# lib:
-# 	@make -C $(LIB)
+lib:
+	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(HEADERS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
 tmp:
 	@mkdir -p $(OBJ_DIR)
@@ -51,9 +50,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@rm -rf $(OBJ_DIR)
+	$(MAKE) -C $(LIBFT) clean
 
 fclean: clean
 	@rm -rf $(OBJ_DIR) $(NAME)
+	$(MAKE) -C $(LIBFT) fclean
+
 
 re: fclean all
 

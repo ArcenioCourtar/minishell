@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_isprint.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/06 14:23:52 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/12 17:09:48 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "libft.h"
-#include "stdio.h"
-
-int	main(void)
+int	ft_isprint(int c)
 {
-	ft_printf("Hello\n");
-	return (0);
+	if (c >= 32 && c <= 126)
+		return (1);
+	else
+		return (0);
 }

@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstiter.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/20 12:45:23 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/20 12:51:39 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	ft_printf("Hello\n");
-	return (0);
+	if (!f)
+		return ;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

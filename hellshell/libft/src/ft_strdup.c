@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_strdup.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/12 15:18:05 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/11/10 12:08:39 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+char	*ft_strdup(const char *s1)
 {
-	ft_printf("Hello\n");
-	return (0);
+	size_t	strlen;
+	char	*ptr;
+	int		i;
+
+	strlen = ft_strlen((char *)s1);
+	ptr = (char *)malloc(sizeof(char) * (strlen + 1));
+	if (!ptr)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }

@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstnew.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/19 16:34:53 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/20 15:26:30 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+t_list	*ft_lstnew(void *content)
 {
-	ft_printf("Hello\n");
-	return (0);
+	t_list	*newlst;
+
+	newlst = (t_list *)malloc(sizeof(t_list));
+	if (newlst == 0)
+		return (0);
+	newlst->content = content;
+	newlst->next = 0;
+	return (newlst);
 }

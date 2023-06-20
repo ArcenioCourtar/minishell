@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_printnbr.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/18 17:32:54 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/31 14:07:17 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "libft.h"
-#include "stdio.h"
+#include "ft_printf.h"
 
-int	main(void)
+int	ft_printnbr(long int n)
 {
-	ft_printf("Hello\n");
-	return (0);
+	int	count;
+
+	count = 0;
+	if (n < 0)
+	{
+		ft_printchar('-');
+		n = -n;
+		count++;
+	}
+	if (n >= 10)
+	{
+		count += ft_printnbr(n / 10);
+	}
+	ft_printchar((n % 10) + '0');
+	count++;
+	return (count);
 }

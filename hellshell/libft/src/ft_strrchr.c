@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_strrchr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/06 16:08:50 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/18 18:24:13 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	ft_printf("Hello\n");
-	return (0);
+	size_t		i;
+	char		*last;
+
+	i = 0;
+	last = 0;
+	while (i <= ft_strlen((char *)s))
+	{
+		if (s[i] == (char)c)
+			last = &((char *)s)[i];
+		i++;
+	}
+	return (last);
 }

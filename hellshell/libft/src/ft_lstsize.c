@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstsize.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/19 17:26:07 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/19 17:31:43 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+int	ft_lstsize(t_list *lst)
 {
-	ft_printf("Hello\n");
-	return (0);
+	int	count;
+
+	if (!lst)
+		return (0);
+	else
+		count = 1;
+	while (lst->next != 0)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return (count);
 }

@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   free_double_array.c                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/02/15 15:07:07 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/02/15 15:07:24 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+void	free_double_array(char **d_arr)
 {
-	ft_printf("Hello\n");
-	return (0);
+	size_t	i;
+
+	i = 0;
+	if (!d_arr)
+		return ;
+	while (d_arr[i])
+	{
+		free(d_arr[i]);
+		i++;
+	}
+	free(d_arr);
 }

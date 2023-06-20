@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   ft_lstlast.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 13:41:06 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/19 17:40:10 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/19 17:48:37 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "stdio.h"
 
-int	main(void)
+t_list	*ft_lstlast(t_list *lst)
 {
-	ft_printf("Hello\n");
-	return (0);
+	if (!lst)
+		return (0);
+	else if (!lst->next)
+		return (lst);
+	else
+		while (lst->next)
+			lst = lst->next;
+	return (lst);
 }
