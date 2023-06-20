@@ -1,52 +1,60 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: acourtar <acourtar@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/01 16:57:57 by acourtar          #+#    #+#              #
-#    Updated: 2023/06/20 13:09:49 by acourtar         ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile template                                  :+:    :+:             #
+#                                                      +:+                     #
+#    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
+#                                                    +#+                       #
+#    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
+#    Updated: 2023/06/20 13:26:02 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-CC			= cc
-NAME		= philo
-CFLAGS		= #-Wall -Werror -Wextra
-SRCFILES	= 
-			
-HEADERFILES	= $(DIR_INC)philo.h
+NAME 		= hellshell
 
-DIR_SRC		= src/
-DIR_OBJ		= obj/
-DIR_INC		= include/
+SRC_FILES	= main.c
 
-ALL_OBJ		= $(addprefix $(DIR_OBJ), $(SRCFILES:.c=.o))
-ALL_SRC		= $(addprefix $(DIR_SRC), $(SRCFILES))
+SRC_DIR		= src
+OBJ_DIR		= obj
 
-#----------------------------------------------------------------------------
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-all: $(NAME)
+####	LIBS 		####
+HEADERS		= -I include
+# LIB		=
+# LIBS		= -L <location> -l<name>
 
-$(NAME): $(ALL_OBJ)
-	$(CC) $(CFLAGS) $(ALL_OBJ) -pthread -o $(NAME)
+#### 	COMPILING 	####
+CC		= gcc
+CFLAGS	= -Wall -Wextra -Werror
+FSAN	= -fsanitize=address
+
+
+#--RULES------------------------------------------------------------------------
+
+all: tmp $(NAME)
+
+# all: lib tmp $(NAME)
+
+# lib:
+# 	@make -C $(LIB)
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(HEADERS) $(OBJS) -o $(NAME)
+
+tmp:
+	@mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<
+
+clean:
+	@rm -rf $(OBJ_DIR)
+
+fclean: clean
+	@rm -rf $(OBJ_DIR) $(NAME)
 
 re: fclean all
 
-clean:
-	rm -rf $(DIR_OBJ)
-	
-fclean:
-	rm -rf $(DIR_OBJ) philo
-
-$(DIR_OBJ)%.o: $(DIR_SRC)%.c $(HEADERFILES)
-	@mkdir -p $(DIR_OBJ)
-	$(CC) -c -g $(CFLAGS) -pthread -o $@ $<
-
-sanadd: $(ALL_OBJ)
-	$(CC) $(CFLAGS) $(ALL_OBJ) -pthread -fsanitize=address -o $(NAME)
-
-santhr: $(ALL_OBJ)
-	$(CC) $(CFLAGS) $(ALL_OBJ) -pthread -fsanitize=thread -o $(NAME)
-
-.PHONY: clean fclean re all
+.PHONY: all, tmp, clean, fclean, re
