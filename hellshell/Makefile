@@ -6,9 +6,11 @@
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 13:50:45 by ovan-rhe      ########   odam.nl          #
+#    Updated: 2023/06/20 15:28:14 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
+
+#--VARIABLES--------------------------------------------------------------------
 
 NAME 		= hellshell
 
@@ -22,15 +24,12 @@ OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 HEADERS		= -I include
 
-####	LIBS 		####
 LIBFT		= libft
-LIBS		= -L libft -lft
+LIBS		= -L $(LIBFT) -lft -lreadline
 
-#### 	COMPILING 	####
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror
 FSAN	= -fsanitize=address
-
 
 #--RULES------------------------------------------------------------------------
 
@@ -59,4 +58,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all, tmp, clean, fclean, re
+.PHONY: all, lib, tmp, clean, fclean, re
