@@ -20,10 +20,14 @@
 // 	system("leaks -q hellshell");
 // }
 
+char	**lexer(char *input);
+
 int	main(void)
 {
 	char		*input;
+	char		**tokens;
 	t_hislst	**h_lst;
+	int			i;
 
 	// atexit(leaks);
 	h_lst = history_list_init();
@@ -34,9 +38,14 @@ int	main(void)
 			break ;
 		add_history(input);
 		add_to_history_list(h_lst, input);
-		ft_printf("%s\n", input);
+		tokens = lexer(input);
+		i = 0;
+		while (tokens[i])
+		{
+			ft_printf("%s\n", tokens[i]);
+			i++;
+		}
 	}
 	ft_printf("\n");
-	print_history_list(h_lst);
 	exit(EXIT_SUCCESS);
 }
