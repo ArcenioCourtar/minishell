@@ -6,7 +6,7 @@
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 15:28:14 by ovan-rhe      ########   odam.nl          #
+#    Updated: 2023/06/20 17:35:53 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= main.c
+SRC_FILES	= main.c history.c
 
 SRC_DIR		= src
 OBJ_DIR		= obj
@@ -28,7 +28,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
