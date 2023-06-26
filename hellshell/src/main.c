@@ -20,23 +20,48 @@
 // 	system("leaks -q hellshell");
 // }
 
+void	init_dat(t_data *dat)
+{
+	dat->input = NULL;
+	dat->start = NULL;
+	dat->hist = NULL;
+}
+
+t_tokens	tokenizer(char *input)
+{
+	t_tokens	*new;
+	int			i;
+
+	new = NULL;
+	i = 0;
+}
+
 int	main(void)
 {
-	char		*input;
-	t_hislst	**h_lst;
+	t_data	dat;
 
-	// atexit(leaks);
-	h_lst = history_list_init();
+	init_dat(&dat);
 	while (1)
 	{
-		input = readline("hellshell-0.1$ ");
-		if (!input)
-			break ;
-		add_history(input);
-		add_to_history_list(h_lst, input);
-		ft_printf("%s\n", input);
+		dat.input = readline("hellshell v0.1$ ");
+		
+		free(dat.input);
 	}
-	ft_printf("\n");
-	print_history_list(h_lst);
 	exit(EXIT_SUCCESS);
 }
+
+// t_hislst	**h_lst;
+
+	// atexit(leaks);
+	// h_lst = history_list_init();
+	// while (1)
+	// {
+	// 	input = readline("hellshell-0.1$ ");
+	// 	if (!input)
+	// 		break ;
+	// 	add_history(input);
+	// 	add_to_history_list(h_lst, input);
+	// 	ft_printf("%s\n", input);
+	// }
+	// ft_printf("\n");
+	// print_history_list(h_lst);
