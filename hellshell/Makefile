@@ -14,7 +14,7 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= main.c history.c
+SRC_FILES	= main.c history.c environment.c
 
 SRC_DIR		= src
 OBJ_DIR		= obj
@@ -28,7 +28,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -g -Wall -Wextra -Werror
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------

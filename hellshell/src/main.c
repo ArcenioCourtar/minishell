@@ -15,53 +15,41 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// static void	leaks(void)
-// {
-// 	system("leaks -q hellshell");
-// }
-
-void	init_dat(t_data *dat)
+void	init_dat(t_data *dat, char **envp)
 {
 	dat->input = NULL;
-	dat->start = NULL;
-	dat->hist = NULL;
+	dat->envp = envp;
+	dat->envlist = init_envlist(envp);
 }
 
-t_tokens	tokenizer(char *input)
+void	execute_command(t_data *dat)
 {
-	t_tokens	*new;
-	int			i;
-
-	new = NULL;
-	i = 0;
+	if (!ft_strncmp(dat->input, "env", 3))
+		builtin_env(dat->envp);
 }
-
-int	main(void)
+/*
+	builtin time!
+	echo (with -n)
+	cd with relative/abs path
+	pwd
+	export
+	unset
+	env
+	exit
+*/
+int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
 
-	init_dat(&dat);
+	(void) argv;
+	(void) argc;
+
+	init_dat(&dat, envp);
 	while (1)
 	{
 		dat.input = readline("hellshell v0.1$ ");
-		
+		execute_command(&dat);
 		free(dat.input);
 	}
 	exit(EXIT_SUCCESS);
 }
-
-// t_hislst	**h_lst;
-
-	// atexit(leaks);
-	// h_lst = history_list_init();
-	// while (1)
-	// {
-	// 	input = readline("hellshell-0.1$ ");
-	// 	if (!input)
-	// 		break ;
-	// 	add_history(input);
-	// 	add_to_history_list(h_lst, input);
-	// 	ft_printf("%s\n", input);
-	// }
-	// ft_printf("\n");
-	// print_history_list(h_lst);
