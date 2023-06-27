@@ -24,16 +24,20 @@ typedef struct s_lexer_lst
 	' " $ < << > >> | <space>	
 */
 
-enum e_token {
-	TOK_DQUOTE = '"',
-	TOK_SQUOTE = '\'',
-	TOK_NAME = 'a',
-	TOK_PIPE = '|',
-	TOK_DOLLAR = '$',
-	TOK_REDIN = '<',
-	TOK_REDOUT = '>',
-	TOK_HEREDOC = '<' * 2,
-	TOK_REDAPPEND = '>' * 2
+enum e_delimiters {
+	DEL_DQUOTE = '"',
+	DEL_SQUOTE = '\'',
+	DEL_PIPE = '|',
+	DEL_DOLLAR = '$',
+	DEL_REDIN = '<',
+	DEL_REDOUT = '>',
+	DEL_SPACE = ' '
 };
+
+int		is_delimiter(char c);
+void	jump_delimiters(char *input, int *i, int curr_char_type);
+void	insert_non_text_tokens(char *input, char **tokens_node, \
+								int *j, int curr_char_type);
+
 
 #endif
