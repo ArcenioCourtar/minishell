@@ -14,7 +14,7 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= main.c history.c environment.c
+SRC_FILES	= main.c history.c environment.c lexer.c
 
 SRC_DIR		= src
 OBJ_DIR		= obj

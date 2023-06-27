@@ -39,6 +39,10 @@ void	execute_command(t_data *dat)
 */
 int	main(int argc, char **argv, char **envp)
 {
+	char		*input;
+	char		**tokens;
+	t_hislst	**h_lst;
+	int			i;
 	t_data	dat;
 
 	(void) argv;
@@ -47,6 +51,18 @@ int	main(int argc, char **argv, char **envp)
 	init_dat(&dat, envp);
 	while (1)
 	{
+		input = readline("hellshell-0.1$ ");
+		if (!input)
+			break ;
+		add_history(input);
+		add_to_history_list(h_lst, input);
+		tokens = lexer(input);
+		i = 0;
+		while (tokens[i])
+		{
+			ft_printf("%s\n", tokens[i]);
+			i++;
+		}
 		dat.input = readline("hellshell v0.1$ ");
 		execute_command(&dat);
 		free(dat.input);
