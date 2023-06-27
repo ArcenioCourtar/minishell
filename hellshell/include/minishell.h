@@ -24,18 +24,18 @@
 	NOT REQUIRED:
 	\ ; && || * () 
 */
-enum e_token {
-	TOK_DQUOTE = '"',
-	TOK_SQUOTE = '\'',
-	TOK_NAME = 'a',
-	TOK_PIPE = '|',
-	TOK_REDIN = '<',
-	TOK_REDOUT = '>',
-	TOK_REDAPPEND = '>' * 2,
-	TOK_HEREDOC = '<' * 2,
-	TOK_DOLLAR = '$',
-	//TOK_ESCAPE = '\\'
-};
+// enum e_token {
+// 	TOK_DQUOTE = '"',
+// 	TOK_SQUOTE = '\'',
+// 	TOK_NAME = 'a',
+// 	TOK_PIPE = '|',
+// 	TOK_REDIN = '<',
+// 	TOK_REDOUT = '>',
+// 	TOK_REDAPPEND = '>' * 2,
+// 	TOK_HEREDOC = '<' * 2,
+// 	TOK_DOLLAR = '$',
+// 	//TOK_ESCAPE = '\\'
+// };
 
 typedef struct s_hislst
 {
@@ -49,6 +49,8 @@ typedef struct s_data
 	char				*input;
 	char				**envp;
 	struct s_envlist	*envlist;
+	char				**tokens;
+	struct s_hislst		**h_lst;
 }	t_data;
 
 typedef struct s_envlist
@@ -61,11 +63,14 @@ typedef struct s_envlist
 
 // history
 t_hislst	**history_list_init(void);
-void		add_to_history_list(t_hislst **history_list, char *input);
+void		add_to_history_list(t_data *dat);
 void		print_history_list(t_hislst **history_list);
 
 // Arcenio
 t_envlist	*init_envlist(char **envp);
 void		builtin_env(char **envp);
+
+// Oliver
+char	**lexer(char *input);
 
 #endif

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer2.0.c                                         :+:    :+:            */
+/*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -100,7 +100,7 @@ int	token_counter(char *input)
 	return (count);
 }
 
-void	insert_tokens_in_array(char *input, char **tokens, int token_count)
-{
-	// TO DO
-}
+// void	insert_tokens_in_array(char *input, char **tokens, int token_count)
+// {
+// 	// TO DO
+// }

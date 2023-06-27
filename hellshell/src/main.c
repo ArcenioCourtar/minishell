@@ -20,12 +20,15 @@ void	init_dat(t_data *dat, char **envp)
 	dat->input = NULL;
 	dat->envp = envp;
 	dat->envlist = init_envlist(envp);
+	dat->h_lst = history_list_init();
 }
 
 void	execute_command(t_data *dat)
 {
 	if (!ft_strncmp(dat->input, "env", 3))
 		builtin_env(dat->envp);
+	if (!ft_strncmp(dat->input, "history", 8))
+		print_history_list(dat->h_lst);
 }
 /*
 	builtin time!
@@ -39,10 +42,7 @@ void	execute_command(t_data *dat)
 */
 int	main(int argc, char **argv, char **envp)
 {
-	char		*input;
-	char		**tokens;
-	t_hislst	**h_lst;
-	int			i;
+	// int		i;
 	t_data	dat;
 
 	(void) argv;
@@ -51,19 +51,18 @@ int	main(int argc, char **argv, char **envp)
 	init_dat(&dat, envp);
 	while (1)
 	{
-		input = readline("hellshell-0.1$ ");
-		if (!input)
+		dat.input = readline("hellshell-0.1$ ");
+		if (!dat.input)
 			break ;
-		add_history(input);
-		add_to_history_list(h_lst, input);
-		tokens = lexer(input);
-		i = 0;
-		while (tokens[i])
-		{
-			ft_printf("%s\n", tokens[i]);
-			i++;
-		}
-		dat.input = readline("hellshell v0.1$ ");
+		add_history(dat.input);
+		add_to_history_list(&dat);
+		dat.tokens = lexer(dat.input);
+		// i = 0;
+		// while (dat.tokens[i])
+		// {
+		// 	ft_printf("%i: %s\n", i, dat.tokens[i]);
+		// 	i++;
+		// }
 		execute_command(&dat);
 		free(dat.input);
 	}
