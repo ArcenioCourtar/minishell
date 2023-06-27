@@ -20,7 +20,8 @@
  * insert tokens in array
  */
 
-int	token_counter(char *input);
+int		token_counter(char *input);
+void	insert_tokens(char *input, char **tokens, int token_count);
 
 char	**lexer(char *input)
 {
@@ -31,7 +32,7 @@ char	**lexer(char *input)
 	tokens = malloc(sizeof(char *) * (token_count + 1));
 	if (!tokens)
 		ft_error(errno, strerror(errno));
-	// insert_tokens(input, tokens, token_count);
+	insert_tokens(input, tokens, token_count);
 	return (tokens);
 }
 
@@ -100,7 +101,39 @@ int	token_counter(char *input)
 	return (count);
 }
 
-// void	insert_tokens_in_array(char *input, char **tokens, int token_count)
-// {
-// 	// TO DO
-// }
+void	insert_tokens(char *input, char **tokens, int token_count)
+{
+	int	i;
+	int	j;
+	int	start;
+
+	i = 0;
+	j = 0;
+	while (i < token_count)
+	{
+		if (input[j] != ' ')
+		{
+			start = j;
+			if (input[j] == 34 || input[j] == 39)
+			{
+				j++;
+				while (input[j] && input[j] != 34 && input[j] != 39)
+					j++;
+				j++;
+				tokens[i] = ft_substr(input, start, j - start);
+			}
+			else
+			{
+				while (input[j] && input[j] != ' ')
+					j++;
+				tokens[i] = ft_substr(input, start, j - start);
+			}
+			if (!tokens[i])
+				ft_error(errno, strerror(errno));
+			i++;
+		}
+		while (input[j] && input[j] == ' ')
+			j++;
+	}
+	tokens[i] = NULL;
+}

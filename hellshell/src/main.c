@@ -42,7 +42,7 @@ void	execute_command(t_data *dat)
 */
 int	main(int argc, char **argv, char **envp)
 {
-	// int		i;
+	int		i;
 	t_data	dat;
 
 	(void) argv;
@@ -57,12 +57,12 @@ int	main(int argc, char **argv, char **envp)
 		add_history(dat.input);
 		add_to_history_list(&dat);
 		dat.tokens = lexer(dat.input);
-		// i = 0;
-		// while (dat.tokens[i])
-		// {
-		// 	ft_printf("%i: %s\n", i, dat.tokens[i]);
-		// 	i++;
-		// }
+		i = 0;
+		while (dat.tokens[i])
+		{
+			ft_printf("%i: %s\n", i, dat.tokens[i]);
+			i++;
+		}
 		execute_command(&dat);
 		free(dat.input);
 	}
