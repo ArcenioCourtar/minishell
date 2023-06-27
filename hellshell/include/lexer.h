@@ -20,13 +20,20 @@ typedef struct s_lexer_lst
 	struct s_lexer_lst	*next;
 }	t_lexer_lst;
 
-// types
-# define IDEN 0
-# define CONS 1
-# define OPRS 0
-# define SEPS 0
-# define KEYW 0
-# define IDEN 0
+/*	delimiters
+	' " $ < << > >> | <space>	
+*/
 
+enum e_token {
+	TOK_DQUOTE = '"',
+	TOK_SQUOTE = '\'',
+	TOK_NAME = 'a',
+	TOK_PIPE = '|',
+	TOK_DOLLAR = '$',
+	TOK_REDIN = '<',
+	TOK_REDOUT = '>',
+	TOK_HEREDOC = '<' * 2,
+	TOK_REDAPPEND = '>' * 2
+};
 
 #endif

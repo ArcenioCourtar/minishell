@@ -20,8 +20,6 @@
 // 	system("leaks -q hellshell");
 // }
 
-char	**lexer(char *input);
-
 int	main(void)
 {
 	char		*input;
