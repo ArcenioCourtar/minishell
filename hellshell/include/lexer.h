@@ -13,18 +13,10 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-typedef struct s_lexer_lst
-{
-	char				*token;
-	int					type;
-	struct s_lexer_lst	*next;
-}	t_lexer_lst;
+# include <errno.h>
+# include <string.h>
 
-/*	delimiters
-	' " $ < << > >> | <space>	
-*/
-
-enum e_delimiters {
+enum e_delims {
 	DEL_DQUOTE = '"',
 	DEL_SQUOTE = '\'',
 	DEL_PIPE = '|',
@@ -34,10 +26,38 @@ enum e_delimiters {
 	DEL_SPACE = ' '
 };
 
-int		is_delimiter(char c);
-void	jump_delimiters(char *input, int *i, int curr_char_type);
-void	insert_non_text_tokens(char *input, char **tokens_node, \
-								int *j, int curr_char_type);
-char	**lexer(char *input);
+enum e_token_types {
+	TOK_DQUOTE = '"',
+	TOK_SQUOTE = '\'',
+	TOK_PIPE = '|',
+	TOK_DOLLAR = '$',
+	TOK_SPACE = ' ',
+	TOK_REDIN = '<',
+	TOK_REDOUT = '>',
+	TOK_REDAPPEND = '>' / 2,
+	TOK_HEREDOC = '<' / 2,
+	TOK_EQUAL = '=',
+	TOK_NAME = 'a'
+};
+
+typedef struct s_token
+{
+	char				*token;
+	enum e_token_types	type;
+	struct s_token		*prev;
+	struct s_token		*next;
+}	t_token;
+
+//--array=======================================================================
+int					is_delimiter(char c);
+void				jump_delimiters(char *input, int *i, int curr_char_type);
+void				insert_non_text_tokens(char *input, char **tokens_node, \
+													int *j, int curr_char_type);
+
+//--list========================================================================
+t_token				**init_token_list(void);
+t_token				*tlst_new_node(char *token);
+enum e_token_types	get_token_type(char *token);
+void				token_lstadd_back(t_token **t_lst_head, t_token *new_node);
 
 #endif

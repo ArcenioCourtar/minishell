@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer_utils.c                                      :+:    :+:            */
+/*   lexer_array_utils.c                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
 #include "lexer.h"
 
@@ -45,7 +44,7 @@ void	jump_delimiters(char *input, int *i, int curr_char_type)
 	(*i)++;
 }
 
-int	get_quote_token_len(char *input, int *j, \
+static int	get_quote_token_len(char *input, int *j, \
 						int curr_char_type, int substr_start)
 {
 	int	substr_len;
@@ -57,7 +56,7 @@ int	get_quote_token_len(char *input, int *j, \
 	return (substr_len);
 }
 
-int	get_space_token_len(char *input, int *j, int substr_start)
+static int	get_space_token_len(char *input, int *j, int substr_start)
 {
 	int	substr_len;
 

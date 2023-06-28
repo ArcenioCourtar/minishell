@@ -44,7 +44,6 @@ void	execute_command(t_data *dat)
 */
 int	main(int argc, char **argv, char **envp)
 {
-	int		i;
 	t_data	dat;
 
 	(void) argv;
@@ -58,13 +57,8 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		add_to_history_list(dat.h_lst, dat.input);
-		dat.tokens = lexer(dat.input);
-		i = 0;
-		while (dat.tokens[i])
-		{
-			ft_printf("%i: %s\n", i, dat.tokens[i]);
-			i++;
-		}
+		lexer(&dat);
+		print_token_list(dat);
 		execute_command(&dat);
 	}
 	exit(EXIT_SUCCESS);
