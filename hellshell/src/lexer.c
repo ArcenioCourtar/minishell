@@ -3,13 +3,12 @@
 /*                                                        ::::::::            */
 /*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By:                                              +#+                     */
+/*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: Invalid date        by               #+#    #+#                 */
-/*   Updated: 2023/06/27 13:43:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/06/28 13:26:01 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/06/28 13:26:01 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 #include "libft.h"
