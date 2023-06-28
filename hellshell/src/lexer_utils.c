@@ -45,37 +45,50 @@ void	jump_delimiters(char *input, int *i, int curr_char_type)
 	(*i)++;
 }
 
+int	get_quote_token_len(char *input, int *j, \
+						int curr_char_type, int substr_start)
+{
+	int	substr_len;
+
+	(*j)++;
+	while (input[*j] && input[*j] != curr_char_type)
+		(*j)++;
+	substr_len = (*j) + 1 - substr_start;
+	return (substr_len);
+}
+
+int	get_space_token_len(char *input, int *j, int substr_start)
+{
+	int	substr_len;
+
+	while (input[*j] && input[*j] == DEL_SPACE)
+		(*j)++;
+	substr_len = (*j) - substr_start;
+	(*j)--;
+	return (substr_len);
+}
+
 void	insert_non_text_tokens(char *input, char **tokens_node, \
 								int *j, int curr_char_type)
 {
-	int	start;
+	int	substr_start;
+	int	substr_len;
 
+	substr_start = *j;
 	if (curr_char_type == DEL_DQUOTE || curr_char_type == DEL_SQUOTE)
-	{
-		start = *j;
-		(*j)++;
-		while (input[*j] && input[*j] != curr_char_type)
-			(*j)++;
-		*tokens_node = ft_substr(input, start, (*j) + 1 - start);
-	}
-	else if (input[*j + 1] && \
-	((curr_char_type == DEL_REDIN && input[*j + 1] == DEL_REDIN) \
-	|| (curr_char_type == DEL_REDOUT && input[*j + 1] == DEL_REDOUT)))
-	{
-		*tokens_node = ft_substr(input, *j, 2);
-		(*j)++;
-	}
-	else if (curr_char_type == DEL_PIPE || curr_char_type == DEL_DOLLAR \
-	|| curr_char_type == DEL_REDIN || curr_char_type == DEL_REDOUT)
-		*tokens_node = ft_substr(input, *j, 1);
+		substr_len = get_quote_token_len(input, j, \
+											curr_char_type, substr_start);
 	else if (curr_char_type == DEL_SPACE)
+		substr_len = get_space_token_len(input, j, substr_start);
+	else if (input[*j + 1] && (curr_char_type == DEL_REDIN || \
+			curr_char_type == DEL_REDOUT) && input[*j + 1] == curr_char_type)
 	{
-		start = *j;
-		while (input[*j] && input[*j] == DEL_SPACE)
-			(*j)++;
-		*tokens_node = ft_substr(input, start, (*j) - start);
-		(*j)--;
+		substr_len = 2;
+		(*j)++;
 	}
+	else
+		substr_len = 1;
+	*tokens_node = ft_substr(input, substr_start, substr_len);
 	if (!*tokens_node)
 		ft_error(errno, strerror(errno));
 	(*j)++;
