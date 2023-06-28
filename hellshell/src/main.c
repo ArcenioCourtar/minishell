@@ -25,26 +25,9 @@ void	init_dat(t_data *dat, char **envp)
 	dat->h_lst = history_list_init();
 }
 
-void	execute_command(t_data *dat)
-{
-	if (!ft_strncmp(dat->input, "env", 3))
-		builtin_env(dat->envp);
-	if (!ft_strncmp(dat->input, "history", 8))
-		print_history_list(dat->h_lst);
-}
-/*
-	builtin time!
-	echo (with -n)
-	cd with relative/abs path
-	pwd
-	export
-	unset
-	env
-	exit
-*/
+
 int	main(int argc, char **argv, char **envp)
 {
-	int		i;
 	t_data	dat;
 
 	(void) argv;
@@ -58,13 +41,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		add_to_history_list(dat.h_lst, dat.input);
-		dat.tokens = lexer(dat.input);
-		i = 0;
-		while (dat.tokens[i])
-		{
-			ft_printf("%i: %s\n", i, dat.tokens[i]);
-			i++;
-		}
+		dat.tokens = lexer(dat.input, &dat.tok_count);
 		execute_command(&dat);
 	}
 	exit(EXIT_SUCCESS);

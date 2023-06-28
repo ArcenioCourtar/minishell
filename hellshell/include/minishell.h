@@ -31,6 +31,7 @@ typedef struct s_data
 	char				**envp;
 	struct s_envlist	*envlist;
 	char				**tokens;
+	int					tok_count;
 	struct s_hislst		**h_lst;
 }	t_data;
 
@@ -48,5 +49,6 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlist	*init_envlist(char **envp);
+void		execute_command(t_data *dat);
 
 #endif

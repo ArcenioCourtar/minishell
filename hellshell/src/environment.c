@@ -15,18 +15,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	builtin_env(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
-}
-
 t_envlist	*newnode_env(char *envp)
 {
 	t_envlist	*new;

@@ -38,6 +38,6 @@ int		is_delimiter(char c);
 void	jump_delimiters(char *input, int *i, int curr_char_type);
 void	insert_non_text_tokens(char *input, char **tokens_node, \
 								int *j, int curr_char_type);
-char	**lexer(char *input);
+char	**lexer(char *input, int *tok_count);
 
 #endif

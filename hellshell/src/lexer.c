@@ -67,16 +67,17 @@ int	token_counter(char *input)
 	return (count);
 }
 
-char	**lexer(char *input)
+char	**lexer(char *input, int *tok_count)
 {
 	char	**tokens;
 	int		token_count;
 
 	token_count = token_counter(input);
+	*tok_count = token_count;
 	tokens = malloc(sizeof(char *) * (token_count + 1));
 	if (!tokens)
 		ft_error(errno, strerror(errno));
-	ft_printf("count: %i\n", token_count);
+	ft_printf("count: %i\n", *tok_count);
 	insert_tokens_in_array(input, tokens, token_count);
 	return (tokens);
 }
