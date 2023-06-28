@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexer.h"
 #include "libft.h"
+#include "builtins.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -55,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
-		add_to_history_list(&dat);
+		add_to_history_list(dat.h_lst, dat.input);
 		dat.tokens = lexer(dat.input);
 		i = 0;
 		while (dat.tokens[i])
@@ -64,7 +66,6 @@ int	main(int argc, char **argv, char **envp)
 			i++;
 		}
 		execute_command(&dat);
-		free(dat.input);
 	}
 	exit(EXIT_SUCCESS);
 }

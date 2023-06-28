@@ -54,15 +54,15 @@ static void	history_lstadd_back(t_hislst **h_lst, t_hislst *new)
 	}
 }
 
-void	add_to_history_list(t_data *dat)
+void	add_to_history_list(t_hislst **history_list, char *input)
 {
 	static int	i = 1;
 	t_hislst	*node_to_add;
 
-	node_to_add = new_history_node(dat->input);
+	node_to_add = new_history_node(input);
 	node_to_add->n = i;
 	i++;
-	history_lstadd_back(dat->h_lst, node_to_add);
+	history_lstadd_back(history_list, node_to_add);
 }
 
 void	print_history_list(t_hislst **history_list)
