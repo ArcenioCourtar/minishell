@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   builtins3.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: acourtar <acourtar@student.42.fr>            +#+                     */
+/*   By: acourtar <acourtar@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/20 13:21:43 by acourtar      #+#    #+#                 */
-/*   Updated: 2023/06/20 17:41:36 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/06/28 19:00:22 by acourtar      #+#    #+#                 */
+/*   Updated: 2023/06/28 19:00:22 by acourtar      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,39 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// For tester compatibility
-// if (!isatty(STDIN_FILENO))
-// 		rl_outstream = stdin;
-
-
-int	main(int argc, char **argv, char **envp)
+void	builtin_env(char **envp)
 {
-	t_data	dat;
+	int	i;
 
-	(void) argv;
-	(void) argc;
-
-	init_dat(&dat, envp);
-	while (1)
+	i = 0;
+	while (envp[i])
 	{
-		dat.input = readline("hellshell-0.1$ ");
-		if (!dat.input)
-			break ;
-		add_history(dat.input);
-		add_to_history_list(dat.h_lst, dat.input);
-		dat.tokens = lexer(dat.input, &dat.tok_count);
-		execute_command(&dat);
+		printf("%s\n", envp[i]);
+		i++;
 	}
+}
+
+void	builtin_pwd(void)
+{
+	char	buffer[1000];
+
+	ft_bzero(buffer, 1000);
+	getcwd(buffer, 1000);
+	// error checking
+	printf("%s\n", buffer);
+}
+
+// TODO: handle CDPATH
+void	builtin_cd(t_data *dat)
+{
+	if (dat->tok_count > 1)
+	{
+		if (chdir(dat->tokens[2]) == -1)
+			printf("%s\n", strerror(errno));
+	}
+}
+
+void	builtin_exit(void)
+{
 	exit(EXIT_SUCCESS);
 }

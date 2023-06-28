@@ -49,6 +49,8 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlist	*init_envlist(char **envp);
+char		**set_envp(t_envlist *envlist);
+void		init_dat(t_data *dat, char **envp);
 void		execute_command(t_data *dat);
 
 #endif

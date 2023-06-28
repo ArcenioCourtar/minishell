@@ -17,40 +17,35 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// bool	compare_token(char **tokens, int n, const char *str)
-// {
-	
-// }
-
-// int	first_command(char **tokens)
-// {
-	
-// }
+bool	compare_token(char **tokens, int n, const char *str)
+{
+	if (!ft_strncmp(tokens[n], str, ft_strlen(str)))
+		return (true);
+	return (false);
+}
 
 void	execute_command(t_data *dat)
 {
-	int	i;
-
-	i = 0;
 	if (dat->tok_count == 0)
 	{
 		printf("no commands\n");
 		return ;
 	}
-	if (!ft_strncmp(dat->input, "env", 3))
+	if (compare_token(dat->tokens, 0, "env"))
 		builtin_env(dat->envp);
-	if (!ft_strncmp(dat->input, "history", 8))
-		print_history_list(dat->h_lst);
-}
-
-void	builtin_env(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
+	if (compare_token(dat->tokens, 0, "export"))
 	{
-		printf("%s\n", envp[i]);
-		i++;
+		if (dat->tok_count == 3)
+			builtin_export(dat);
+		else
+			builtin_env(dat->envp);
 	}
+	if (compare_token(dat->tokens, 0, "history"))
+		print_history_list(dat->h_lst);
+	if (compare_token(dat->tokens, 0, "pwd"))
+		builtin_pwd();
+	if (compare_token(dat->tokens, 0, "cd"))
+		builtin_cd(dat);
+	if (compare_token(dat->tokens, 0, "exit"))
+		builtin_exit();
 }

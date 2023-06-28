@@ -69,3 +69,55 @@ t_envlist	*init_envlist(char **envp)
 	}
 	return (start);
 }
+
+int	envlist_nodecount(t_envlist *start)
+{
+	t_envlist	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = start;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
+static void	cpy_contents(char *new, t_envlist *node)
+{
+	int	len_name;
+	int	len_val;
+
+	len_name = ft_strlen(node->name);
+	len_val = ft_strlen(node->value);
+	ft_memcpy(new, node->name, len_name);
+	new[len_name] = '=';
+	ft_memcpy(new + len_name + 1, node->value, len_val);
+	new[len_name + len_val + 1] = '\0';
+}
+
+char	**set_envp(t_envlist *envlist)
+{
+	char	**new;
+	int		count;
+	int		i;
+
+	count = envlist_nodecount(envlist);
+	new = malloc(sizeof(char *) * (count + 1));
+	if (!new)
+		ft_error(errno, "malloc\n");
+	i = 0;
+	while (envlist)
+	{
+		new[i] = malloc(sizeof(char) * (envlist->size + 1));
+		if (!new[i])
+			ft_error(errno, "malloc\n");
+		cpy_contents(new[i], envlist);
+		envlist = envlist->next;
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}
