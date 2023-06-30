@@ -16,10 +16,9 @@ NAME 		= hellshell
 
 SRC_FILES	= 	main.c history.c environment.c \
 				\
-				lexer/lexer_array_utils.c 	\
-				lexer/lexer_list_utils.c 	\
-				lexer/list_token_type.c 	\
 				lexer/lexer_main.c 			\
+				lexer/token_array_utils.c 	\
+				lexer/token_list_utils.c 	\
 				\
 				testing.c
 

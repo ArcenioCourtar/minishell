@@ -55,9 +55,8 @@ void				insert_non_text_tokens(char *input, char **tokens_node, \
 													int *j, int curr_char_type);
 
 //--list========================================================================
-t_token				**init_token_list(void);
 t_token				*tlst_new_node(char *token);
-enum e_token_types	get_token_type(char *token);
 void				token_lstadd_back(t_token **t_lst_head, t_token *new_node);
+enum e_token_types	get_token_type(char *token);
 
 #endif

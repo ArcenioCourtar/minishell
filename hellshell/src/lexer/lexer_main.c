@@ -66,12 +66,28 @@ static void	insert_tokens_in_array(char *input, char **tokens, int token_count)
 	tokens[i] = NULL;
 }
 
+static char	**input_to_token_array(char *input)
+{
+	char	**tokens;
+	int		token_count;
+
+	token_count = token_counter(input);
+	tokens = malloc(sizeof(char *) * (token_count + 1));
+	if (!tokens)
+		ft_error(errno, strerror(errno));
+	insert_tokens_in_array(input, tokens, token_count);
+	return (tokens);
+}
+
 static void	token_array_to_list(t_data *data, char **tokens)
 {
 	int		i;
 	t_token	*new_token_node;
 
-	(*data).t_lst = init_token_list();
+	data->t_lst = (t_token **)malloc(sizeof(t_token *));
+	if (!data->t_lst)
+		ft_error(errno, strerror(errno));
+	*data->t_lst = NULL;
 	i = 0;
 	while (tokens[i])
 	{
@@ -83,15 +99,9 @@ static void	token_array_to_list(t_data *data, char **tokens)
 
 void	lexer(t_data *data)
 {
-	char	**tokens;
-	int		token_count;
+	char	**token_array;
 
-	token_count = token_counter(data->input);
-	tokens = malloc(sizeof(char *) * (token_count + 1));
-	if (!tokens)
-		ft_error(errno, strerror(errno));
-	ft_printf("count: %i\n", token_count);
-	insert_tokens_in_array(data->input, tokens, token_count);
-	token_array_to_list(data, tokens);
+	token_array = input_to_token_array(data->input);
+	token_array_to_list(data, token_array);
 	return ;
 }
