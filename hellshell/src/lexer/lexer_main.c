@@ -100,9 +100,7 @@ static void	token_array_to_list(t_data *data, char **tokens)
 
 void	lexer(t_data *data)
 {
-	char	**token_array;
-
-	token_array = input_to_token_array(data, data->input);
-	token_array_to_list(data, token_array);
+	data->tokens = input_to_token_array(data, data->input);
+	token_array_to_list(data, data->tokens);
 	return ;
 }
