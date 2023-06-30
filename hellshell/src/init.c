@@ -21,6 +21,7 @@ void	init_dat(t_data *dat, char **envp)
 {
 	dat->input = NULL;
 	dat->envlist = init_envlist(envp);
-	dat->envp = envp;
+	dat->envp = NULL;
+	dat->envp = set_envp(dat->envlist, dat->envp);
 	dat->h_lst = history_list_init();
 }

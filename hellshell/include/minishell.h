@@ -41,6 +41,7 @@ typedef struct s_envlist
 	char				*name;
 	char				*value;
 	struct s_envlist	*next;
+	struct s_envlist	*prev;
 }	t_envlist;
 
 // history
@@ -49,7 +50,7 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlist	*init_envlist(char **envp);
-char		**set_envp(t_envlist *envlist);
+char		**set_envp(t_envlist *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);
 void		execute_command(t_data *dat);
 

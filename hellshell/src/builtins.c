@@ -35,7 +35,7 @@ void	execute_command(t_data *dat)
 		builtin_env(dat->envp);
 	if (compare_token(dat->tokens, 0, "export"))
 	{
-		if (dat->tok_count == 3)
+		if (dat->tok_count >= 3)
 			builtin_export(dat);
 		else
 			builtin_env(dat->envp);
@@ -44,8 +44,12 @@ void	execute_command(t_data *dat)
 		print_history_list(dat->h_lst);
 	if (compare_token(dat->tokens, 0, "pwd"))
 		builtin_pwd();
-	if (compare_token(dat->tokens, 0, "cd"))
+	if (compare_token(dat->tokens, 0, "cd") && dat->tok_count >= 3)
 		builtin_cd(dat);
 	if (compare_token(dat->tokens, 0, "exit"))
 		builtin_exit();
+	if (compare_token(dat->tokens, 0, "unset") && dat->tok_count >= 3)
+		builtin_unset(dat);
+	if (compare_token(dat->tokens, 0, "echo") && dat->tok_count >= 3)
+		builtin_echo(dat);
 }

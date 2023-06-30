@@ -25,6 +25,7 @@ t_envlist	*newnode_env(char *envp)
 		return (NULL);
 	new->size = ft_strlen(envp);
 	new->next = NULL;
+	new->prev = NULL;
 	namesize = ft_strchr(envp, '=') - envp;
 	new->name = ft_substr(envp, 0, namesize);
 	if (new->name == NULL)
@@ -64,6 +65,7 @@ t_envlist	*init_envlist(char **envp)
 			return (NULL);
 		}
 		next->next = new;
+		new->prev = next;
 		next = next->next;
 		i++;
 	}
@@ -98,12 +100,28 @@ static void	cpy_contents(char *new, t_envlist *node)
 	new[len_name + len_val + 1] = '\0';
 }
 
-char	**set_envp(t_envlist *envlist)
+// Assuming the last address is set to NULL
+void	free_doubleptr(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
+}
+
+char	**set_envp(t_envlist *envlist, char **envp)
 {
 	char	**new;
 	int		count;
 	int		i;
 
+	if (envp != NULL)
+		free_doubleptr(envp);
 	count = envlist_nodecount(envlist);
 	new = malloc(sizeof(char *) * (count + 1));
 	if (!new)

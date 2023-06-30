@@ -76,7 +76,6 @@ char	**lexer(char *input, int *tok_count)
 	tokens = malloc(sizeof(char *) * (token_count + 1));
 	if (!tokens)
 		ft_error(errno, strerror(errno));
-	ft_printf("count: %i\n", *tok_count);
 	insert_tokens_in_array(input, tokens, token_count);
 	return (tokens);
 }

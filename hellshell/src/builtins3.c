@@ -29,6 +29,11 @@ void	builtin_env(char **envp)
 	}
 }
 
+void	builtin_echo(t_data *dat)
+{
+	printf("%s\n", dat->tokens[2]);
+}
+
 void	builtin_pwd(void)
 {
 	char	buffer[1000];

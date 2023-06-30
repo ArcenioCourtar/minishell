@@ -40,7 +40,7 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
+	@$(CC) $(FSAN) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
 tmp:
 	@mkdir -p $(OBJ_DIR)

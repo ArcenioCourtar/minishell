@@ -18,11 +18,14 @@
 # include <stdio.h>
 # include <stdbool.h>
 
+bool		compare_token(char **tokens, int n, const char *str);
 t_envlist	*newnode_env(char *envp);
 void		builtin_env(char **envp);
 void		builtin_pwd(void);
 void		builtin_cd(t_data *dat);
 void		builtin_exit(void);
 void		builtin_export(t_data *dat);
+void		builtin_unset(t_data *dat);
+void		builtin_echo(t_data *dat);
 
 #endif

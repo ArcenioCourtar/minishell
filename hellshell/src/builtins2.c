@@ -34,17 +34,24 @@ int	strchrloc(char *s, int c)
 	return (-1);
 }
 
-void	envlist_addback(t_envlist *list, t_envlist *new)
+void	envlist_addback(t_envlist **list, t_envlist *new)
 {
-	t_envlist	*tmp;
+	t_envlist	*last;
 
-	tmp = list;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
+	if (*list == NULL)
+		*list = new;
+	else
+	{
+		last = *list;
+		while (last->next != NULL)
+			last = last->next;
+		last->next = new;
+		new->prev = last;
+	}
 }
 
 // TODO: prevent duplicate variables
+// use the function you created to initialize this type xd dumbo
 void	builtin_export(t_data *dat)
 {
 	t_envlist	*new;
@@ -76,6 +83,46 @@ void	builtin_export(t_data *dat)
 		if (!new->value)
 			ft_error(errno, "malloc\n");
 	}
-	envlist_addback(dat->envlist, new);
-	dat->envp = set_envp(dat->envlist);
+	new->next = NULL;
+	new->prev = NULL;
+	new->size = ft_strlen(new->name) + ft_strlen(new->value) + 2;
+	envlist_addback(&dat->envlist, new);
+	dat->envp = set_envp(dat->envlist, dat->envp);
+}
+
+void	remove_envnode(t_envlist *start, t_envlist *node)
+{
+	if (start == node)
+	{
+		start = node->next;
+		start->prev = NULL;
+	}
+	else
+	{
+		node->prev->next = node->next;
+		if (node->next != NULL)
+			node->next->prev = node->prev;
+	}
+
+	free(node->name);
+	free(node->value);
+	free(node);
+}
+
+// TODO add non-env variable declaration, and unsetting
+void	builtin_unset(t_data *dat)
+{
+	t_envlist	*p;
+
+	p = dat->envlist;
+	while (p)
+	{
+		if (compare_token(dat->tokens, 2, p->name))
+		{
+			remove_envnode(dat->envlist, p);
+			dat->envp = set_envp(dat->envlist, dat->envp);
+			break ;
+		}
+		p = p->next;
+	}
 }
