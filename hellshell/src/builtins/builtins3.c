@@ -31,7 +31,24 @@ void	builtin_env(char **envp)
 
 void	builtin_echo(t_data *dat)
 {
-	printf("%s\n", dat->tokens[2]);
+	t_envlist	*tmp;
+
+	tmp = dat->envlist;
+	if (dat->tokens[2][0] == '$')
+	{
+		while (tmp && dat->tok_count == 4)
+		{
+			if (!ft_strnstr(tmp->name, dat->tokens[3], ft_strlen(tmp->name)))
+			{
+				printf("%s\n", tmp->value);
+				return ;
+			}
+			tmp = tmp->next;
+		}
+		printf("\n");
+	}
+	else
+		printf("%s\n", dat->tokens[2]);
 }
 
 void	builtin_pwd(void)
@@ -39,9 +56,10 @@ void	builtin_pwd(void)
 	char	buffer[1000];
 
 	ft_bzero(buffer, 1000);
-	getcwd(buffer, 1000);
-	// error checking
-	printf("%s\n", buffer);
+	if (getcwd(buffer, 1000) == NULL)
+		printf("%s\n", strerror(errno));
+	else
+		printf("%s\n", buffer);
 }
 
 // TODO: handle CDPATH

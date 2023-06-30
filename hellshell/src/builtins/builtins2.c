@@ -52,40 +52,16 @@ void	envlist_addback(t_envlist **list, t_envlist *new)
 
 // TODO: prevent duplicate variables
 // use the function you created to initialize this type xd dumbo
+// for that you need to implement the check for the '=' operator in that func
 void	builtin_export(t_data *dat)
 {
 	t_envlist	*new;
-	int			equalsloc;
 
-	// if valid
-	new = malloc(sizeof(t_envlist));
+	if (dat->tokens[2][0] == '=')
+		return ;
+	new = newnode_env(dat->tokens[2]);
 	if (!new)
 		ft_error(errno, "malloc\n");
-	equalsloc = strchrloc(dat->tokens[2], '=');
-	if (equalsloc == 0)
-		return ;
-	else if (equalsloc == -1)
-	{
-		new->name = ft_substr(dat->tokens[2], 0, ft_strlen(dat->tokens[2]));
-		if (!new->name)
-			ft_error(errno, "malloc\n");
-		new->value = malloc(1);
-		if (!new->value)
-			ft_error(errno, "malloc\n");
-		new->value[0] = '\0';
-	}
-	else
-	{
-		new->name = ft_substr(dat->tokens[2], 0, equalsloc);
-		if (!new->name)
-			ft_error(errno, "malloc\n");
-		new->value = ft_substr(dat->tokens[2], equalsloc + 1, ft_strlen(dat->tokens[2]) - equalsloc);
-		if (!new->value)
-			ft_error(errno, "malloc\n");
-	}
-	new->next = NULL;
-	new->prev = NULL;
-	new->size = ft_strlen(new->name) + ft_strlen(new->value) + 2;
 	envlist_addback(&dat->envlist, new);
 	dat->envp = set_envp(dat->envlist, dat->envp);
 }

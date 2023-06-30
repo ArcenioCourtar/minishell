@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_envlist	*newnode_env(char *envp)
+t_envlist	*newnode_env(char *envvar)
 {
 	t_envlist	*new;
 	size_t		namesize;
@@ -23,23 +23,22 @@ t_envlist	*newnode_env(char *envp)
 	new = malloc(sizeof(t_envlist));
 	if (new == NULL)
 		return (NULL);
-	new->size = ft_strlen(envp);
+	if (ft_strchr(envvar, '=') == 0)
+		new->size = ft_strlen(envvar) + 1;
+	else
+		new->size = ft_strlen(envvar);
 	new->next = NULL;
 	new->prev = NULL;
-	namesize = ft_strchr(envp, '=') - envp;
-	new->name = ft_substr(envp, 0, namesize);
+	if (ft_strchr(envvar, '=') == 0)
+		namesize = new->size - 1;
+	else
+		namesize = ft_strchr(envvar, '=') - envvar;
+	new->name = ft_substr(envvar, 0, namesize);
 	if (new->name == NULL)
-	{
-		free(new);
-		return (NULL);
-	}
-	new->value = ft_substr(envp, namesize + 1, new->size - namesize);
+		ft_error(errno, "malloc\n");
+	new->value = ft_substr(envvar, namesize + 1, new->size - namesize);
 	if (new->name == NULL)
-	{
-		free(new->name);
-		free(new);
-		return (NULL);
-	}
+		ft_error(errno, "malloc\n");
 	return (new);
 }
 
@@ -60,10 +59,7 @@ t_envlist	*init_envlist(char **envp)
 	{
 		new = newnode_env(envp[i]);
 		if (!new)
-		{
-			// freeing
-			return (NULL);
-		}
+			ft_error(errno, "malloc\n");
 		next->next = new;
 		new->prev = next;
 		next = next->next;
