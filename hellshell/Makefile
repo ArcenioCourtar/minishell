@@ -5,8 +5,8 @@
 #                                                      +:+                     #
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/05/22 15:34:23 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 17:35:53 by ovan-rhe      ########   odam.nl          #
+#    Created: 2023/06/28 19:08:38 by ovan-rhe      #+#    #+#                  #
+#    Updated: 2023/06/28 19:08:38 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,24 @@
 NAME 		= hellshell
 
 SRC_FILES	= main.c history.c environment.c init.c \
-				builtins.c builtins2.c builtins3.c lexer.c lexer_utils.c
+				\
+				builtins/builtins.c 		\
+				builtins/builtins2.c 		\
+				builtins/builtins3.c 		\
+				\
+				lexer/lexer_main.c 			\
+				lexer/token_array_utils.c 	\
+				lexer/token_list_utils.c 	\
+				\
+				testing.c
 
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+
+SRCSUBD		= $(shell find $(SRC_DIR) -type d)
+OBJSUBD		= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
 
 HEADERS		= -I include
 
@@ -29,7 +40,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -g -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror $(FSAN)
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
@@ -43,7 +54,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(FSAN) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
 tmp:
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<

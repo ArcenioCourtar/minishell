@@ -37,7 +37,8 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		add_to_history_list(dat.h_lst, dat.input);
-		dat.tokens = lexer(dat.input, &dat.tok_count);
+		lexer(&dat);
+		print_token_list(dat);
 		execute_command(&dat);
 	}
 	exit(EXIT_SUCCESS);

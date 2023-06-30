@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
+/*   lexer_main.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -14,7 +14,31 @@
 #include "libft.h"
 #include "lexer.h"
 
-void	insert_tokens_in_array(char *input, char **tokens, int token_count)
+static int	token_counter(char *input)
+{
+	int	i;
+	int	count;
+	int	curr_char_type;
+
+	count = 0;
+	i = 0;
+	while (input && input[i])
+	{
+		curr_char_type = is_delimiter(input[i]);
+		count++;
+		if (curr_char_type < 0)
+			while (input[i] && is_delimiter(input[i]) < 0)
+				i++;
+		else if (curr_char_type == DEL_SPACE)
+			while (input[i] && is_delimiter(input[i]) == DEL_SPACE)
+				i++;
+		else if (curr_char_type >= 0)
+			jump_delimiters(input, &i, curr_char_type);
+	}
+	return (count);
+}
+
+static void	insert_tokens_in_array(char *input, char **tokens, int token_count)
 {
 	int	i;
 	int	j;
@@ -42,40 +66,43 @@ void	insert_tokens_in_array(char *input, char **tokens, int token_count)
 	tokens[i] = NULL;
 }
 
-int	token_counter(char *input)
-{
-	int	i;
-	int	count;
-	int	curr_char_type;
-
-	count = 0;
-	i = 0;
-	while (input && input[i])
-	{
-		curr_char_type = is_delimiter(input[i]);
-		count++;
-		if (curr_char_type < 0)
-			while (input[i] && is_delimiter(input[i]) < 0)
-				i++;
-		else if (curr_char_type == DEL_SPACE)
-			while (input[i] && is_delimiter(input[i]) == DEL_SPACE)
-				i++;
-		else if (curr_char_type >= 0)
-			jump_delimiters(input, &i, curr_char_type);
-	}
-	return (count);
-}
-
-char	**lexer(char *input, int *tok_count)
+static char	**input_to_token_array(t_data *data, char *input)
 {
 	char	**tokens;
 	int		token_count;
 
 	token_count = token_counter(input);
-	*tok_count = token_count;
+	data->tok_count = token_count;
 	tokens = malloc(sizeof(char *) * (token_count + 1));
 	if (!tokens)
 		ft_error(errno, strerror(errno));
 	insert_tokens_in_array(input, tokens, token_count);
 	return (tokens);
+}
+
+static void	token_array_to_list(t_data *data, char **tokens)
+{
+	int		i;
+	t_token	*new_token_node;
+
+	data->t_lst = (t_token **)malloc(sizeof(t_token *));
+	if (!data->t_lst)
+		ft_error(errno, strerror(errno));
+	*data->t_lst = NULL;
+	i = 0;
+	while (tokens[i])
+	{
+		new_token_node = tlst_new_node(tokens[i]);
+		token_lstadd_back((*data).t_lst, new_token_node);
+		i++;
+	}
+}
+
+void	lexer(t_data *data)
+{
+	char	**token_array;
+
+	token_array = input_to_token_array(data, data->input);
+	token_array_to_list(data, token_array);
+	return ;
 }
