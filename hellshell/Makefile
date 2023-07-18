@@ -14,7 +14,7 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= main.c history.c environment.c init.c \
+SRC_FILES	= 	main.c history.c environment.c init.c \
 				\
 				builtins/builtins.c 		\
 				builtins/builtins2.c 		\
@@ -23,6 +23,9 @@ SRC_FILES	= main.c history.c environment.c init.c \
 				lexer/lexer_main.c 			\
 				lexer/token_array_utils.c 	\
 				lexer/token_list_utils.c 	\
+				\
+				parser/parser_main.c		\
+				parser/redirects.c			\
 				\
 				testing.c
 
@@ -45,7 +48,7 @@ FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
 
-all: lib tmp $(NAME)
+all: lib objdir $(NAME)
 
 lib:
 	$(MAKE) -C $(LIBFT)
@@ -53,7 +56,7 @@ lib:
 $(NAME): $(OBJS)
 	@$(CC) $(FSAN) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
-tmp:
+objdir:
 	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
