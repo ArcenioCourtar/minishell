@@ -79,7 +79,6 @@ void	remove_envnode(t_envlist *start, t_envlist *node)
 		if (node->next != NULL)
 			node->next->prev = node->prev;
 	}
-
 	free(node->name);
 	free(node->value);
 	free(node);

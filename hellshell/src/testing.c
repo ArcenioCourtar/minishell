@@ -33,7 +33,8 @@ void	print_token_list(t_data dat)
 	i = 0;
 	while ((*dat.t_lst))
 	{
-		ft_printf("%i: '%s'\r\e[27Ctype: %i\n", i, (*dat.t_lst)->token, (*dat.t_lst)->type);
+		ft_printf("%i: '%s'\r\e[27Ctype: %i\n", i, (*dat.t_lst)->token, \
+		(*dat.t_lst)->type);
 		(*dat.t_lst) = (*dat.t_lst)->next;
 		i++;
 	}
