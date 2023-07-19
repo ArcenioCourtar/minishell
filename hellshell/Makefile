@@ -26,6 +26,8 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				\
 				parser/parser_main.c		\
 				parser/redirects.c			\
+				parser/command_table.c		\
+				parser/cmd_list_utils.c		\
 				\
 				testing.c
 

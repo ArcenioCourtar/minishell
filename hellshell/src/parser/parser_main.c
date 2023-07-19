@@ -14,6 +14,8 @@
 #include "minishell.h"
 #include "libft.h"
 
+void	create_command_table(t_data *data, t_parser_data *p_data);
+
 void	init_io_redirect(t_inout *io_redirect)
 {
 	io_redirect->infile = NULL;
@@ -28,18 +30,23 @@ t_cmd	**init_cmd_table(void)
 	new_table = (t_cmd **)malloc(sizeof(t_cmd *));
 	if (!new_table)
 		ft_error(errno, strerror(errno));
-	*new_table = 0;
+	*new_table = NULL;
 	return (new_table);
 }
 
-t_parser_data	*init_parser_data(t_cmd **cmd_table)
+t_parser_data	*init_parser_data(void)
 {
 	t_parser_data	*p_data;
 
-	p_data = (t_parser_data *)malloc(sizeof(t_parser_data));
+	p_data = (t_parser_data *)ft_calloc(1, sizeof(t_parser_data));
 	if (!p_data)
 		ft_error(errno, strerror(errno));
-	p_data->cmd_table = cmd_table;
+	p_data->cmd_table = (t_cmd **)ft_calloc(1, sizeof(t_cmd *));
+	if (!p_data->cmd_table)
+		ft_error(errno, strerror(errno));
+	p_data->io_redirects = (t_inout *)malloc(sizeof(t_inout));
+	if (!p_data->io_redirects)
+		ft_error(errno, strerror(errno));
 	return (p_data);
 }
 
@@ -47,9 +54,10 @@ void	parser(t_data *data)
 {
 	// t_cmd			**cmd_table;
 	t_inout			io_redirect;
-	// t_parser_data	*p_data;
+	t_parser_data	*p_data;
 
-	// p_data = init_parser_data();
+	p_data = init_parser_data();
+	create_command_table(data, p_data);
 	init_io_redirect(&io_redirect);
-	redirects(*data);
+	// redirects(*data);
 }

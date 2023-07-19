@@ -13,14 +13,14 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "minishell.h" 
+# include "minishell.h"
 
 typedef struct s_cmd
 {
 	char			*command;
 	char			**argv;
 	char			**envp;
-	struct s_cmdlst	*next;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_inout
@@ -30,10 +30,16 @@ typedef struct s_inout
 	char	*error;
 }	t_inout;
 
+typedef struct s_redir_files
+{
+	char				**file_name;
+	enum e_token_types	type;
+}	t_redir_files;
+
 typedef struct s_parser_data
 {
 	struct s_cmd	**cmd_table;
-	struct s_inout	io_redirects;
+	struct s_inout	*io_redirects;
 	char			**redirect_files;
 }	t_parser_data;
 

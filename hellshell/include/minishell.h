@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include "lexer.h"
+# include "parser.h"
 
 typedef struct s_hislst
 {
@@ -57,6 +58,8 @@ void		init_dat(t_data *dat, char **envp);
 void		execute_command(t_data *dat);
 
 void		lexer(t_data *data);
+
+void		parser(t_data *data);
 
 //--testing---------------------------------------------------------------------
 void		print_token_array(t_data dat);
