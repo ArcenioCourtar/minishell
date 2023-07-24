@@ -66,6 +66,7 @@ void	parser(t_data *data)
 	p_data = init_parser_data();
 	/*handle quotes and heredoc */
 	init_io_redirect(&io_redirect);
+	// if (state == CMD)
 	create_command_table(data, p_data);
 	// redirects(*data);
 }

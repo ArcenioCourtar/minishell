@@ -22,7 +22,6 @@ int	args_count(t_token *t_lst)
 	int	count;
 
 	count = 0;
-	t_lst = t_lst->next;
 	while (t_lst && t_lst->type != TOK_PIPE)
 	{
 		while (t_lst && t_lst->type == TOK_SPACE)
@@ -50,7 +49,6 @@ char	**get_cmd_args(t_token *t_lst)
 	if (!args)
 		ft_error(errno, strerror(errno));
 	i = 0;
-	tmp = tmp->next;
 	while (tmp && i < argc)
 	{
 		while (tmp && tmp->type == TOK_SPACE)

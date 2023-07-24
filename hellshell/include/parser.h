@@ -49,4 +49,6 @@ enum	e_p_states
 	ST_SQUOTE
 };
 
+void		printf_cmd_table(t_parser_data *p_data);
+
 #endif

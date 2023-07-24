@@ -24,10 +24,10 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				lexer/token_array_utils.c 	\
 				lexer/token_list_utils.c 	\
 				\
+				parser/cmd_list_utils.c		\
+				parser/command_table.c		\
 				parser/parser_main.c		\
 				parser/redirects.c			\
-				parser/command_table.c		\
-				parser/cmd_list_utils.c		\
 				\
 				testing.c
 

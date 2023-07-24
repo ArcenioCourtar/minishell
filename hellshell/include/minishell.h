@@ -64,6 +64,5 @@ void		parser(t_data *data);
 //--testing---------------------------------------------------------------------
 void		print_token_array(t_data dat);
 void		print_token_list(t_data dat);
-void		printf_cmd_table(t_parser_data *p_data);
 
 #endif
