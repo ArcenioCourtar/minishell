@@ -33,8 +33,34 @@ void	print_token_list(t_data dat)
 	i = 0;
 	while ((*dat.t_lst))
 	{
-		ft_printf("%i: '%s'\r\e[27Ctype: %i\n", i, (*dat.t_lst)->token, (*dat.t_lst)->type);
+		ft_printf("%i:\t%s\r\e[27Ctype: %i\n", i, (*dat.t_lst)->token, (*dat.t_lst)->type);
 		(*dat.t_lst) = (*dat.t_lst)->next;
+		i++;
+	}
+}
+
+void	printf_cmd_table(t_parser_data *p_data)
+{
+	t_cmd	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	tmp = *(p_data->cmd_table);
+	while (tmp)
+	{
+		ft_printf("[%i]\ncmd:\t%s\nargs:\t", i, tmp->command);
+		j = 0;
+		while (tmp->argv[j])
+		{
+			ft_printf("%s", tmp->argv[j]);
+			j++;
+			if (tmp->argv[j])
+				ft_printf(", ");
+			else
+				ft_printf("\n");
+		}
+		tmp = tmp->next;
 		i++;
 	}
 }

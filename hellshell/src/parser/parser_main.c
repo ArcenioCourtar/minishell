@@ -14,6 +14,14 @@
 #include "minishell.h"
 #include "libft.h"
 
+/** PARSING ORDER
+ * quotes
+ * heredoc
+ * pipes i guess
+ * expanding
+ * put everything together
+ */
+
 void	create_command_table(t_data *data, t_parser_data *p_data);
 
 void	init_io_redirect(t_inout *io_redirect)
@@ -52,12 +60,12 @@ t_parser_data	*init_parser_data(void)
 
 void	parser(t_data *data)
 {
-	// t_cmd			**cmd_table;
 	t_inout			io_redirect;
 	t_parser_data	*p_data;
 
 	p_data = init_parser_data();
-	create_command_table(data, p_data);
+	/*handle quotes and heredoc */
 	init_io_redirect(&io_redirect);
+	create_command_table(data, p_data);
 	// redirects(*data);
 }

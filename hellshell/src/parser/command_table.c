@@ -71,9 +71,11 @@ void	create_command_table(t_data *data, t_parser_data *p_data)
 	tmp_token_lst = *(data->t_lst);
 	while (tmp_token_lst)
 	{
+		// if (state == redirect);
+		// 	redirect handle;
+		// if (state == pipe);
 		// add new node to cmd table
 		new_node = cmdlst_new_node(tmp_token_lst->token);
-
 		// add args to command table
 		new_node->argv = get_cmd_args(tmp_token_lst);
 		// add to command table
@@ -81,6 +83,11 @@ void	create_command_table(t_data *data, t_parser_data *p_data)
 		// iterate till pipe
 		while (tmp_token_lst && tmp_token_lst->type != TOK_PIPE)
 			tmp_token_lst = tmp_token_lst->next;
+		if (tmp_token_lst && tmp_token_lst->type == TOK_PIPE)
+			tmp_token_lst = tmp_token_lst->next;
+		while (tmp_token_lst && tmp_token_lst->type == TOK_SPACE)
+			tmp_token_lst = tmp_token_lst->next;
 	}
+	printf_cmd_table(p_data);
 	exit(EXIT_SUCCESS);
 }

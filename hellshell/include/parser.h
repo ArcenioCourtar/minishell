@@ -43,6 +43,10 @@ typedef struct s_parser_data
 	char			**redirect_files;
 }	t_parser_data;
 
-void	redirects(t_data data);
+enum	e_p_states
+{
+	ST_DQUOTE,
+	ST_SQUOTE
+};
 
 #endif
