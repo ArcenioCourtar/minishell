@@ -87,5 +87,5 @@ void	create_command_table(t_data *data, t_parser_data *p_data)
 			tmp_token_lst = tmp_token_lst->next;
 	}
 	printf_cmd_table(p_data);
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 }

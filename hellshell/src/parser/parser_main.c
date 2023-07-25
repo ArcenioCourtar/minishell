@@ -22,6 +22,17 @@
  * put everything together
  */
 
+/** QUOTES
+ * state SPACE or NOSPACE before quote
+ * if SPACE
+ * 		in state S/D QUOTE 
+ * 				something
+ * if NOSPACE
+ * 		in state S/D QUOTE
+ * 				append to what's before
+ * 				delete quotes token from list
+ */
+
 void	create_command_table(t_data *data, t_parser_data *p_data);
 
 void	init_io_redirect(t_inout *io_redirect)
