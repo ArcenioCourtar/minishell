@@ -34,13 +34,14 @@
  */
 
 void	create_command_table(t_data *data, t_parser_data *p_data);
+void	create_cmd_lst2(t_data *data, t_cmd **cmd_lst_head);
 
-void	init_io_redirect(t_inout *io_redirect)
-{
-	io_redirect->infile = NULL;
-	io_redirect->outfile = NULL;
-	io_redirect->error = NULL;
-}
+// void	init_io_redirect(t_inout *io_redirect)
+// {
+// 	io_redirect->infile = NULL;
+// 	io_redirect->outfile = NULL;
+// 	io_redirect->error = NULL;
+// }
 
 t_cmd	**init_cmd_table(void)
 {
@@ -63,21 +64,23 @@ t_parser_data	*init_parser_data(void)
 	p_data->cmd_table = (t_cmd **)ft_calloc(1, sizeof(t_cmd *));
 	if (!p_data->cmd_table)
 		ft_error(errno, strerror(errno));
-	p_data->io_redirects = (t_inout *)malloc(sizeof(t_inout));
-	if (!p_data->io_redirects)
-		ft_error(errno, strerror(errno));
+	// p_data->io_redirects = (t_inout *)malloc(sizeof(t_inout));
+	// if (!p_data->io_redirects)
+	// 	ft_error(errno, strerror(errno));
 	return (p_data);
 }
 
 void	parser(t_data *data)
 {
-	t_inout			io_redirect;
 	t_parser_data	*p_data;
-
 	p_data = init_parser_data();
-	/*handle quotes and heredoc */
-	init_io_redirect(&io_redirect);
-	// if (state == CMD)
-	create_command_table(data, p_data);
-	// redirects(*data);
+
+	t_cmd			**cmd_lst_head;
+
+	cmd_lst_head = (t_cmd **)malloc(sizeof(t_cmd *));
+	if (!cmd_lst_head)
+		ft_error(errno, strerror(errno));
+	*cmd_lst_head = NULL;
+	create_cmd_lst2(data, cmd_lst_head);
+	// create_command_table(data, p_data);
 }
