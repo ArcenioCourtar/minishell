@@ -39,28 +39,44 @@ void	print_token_list(t_data dat)
 	}
 }
 
-void	printf_cmd_table(t_parser_data *p_data)
+void	printf_cmd_table(t_cmd **cmd_table_head)
 {
 	t_cmd	*tmp;
 	int		i;
 	int		j;
 
 	i = 0;
-	tmp = *(p_data->cmd_table);
+	tmp = *(cmd_table_head);
+	ft_printf("--First node-----------------------------------------------------------------------------\n");
 	while (tmp)
 	{
-		ft_printf("[%i]\ncmd:\t%s\nargs:\t", i, tmp->command);
+		ft_printf("[%i]\t type: %i\n", i, tmp->type);
+		ft_printf("argv: \r\e[15C");
 		j = 0;
 		while (tmp->argv[j])
 		{
-			ft_printf("%s", tmp->argv[j]);
-			j++;
-			if (tmp->argv[j])
-				ft_printf(", ");
+			if (tmp->argv[j + 1])
+				ft_printf("%s, ", tmp->argv[j]);
 			else
-				ft_printf("\n");
+				ft_printf("%s", tmp->argv[j]);
+			j++;
+		}
+		ft_printf("\n");
+		ft_printf("redirects: \r\e[15C");
+		j = 0;
+		while (tmp->redirect[j].name)
+		{
+			if (tmp->redirect[j + 1].name)
+				ft_printf("%s [%i], ", tmp->redirect[j].name, tmp->redirect[j].type);
+			else
+				ft_printf("%s [%i]", tmp->redirect[j].name, tmp->redirect[j].type);
+			j++;
 		}
 		tmp = tmp->next;
+		if (tmp)
+			ft_printf("\n--Next node------------------------------------------------------------------------------\n");
+		else
+			ft_printf("\n--End of list----------------------------------------------------------------------------\n");
 		i++;
 	}
 }

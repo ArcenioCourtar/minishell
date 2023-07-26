@@ -5,50 +5,73 @@
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/18 14:09:12 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2023/07/18 14:09:12 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/07/26 15:26:30 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/07/26 15:26:30 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "minishell.h"
+#include "parser.h"
 #include "libft.h"
+#include "lexer.h"
 
-t_cmd	*cmdlst_new_node(void)
+int	count_redirs(t_token *token)
 {
-	t_cmd	*new_node;
+	t_token	*tmp;
+	int		count;
 
-	new_node = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
-	if (!new_node)
-		ft_error(errno, strerror(errno));
-	return (new_node);
+	tmp = token;
+	count = 0;
+	while (tmp && tmp->type != TOK_PIPE)
+	{
+		if (is_redirect(tmp->type))
+		{
+			count++;
+			tmp = tmp->next;
+			while (tmp && tmp->type == TOK_SPACE)
+				tmp = tmp->next;
+			if (!tmp)
+				break ;
+		}
+		tmp = tmp->next;
+	}
+	return (count);
 }
 
-static t_cmd	*cmdlst_last(t_cmd *cmd_lst)
+void	skip_redirects(t_token **token)
 {
-	if (!cmd_lst)
-		return (NULL);
-	else if (!cmd_lst->next)
-		return (cmd_lst);
-	else
-		while (cmd_lst->next)
-			cmd_lst = cmd_lst->next;
-	return (cmd_lst);
+	*token = (*token)->next;
+	while ((*token)->type == TOK_SPACE)
+		*token = (*token)->next;
+	*token = (*token)->next;
 }
 
-void	cmdlst_add_back(t_cmd **cmd_lst_head, t_cmd *new_node)
+int	argv_count(t_token *t_lst)
 {
-	t_cmd	*tmp;
+	int	count;
 
-	if (!*cmd_lst_head)
+	count = 0;
+	while (t_lst && t_lst->type != TOK_PIPE)
 	{
-		*cmd_lst_head = new_node;
-		return ;
+		while (t_lst && t_lst->type == TOK_SPACE)
+			t_lst = t_lst->next;
+		if (is_redirect(t_lst->type))
+			skip_redirects(&t_lst);
+		if (t_lst && t_lst->type != TOK_SPACE && t_lst->type != TOK_PIPE)
+		{
+			count++;
+			t_lst = t_lst->next;
+		}
 	}
+	ft_printf("args count: %i\n", count);
+	return (count);
+}
+
+bool	is_redirect(enum e_token_types type)
+{
+	if (type == TOK_REDIN || type == TOK_REDOUT || \
+		type == TOK_REDAPPEND || type == TOK_HEREDOC)
+		return (true);
 	else
-	{
-		tmp = cmdlst_last(*cmd_lst_head);
-		tmp->next = new_node;
-		new_node->prev = tmp;
-	}
+		return (false);
 }

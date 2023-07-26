@@ -62,6 +62,14 @@ enum	e_p_states
 	ST_SQUOTE
 };
 
-void		printf_cmd_table(t_parser_data *p_data);
+void	cmdlst_add_back(t_cmd **cmd_lst_head, t_cmd *new_node);
+t_cmd	*cmdlst_new_node(void);
+int		count_redirs(t_token *token);
+int		argv_count(t_token *t_lst);
+void	skip_redirects(t_token **token);
+bool	is_redirect(enum e_token_types type);
+
+// testing
+void	printf_cmd_table(t_cmd **cmd_table_head);
 
 #endif
