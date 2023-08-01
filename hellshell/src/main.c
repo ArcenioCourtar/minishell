@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 		add_to_history_list(dat.h_lst, dat.input);
 		lexer(&dat);
 		parser(&dat);
-		print_token_list(dat);
+		// print_token_list(dat);
 		execute_command(&dat);
 	}
 	exit(EXIT_SUCCESS);

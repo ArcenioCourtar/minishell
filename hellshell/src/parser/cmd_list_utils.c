@@ -55,7 +55,7 @@ int	argv_count(t_token *t_lst)
 	{
 		while (t_lst && t_lst->type == TOK_SPACE)
 			t_lst = t_lst->next;
-		if (is_redirect(t_lst->type))
+		if (t_lst && is_redirect(t_lst->type))
 			skip_redirects(&t_lst);
 		if (t_lst && t_lst->type != TOK_SPACE && t_lst->type != TOK_PIPE)
 		{

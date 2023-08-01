@@ -33,6 +33,8 @@
  * 				delete quotes token from list
  */
 
+void	create_cmd_lst(t_data *data, t_cmd **cmd_lst_head);
+
 t_cmd	**init_cmd_table(void)
 {
 	t_cmd	**new_table;
