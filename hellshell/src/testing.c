@@ -39,11 +39,11 @@ void	print_token_list(t_data dat)
 	}
 }
 
-void	printf_cmd_table(t_cmd **cmd_table_head)
+void	printf_cmd_table(t_cmdlst **cmd_table_head)
 {
-	t_cmd	*tmp;
-	int		i;
-	int		j;
+	t_cmdlst	*tmp;
+	int			i;
+	int			j;
 
 	i = 0;
 	tmp = *(cmd_table_head);

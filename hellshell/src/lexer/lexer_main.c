@@ -82,10 +82,10 @@ static char	**input_to_token_array(t_data *data, char *input)
 
 static void	token_array_to_list(t_data *data, char **tokens)
 {
-	int		i;
-	t_token	*new_token_node;
+	int			i;
+	t_toklst	*new_token_node;
 
-	data->t_lst = (t_token **)malloc(sizeof(t_token *));
+	data->t_lst = (t_toklst **)malloc(sizeof(t_toklst *));
 	if (!data->t_lst)
 		ft_error(errno, strerror(errno));
 	*data->t_lst = NULL;

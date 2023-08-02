@@ -13,11 +13,11 @@
 #include "lexer.h"
 #include "libft.h"
 
-t_token	*tlst_new_node(char *token)
+t_toklst	*tlst_new_node(char *token)
 {
-	t_token	*new_node;
+	t_toklst	*new_node;
 
-	new_node = (t_token *)malloc(sizeof(t_token));
+	new_node = (t_toklst *)malloc(sizeof(t_toklst));
 	if (!new_node)
 		ft_error(errno, strerror(errno));
 	new_node->token = token;
@@ -27,7 +27,7 @@ t_token	*tlst_new_node(char *token)
 	return (new_node);
 }
 
-static t_token	*token_lstlast(t_token *t_lst)
+static t_toklst	*token_lstlast(t_toklst *t_lst)
 {
 	if (!t_lst)
 		return (NULL);
@@ -39,9 +39,9 @@ static t_token	*token_lstlast(t_token *t_lst)
 	return (t_lst);
 }
 
-void	token_lstadd_back(t_token **t_lst_head, t_token *new_node)
+void	token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node)
 {
-	t_token	*tmp;
+	t_toklst	*tmp;
 
 	if (!*t_lst_head)
 	{

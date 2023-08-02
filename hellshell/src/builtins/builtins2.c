@@ -34,9 +34,9 @@ int	strchrloc(char *s, int c)
 	return (-1);
 }
 
-void	envlist_addback(t_envlist **list, t_envlist *new)
+void	envlist_addback(t_envlst **list, t_envlst *new)
 {
-	t_envlist	*last;
+	t_envlst	*last;
 
 	if (*list == NULL)
 		*list = new;
@@ -55,7 +55,7 @@ void	envlist_addback(t_envlist **list, t_envlist *new)
 // for that you need to implement the check for the '=' operator in that func
 void	builtin_export(t_data *dat)
 {
-	t_envlist	*new;
+	t_envlst	*new;
 
 	if (dat->tokens[2][0] == '=')
 		return ;
@@ -66,7 +66,7 @@ void	builtin_export(t_data *dat)
 	dat->envp = set_envp(dat->envlist, dat->envp);
 }
 
-void	remove_envnode(t_envlist *start, t_envlist *node)
+void	remove_envnode(t_envlst *start, t_envlst *node)
 {
 	if (start == node)
 	{
@@ -88,7 +88,7 @@ void	remove_envnode(t_envlist *start, t_envlist *node)
 // TODO add non-env variable declaration, and unsetting
 void	builtin_unset(t_data *dat)
 {
-	t_envlist	*p;
+	t_envlst	*p;
 
 	p = dat->envlist;
 	while (p)

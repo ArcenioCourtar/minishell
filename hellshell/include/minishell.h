@@ -31,37 +31,42 @@ typedef struct s_data
 {
 	char				*input;
 	char				**envp;
-	struct s_envlist	*envlist;
+	struct s_envlst		*envlist;
 	char				**tokens;
 	int					tok_count;
-	struct s_token		**t_lst;
+	struct s_toklst		**t_lst;
 	struct s_hislst		**h_lst;
+	struct s_cmdlst		**cmd_lst;
 }	t_data;
 
-typedef struct s_envlist
+typedef struct s_envlst
 {
 	int					size;
 	char				*name;
 	char				*value;
-	struct s_envlist	*next;
-	struct s_envlist	*prev;
-}	t_envlist;
+	struct s_envlst		*next;
+	struct s_envlst		*prev;
+}	t_envlst;
 
-// history
-t_hislst	**history_list_init(void);
+/* history------------------------------------------------------------------- */
+t_hislst	**init_history_list(void);
 void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
-t_envlist	*init_envlist(char **envp);
-char		**set_envp(t_envlist *envlist, char **envp);
+t_envlst	*init_envlst(char **envp);
+char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);
 void		execute_command(t_data *dat);
 
 void		lexer(t_data *data);
 
 void		parser(t_data *data);
+void	free_command_list(t_data *data);
 
-//--testing---------------------------------------------------------------------
+/* error checking------------------------------------------------------------ */
+void	quotes_check(t_data data);
+
+/* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);
 void		print_token_list(t_data dat);
 

@@ -15,10 +15,10 @@
 #include "libft.h"
 #include "lexer.h"
 
-int	count_redirs(t_token *token)
+int	count_redirs(t_toklst *token)
 {
-	t_token	*tmp;
-	int		count;
+	t_toklst	*tmp;
+	int			count;
 
 	tmp = token;
 	count = 0;
@@ -38,7 +38,7 @@ int	count_redirs(t_token *token)
 	return (count);
 }
 
-void	skip_redirects(t_token **token)
+void	skip_redirects(t_toklst **token)
 {
 	*token = (*token)->next;
 	while ((*token)->type == TOK_SPACE)
@@ -46,7 +46,7 @@ void	skip_redirects(t_token **token)
 	*token = (*token)->next;
 }
 
-int	argv_count(t_token *t_lst)
+int	argv_count(t_toklst *t_lst)
 {
 	int	count;
 

@@ -33,13 +33,14 @@
  * 				delete quotes token from list
  */
 
-void	create_cmd_lst(t_data *data, t_cmd **cmd_lst_head);
+void	quotes(t_data *data);
+void	create_cmd_lst(t_data *data);
 
-t_cmd	**init_cmd_table(void)
+t_cmdlst	**init_cmd_table(void)
 {
-	t_cmd	**new_table;
+	t_cmdlst	**new_table;
 
-	new_table = (t_cmd **)malloc(sizeof(t_cmd *));
+	new_table = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
 	if (!new_table)
 		ft_error(errno, strerror(errno));
 	*new_table = NULL;
@@ -53,7 +54,7 @@ t_parser_data	*init_parser_data(void)
 	p_data = (t_parser_data *)ft_calloc(1, sizeof(t_parser_data));
 	if (!p_data)
 		ft_error(errno, strerror(errno));
-	p_data->cmd_table = (t_cmd **)ft_calloc(1, sizeof(t_cmd *));
+	p_data->cmd_table = (t_cmdlst **)ft_calloc(1, sizeof(t_cmdlst *));
 	if (!p_data->cmd_table)
 		ft_error(errno, strerror(errno));
 	return (p_data);
@@ -61,11 +62,38 @@ t_parser_data	*init_parser_data(void)
 
 void	parser(t_data *data)
 {
-	t_cmd			**cmd_lst_head;
+	quotes(data);
+	create_cmd_lst(data);
+}
 
-	cmd_lst_head = (t_cmd **)malloc(sizeof(t_cmd *));
+t_cmdlst	**init_command_list(void)
+{
+	t_cmdlst	**cmd_lst_head;
+
+	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
 	if (!cmd_lst_head)
 		ft_error(errno, strerror(errno));
 	*cmd_lst_head = NULL;
-	create_cmd_lst(data, cmd_lst_head);
+	return (cmd_lst_head);
+}
+
+void	free_command_list(t_data *data)
+{
+	t_cmdlst	*tmp;
+	int			i;
+
+	tmp = *(data->cmd_lst);
+	*(data->cmd_lst) = NULL;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->argv[i])
+		{
+			free(tmp->argv[i]);
+			i++;
+		}
+		free(tmp->argv);
+		free(tmp->redirect);
+		tmp = tmp->next;
+	}
 }

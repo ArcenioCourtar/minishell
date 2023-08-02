@@ -15,13 +15,11 @@
 #include "parser.h"
 #include <stdlib.h>
 
-void	redirect_error(t_token *token);
-
-void	redirects_to_node(t_token *token, t_cmd *node)
+void	redirects_to_node(t_toklst *token, t_cmdlst *node)
 {
-	int		rdr_count;
-	int		r;
-	t_token	*tmp;
+	int			rdr_count;
+	int			r;
+	t_toklst	*tmp;
 
 	tmp = token;
 	rdr_count = count_redirs(tmp);
@@ -45,11 +43,11 @@ void	redirects_to_node(t_token *token, t_cmd *node)
 	node->redirect[rdr_count].name = NULL;
 }
 
-void	argv_to_node(t_token *token, t_cmd *node)
+void	argv_to_node(t_toklst *token, t_cmdlst *node)
 {
-	t_token	*tmp;
-	int		argc;
-	int		i;
+	t_toklst	*tmp;
+	int			argc;
+	int			i;
 
 	tmp = token;
 	argc = argv_count(tmp);
@@ -73,9 +71,10 @@ void	argv_to_node(t_token *token, t_cmd *node)
 	node->argv[argc] = NULL;
 }
 
-void	parse_chunk(t_token *token, t_cmd **cmd_lst_head, enum e_cmd_type type)
+static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
+											enum e_cmd_type type)
 {
-	t_cmd	*new_node;
+	t_cmdlst	*new_node;
 
 	new_node = cmdlst_new_node();
 	new_node->type = type;
@@ -84,9 +83,9 @@ void	parse_chunk(t_token *token, t_cmd **cmd_lst_head, enum e_cmd_type type)
 	cmdlst_add_back(cmd_lst_head, new_node);
 }
 
-void	create_cmd_lst(t_data *data, t_cmd **cmd_lst_head)
+void	create_cmd_lst(t_data *data)
 {
-	t_token			*current_token;
+	t_toklst		*current_token;
 	enum e_cmd_type	type;
 
 	type = CMD_FIRST;
@@ -99,10 +98,10 @@ void	create_cmd_lst(t_data *data, t_cmd **cmd_lst_head)
 			current_token = current_token->next;
 		if (!current_token)
 			break ;
-		parse_chunk(current_token, cmd_lst_head, type);
+		parse_chunk(current_token, data->cmd_lst, type);
 		type = CMD_PIPE;
 		while (current_token && current_token->type != TOK_PIPE)
 			current_token = current_token->next;
 	}
-	printf_cmd_table(cmd_lst_head);
+	printf_cmd_table(data->cmd_lst);
 }

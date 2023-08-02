@@ -15,6 +15,13 @@
 
 # include "minishell.h"
 
+enum e_state_space
+{
+	SPACE,
+	NOSPACE,
+	NOTOK
+};
+
 enum e_cmd_type
 {
 	CMD_FIRST,
@@ -39,20 +46,18 @@ typedef struct s_redirect
 	enum e_redir_type	type;
 }	t_redirect;
 
-typedef struct s_cmd
+typedef struct s_cmdlst
 {
 	char				**argv;
 	struct s_redirect	*redirect;
-	// char				**envp;
 	enum e_cmd_type		type;
-	struct s_cmd		*prev;
-	struct s_cmd		*next;
-}	t_cmd;
+	struct s_cmdlst		*prev;
+	struct s_cmdlst		*next;
+}	t_cmdlst;
 
 typedef struct s_parser_data
 {
-	struct s_cmd	**cmd_table;
-	// struct s_inout	*io_redirects;
+	struct s_cmdlst	**cmd_table;
 	char			**redirect_files;
 }	t_parser_data;
 
@@ -62,14 +67,20 @@ enum	e_p_states
 	ST_SQUOTE
 };
 
-void	cmdlst_add_back(t_cmd **cmd_lst_head, t_cmd *new_node);
-t_cmd	*cmdlst_new_node(void);
-int		count_redirs(t_token *token);
-int		argv_count(t_token *t_lst);
-void	skip_redirects(t_token **token);
-bool	is_redirect(enum e_token_types type);
+void		redirect_error(t_toklst *token);
+void		skip_redirects(t_toklst **token);
+int			count_redirs(t_toklst *token);
+int			argv_count(t_toklst *t_lst);
+bool		is_redirect(enum e_token_types type);
+
+// command list functions
+t_cmdlst	**init_command_list(void);
+t_cmdlst	*cmdlst_new_node(void);
+void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
+void		cmdlst_del_node(t_toklst **token);
+
 
 // testing
-void	printf_cmd_table(t_cmd **cmd_table_head);
+void		printf_cmd_table(t_cmdlst **cmd_table_head);
 
 #endif

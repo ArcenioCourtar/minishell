@@ -40,13 +40,13 @@ enum e_token_types {
 	TOK_NAME = 'a'
 };
 
-typedef struct s_token
+typedef struct s_toklst
 {
 	char				*token;
 	enum e_token_types	type;
-	struct s_token		*prev;
-	struct s_token		*next;
-}	t_token;
+	struct s_toklst		*prev;
+	struct s_toklst		*next;
+}	t_toklst;
 
 //--array=======================================================================
 int					is_delimiter(char c);
@@ -55,8 +55,8 @@ void				insert_non_text_tokens(char *input, char **tokens_node, \
 													int *j, int curr_char_type);
 
 //--list========================================================================
-t_token				*tlst_new_node(char *token);
-void				token_lstadd_back(t_token **t_lst_head, t_token *new_node);
+t_toklst			*tlst_new_node(char *token);
+void				token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node);
 enum e_token_types	get_token_type(char *token);
 
 #endif

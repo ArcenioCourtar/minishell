@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cmd_list_utils.c                                   :+:    :+:            */
+/*   cmd_list_functions.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -14,17 +14,17 @@
 #include "minishell.h"
 #include "libft.h"
 
-t_cmd	*cmdlst_new_node(void)
+t_cmdlst	*cmdlst_new_node(void)
 {
-	t_cmd	*new_node;
+	t_cmdlst	*new_node;
 
-	new_node = (t_cmd *)ft_calloc(sizeof(t_cmd), 1);
+	new_node = (t_cmdlst *)ft_calloc(sizeof(t_cmdlst), 1);
 	if (!new_node)
 		ft_error(errno, strerror(errno));
 	return (new_node);
 }
 
-static t_cmd	*cmdlst_last(t_cmd *cmd_lst)
+static t_cmdlst	*cmdlst_last(t_cmdlst *cmd_lst)
 {
 	if (!cmd_lst->next)
 		return (cmd_lst);
@@ -34,9 +34,9 @@ static t_cmd	*cmdlst_last(t_cmd *cmd_lst)
 	return (cmd_lst);
 }
 
-void	cmdlst_add_back(t_cmd **cmd_lst_head, t_cmd *new_node)
+void	cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node)
 {
-	t_cmd	*tmp;
+	t_cmdlst	*tmp;
 
 	if (!*cmd_lst_head)
 	{
@@ -49,4 +49,26 @@ void	cmdlst_add_back(t_cmd **cmd_lst_head, t_cmd *new_node)
 		tmp->next = new_node;
 		new_node->prev = tmp;
 	}
+}
+
+void	cmdlst_del_node(t_toklst **token)
+{
+	t_toklst	*current_tok;
+
+	if ((*token)->prev)
+	{
+		if ((*token)->next)
+		{
+			(*token)->prev->next = (*token)->next;
+			(*token)->next->prev = (*token)->prev;
+		}
+		else
+			(*token)->prev->next = NULL;
+		current_tok = (*token)->prev;
+	}
+	else
+		current_tok = NULL;
+	free((*token)->token);
+	free(*token);
+	*token = current_tok;
 }
