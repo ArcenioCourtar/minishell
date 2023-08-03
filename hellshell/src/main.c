@@ -38,10 +38,13 @@ int	main(int argc, char **argv, char **envp)
 		add_to_history_list(dat.h_lst, dat.input);
 		quotes_check(dat);
 		lexer(&dat);
-		parser(&dat);
-		print_token_list(dat);
+		parser(&dat); 
+		// print_token_list(dat);
 		execute_command(&dat);
-		free_command_list(&dat);
+		cmdlst_free(&dat);
+		free(dat.input);
+		free(dat.t_lst);
+		system("leaks -q hellshell");
 	}
 	exit(EXIT_SUCCESS);
 }

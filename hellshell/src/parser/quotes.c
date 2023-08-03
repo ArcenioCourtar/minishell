@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	trim_quotes(t_toklst **token, enum e_token_types type, char *trim)
+void	trim_quotes(t_toklst **token, enum e_token_type type, char *trim)
 {
 	char	*tmp;
 
@@ -24,13 +24,24 @@ void	trim_quotes(t_toklst **token, enum e_token_types type, char *trim)
 	(*token)->type = type;
 }
 
-void	single_quote_join(t_toklst **token)
+void	quote_join_back(t_toklst **token)
 {
-	char		*tmp;
+	// char		*tmp;
 
-	tmp = ft_strdup((*token)->prev->token);
-	free((*token)->prev->token);
-	(*token)->prev->token = ft_strjoinfree(tmp, (*token)->token);
+	// tmp = ft_strdup((*token)->prev->token);
+	// free((*token)->prev->token);
+	(*token)->prev->token = ft_strjoinfree((*token)->prev->token, (*token)->token);
+	cmdlst_del_node(token);
+}
+
+void	quote_join_front(t_toklst **token)
+{
+	// char	*tmp;
+
+	// tmp = ft_strdup((*token)->token);
+	// free((*token)->token);
+	(*token)->token = ft_strjoinfree((*token)->token, (*token)->next->token);
+	*token = (*token)->next;
 	cmdlst_del_node(token);
 }
 
@@ -39,13 +50,23 @@ void	handle_single_quote(t_toklst **token, \
 {
 	trim_quotes(token, TOK_NAME, "\'");
 	if (space_state == NOSPACE)
-		single_quote_join(token);
+		quote_join_back(token);
+	if ((*token)->next && (*token)->next->type != TOK_SPACE && (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
+		quote_join_front(token);
 }
 
-void	handle_double_quote(t_toklst **token)
+void	handle_double_quote(t_toklst **token, enum e_state_space space_state)
 {
 	trim_quotes(token, TOK_DQUOTE, "\"");
-	//expand ofzo
+	if (check_for_dollar((*token)->token))
+	{
+		// expansion(token);
+		ft_printf("\"expansion\"\n");
+	}
+	if (space_state == NOSPACE)
+		quote_join_back(token);
+	if ((*token)->next && (*token)->next->type != TOK_SPACE && (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
+		quote_join_front(token);
 }
 
 void	handle_quotes(t_toklst **token)
@@ -57,11 +78,11 @@ void	handle_quotes(t_toklst **token)
 	else if ((*token)->prev)
 		space_state = NOSPACE;
 	else
-		space_state = NOTOK;
+		space_state = FIRST;
 	if ((*token)->type == TOK_SQUOTE)
 		handle_single_quote(token, space_state);
 	else if ((*token)->type == TOK_DQUOTE)
-		handle_double_quote(token);
+		handle_double_quote(token, space_state);
 }
 
 void	quotes(t_data *data)
@@ -71,7 +92,14 @@ void	quotes(t_data *data)
 	tmp = *(data->t_lst);
 	while (tmp)
 	{
-		handle_quotes(&tmp);
+		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+			handle_quotes(&tmp);
+		else if (tmp->type == TOK_DOLLAR)
+		{
+			// expansion(&tmp);
+			ft_printf("expansion\n");
+			handle_quotes(&tmp);
+		}
 		tmp = tmp->next;
 	}
 }

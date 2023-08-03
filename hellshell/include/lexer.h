@@ -26,7 +26,7 @@ enum e_delims {
 	DEL_SPACE = ' '
 };
 
-enum e_token_types {
+enum e_token_type {
 	TOK_DQUOTE = '"',
 	TOK_SQUOTE = '\'',
 	TOK_PIPE = '|',
@@ -43,7 +43,7 @@ enum e_token_types {
 typedef struct s_toklst
 {
 	char				*token;
-	enum e_token_types	type;
+	enum e_token_type	type;
 	struct s_toklst		*prev;
 	struct s_toklst		*next;
 }	t_toklst;
@@ -56,7 +56,8 @@ void				insert_non_text_tokens(char *input, char **tokens_node, \
 
 //--list========================================================================
 t_toklst			*tlst_new_node(char *token);
-void				token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node);
-enum e_token_types	get_token_type(char *token);
+void				token_lstadd_back(t_toklst **t_lst_head, \
+												t_toklst *new_node);
+enum e_token_type	get_token_type(char *token);
 
 #endif

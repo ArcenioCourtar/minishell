@@ -81,11 +81,11 @@ static int	is_equal_token(char *token)
 	return (1);
 }
 
-enum e_token_types	get_token_type(char *token)
+enum e_token_type	get_token_type(char *token)
 {
 	if (token[0] == TOK_DQUOTE || token[0] == TOK_SQUOTE || \
 	token[0] == TOK_PIPE || token[0] == TOK_DOLLAR || token[0] == TOK_SPACE)
-		return ((enum e_token_types)token[0]);
+		return ((enum e_token_type)token[0]);
 	else if (token[0] == TOK_REDIN)
 	{
 		if (token[1] == TOK_REDIN)

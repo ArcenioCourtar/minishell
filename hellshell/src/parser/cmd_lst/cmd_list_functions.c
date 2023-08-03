@@ -57,6 +57,7 @@ void	cmdlst_del_node(t_toklst **token)
 
 	if ((*token)->prev)
 	{
+		current_tok = (*token)->prev;
 		if ((*token)->next)
 		{
 			(*token)->prev->next = (*token)->next;
@@ -64,11 +65,31 @@ void	cmdlst_del_node(t_toklst **token)
 		}
 		else
 			(*token)->prev->next = NULL;
-		current_tok = (*token)->prev;
 	}
 	else
 		current_tok = NULL;
 	free((*token)->token);
 	free(*token);
 	*token = current_tok;
+}
+
+void	cmdlst_free(t_data *data)
+{
+	t_cmdlst	*tmp;
+	int			i;
+
+	tmp = *(data->cmd_lst);
+	*(data->cmd_lst) = NULL;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->argv[i])
+		{
+			free(tmp->argv[i]);
+			i++;
+		}
+		free(tmp->argv);
+		free(tmp->redirect);
+		tmp = tmp->next;
+	}
 }

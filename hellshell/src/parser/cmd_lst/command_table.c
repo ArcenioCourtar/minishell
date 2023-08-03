@@ -83,6 +83,19 @@ static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 	cmdlst_add_back(cmd_lst_head, new_node);
 }
 
+void	free_token_list(t_toklst **t_lst)
+{
+	t_toklst	*tmp;
+
+	while (*t_lst)
+	{
+		tmp = (*t_lst)->next;
+		// free((*t_lst)->token);
+		free(*t_lst);
+		*t_lst = tmp;
+	}
+}
+
 void	create_cmd_lst(t_data *data)
 {
 	t_toklst		*current_token;
@@ -103,5 +116,7 @@ void	create_cmd_lst(t_data *data)
 		while (current_token && current_token->type != TOK_PIPE)
 			current_token = current_token->next;
 	}
+	// free(data->tokens);
+	free_token_list(data->t_lst);
 	printf_cmd_table(data->cmd_lst);
 }

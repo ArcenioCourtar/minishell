@@ -24,9 +24,10 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				lexer/token_array_utils.c 	\
 				lexer/token_list_utils.c 	\
 				\
-				parser/cmd_list_functions.c	\
-				parser/cmd_list_utils.c		\
-				parser/command_table.c		\
+				parser/cmd_lst/cmd_list_functions.c	\
+				parser/cmd_lst/cmd_list_utils.c		\
+				parser/cmd_lst/command_table.c		\
+				parser/expansion.c			\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\
@@ -47,7 +48,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -g -Wall -Wextra -Werror $(FSAN)
+CFLAGS	= -g -Wall -Wextra -Werror
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
@@ -58,7 +59,7 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(FSAN) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
 objdir:
 	@mkdir -p $(OBJSUBD)

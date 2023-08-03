@@ -67,7 +67,7 @@ int	argv_count(t_toklst *t_lst)
 	return (count);
 }
 
-bool	is_redirect(enum e_token_types type)
+bool	is_redirect(enum e_token_type type)
 {
 	if (type == TOK_REDIN || type == TOK_REDOUT || \
 		type == TOK_REDAPPEND || type == TOK_HEREDOC)

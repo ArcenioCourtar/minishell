@@ -19,7 +19,7 @@ enum e_state_space
 {
 	SPACE,
 	NOSPACE,
-	NOTOK
+	FIRST
 };
 
 enum e_cmd_type
@@ -61,17 +61,24 @@ typedef struct s_parser_data
 	char			**redirect_files;
 }	t_parser_data;
 
-enum	e_p_states
+typedef struct s_varlist
 {
-	ST_DQUOTE,
-	ST_SQUOTE
-};
+	int					size;
+	char				*name;
+	char				*value;
+	struct s_varlist	*next;
+	struct s_varlist	*prev;
+}	t_varlist;
 
 void		redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
 int			count_redirs(t_toklst *token);
 int			argv_count(t_toklst *t_lst);
-bool		is_redirect(enum e_token_types type);
+bool		is_redirect(enum e_token_type type);
+
+// expansion
+bool		check_for_dollar(char *token);
+void		expansion(t_toklst **token);
 
 // command list functions
 t_cmdlst	**init_command_list(void);

@@ -61,10 +61,10 @@ void		execute_command(t_data *dat);
 void		lexer(t_data *data);
 
 void		parser(t_data *data);
-void	free_command_list(t_data *data);
+void		cmdlst_free(t_data *data);
 
 /* error checking------------------------------------------------------------ */
-void	quotes_check(t_data data);
+void		quotes_check(t_data data);
 
 /* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);

@@ -26,7 +26,7 @@ void	redirect_error(t_toklst *token)
 void	quotes_check(t_data data)
 {
 	int					i;
-	enum e_token_types	state;
+	enum e_token_type	state;
 
 	i = 0;
 	while (data.input[i])
