@@ -20,17 +20,19 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				builtins/builtins2.c 		\
 				builtins/builtins3.c 		\
 				\
-				lexer/lexer_main.c 			\
-				lexer/token_array_utils.c 	\
-				lexer/token_list_utils.c 	\
+				lexer/lexer_main.c 				\
+				lexer/token_array_utils.c 		\
+				lexer/token_list_functions.c	\
 				\
-				parser/cmd_lst/cmd_list_functions.c	\
-				parser/cmd_lst/cmd_list_utils.c		\
-				parser/cmd_lst/command_table.c		\
+				parser/cmd_lst/cmd_list_functions.c		\
+				parser/cmd_lst/cmd_list_node_utils.c	\
+				parser/cmd_lst/cmd_list_node.c			\
+				parser/cmd_lst/command_table.c			\
 				parser/expansion.c			\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\
+				parser/quotes_utils.c		\
 				\
 				testing.c
 

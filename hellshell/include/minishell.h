@@ -18,7 +18,6 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include "lexer.h"
-# include "parser.h"
 
 typedef struct s_hislst
 {
@@ -48,6 +47,8 @@ typedef struct s_envlst
 	struct s_envlst		*prev;
 }	t_envlst;
 
+typedef struct s_cmdlst	t_cmdlst;
+
 /* history------------------------------------------------------------------- */
 t_hislst	**init_history_list(void);
 void		add_to_history_list(t_hislst **history_list, char *input);
@@ -62,6 +63,9 @@ void		lexer(t_data *data);
 
 void		parser(t_data *data);
 void		cmdlst_free(t_data *data);
+
+/* init---------------------------------------------------------------------- */
+t_cmdlst	**init_command_list(void);
 
 /* error checking------------------------------------------------------------ */
 void		quotes_check(t_data data);

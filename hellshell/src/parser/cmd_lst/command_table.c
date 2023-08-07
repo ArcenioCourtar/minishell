@@ -15,60 +15,15 @@
 #include "parser.h"
 #include <stdlib.h>
 
-void	redirects_to_node(t_toklst *token, t_cmdlst *node)
+t_cmdlst	**init_command_list(void)
 {
-	int			rdr_count;
-	int			r;
-	t_toklst	*tmp;
+	t_cmdlst	**cmd_lst_head;
 
-	tmp = token;
-	rdr_count = count_redirs(tmp);
-	node->redirect = (t_redirect *)malloc(sizeof(t_redirect) * (rdr_count + 1));
-	r = 0;
-	while (r < rdr_count)
-	{
-		while (!is_redirect(tmp->type))
-			tmp = tmp->next;
-		node->redirect[r].type = (enum e_redir_type)tmp->type;
-		tmp = tmp->next;
-		while (tmp && tmp->type == TOK_SPACE)
-			tmp = tmp->next;
-		if (tmp && (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE || \
-		tmp->type == TOK_NAME))
-			node->redirect[r].name = tmp->token;
-		else
-			redirect_error(tmp);
-		r++;
-	}
-	node->redirect[rdr_count].name = NULL;
-}
-
-void	argv_to_node(t_toklst *token, t_cmdlst *node)
-{
-	t_toklst	*tmp;
-	int			argc;
-	int			i;
-
-	tmp = token;
-	argc = argv_count(tmp);
-	node->argv = (char **)malloc(sizeof(char *) * (argc + 1));
-	if (!node->argv)
+	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
+	if (!cmd_lst_head)
 		ft_error(errno, strerror(errno));
-	i = 0;
-	while (i < argc)
-	{
-		while (tmp && tmp->type == TOK_SPACE)
-			tmp = tmp->next;
-		if (is_redirect(tmp->type))
-			skip_redirects(&tmp);
-		if (tmp && tmp->type != TOK_SPACE && !is_redirect(tmp->type))
-		{
-			node->argv[i] = tmp->token;
-			i++;
-			tmp = tmp->next;
-		}
-	}
-	node->argv[argc] = NULL;
+	*cmd_lst_head = NULL;
+	return (cmd_lst_head);
 }
 
 static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
@@ -83,16 +38,30 @@ static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 	cmdlst_add_back(cmd_lst_head, new_node);
 }
 
-void	free_token_list(t_toklst **t_lst)
+static void	toklst_free(t_toklst **t_lst)
 {
 	t_toklst	*tmp;
 
 	while (*t_lst)
 	{
 		tmp = (*t_lst)->next;
-		// free((*t_lst)->token);
 		free(*t_lst);
 		*t_lst = tmp;
+	}
+}
+
+void	cmdlst_free(t_data *data)
+{
+	t_cmdlst	*tmp;
+	t_cmdlst	*next;
+
+	tmp = *(data->cmd_lst);
+	*(data->cmd_lst) = NULL;
+	while (tmp)
+	{
+		next = tmp->next;
+		cmdlst_free_node(tmp);
+		tmp = next;
 	}
 }
 
@@ -116,7 +85,6 @@ void	create_cmd_lst(t_data *data)
 		while (current_token && current_token->type != TOK_PIPE)
 			current_token = current_token->next;
 	}
-	// free(data->tokens);
-	free_token_list(data->t_lst);
+	toklst_free(data->t_lst);
 	printf_cmd_table(data->cmd_lst);
 }

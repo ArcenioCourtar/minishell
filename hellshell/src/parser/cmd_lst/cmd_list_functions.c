@@ -51,7 +51,7 @@ void	cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node)
 	}
 }
 
-void	cmdlst_del_node(t_toklst **token)
+void	toklst_del_node(t_toklst **token)
 {
 	t_toklst	*current_tok;
 
@@ -73,23 +73,17 @@ void	cmdlst_del_node(t_toklst **token)
 	*token = current_tok;
 }
 
-void	cmdlst_free(t_data *data)
+void	cmdlst_free_node(t_cmdlst *node)
 {
-	t_cmdlst	*tmp;
-	int			i;
+	int	i;
 
-	tmp = *(data->cmd_lst);
-	*(data->cmd_lst) = NULL;
-	while (tmp)
+	i = 0;
+	while (node->argv[i])
 	{
-		i = 0;
-		while (tmp->argv[i])
-		{
-			free(tmp->argv[i]);
-			i++;
-		}
-		free(tmp->argv);
-		free(tmp->redirect);
-		tmp = tmp->next;
+		free(node->argv[i]);
+		i++;
 	}
+	free(node->argv);
+	free(node->redirect);
+	free(node);
 }

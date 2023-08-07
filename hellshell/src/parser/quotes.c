@@ -14,45 +14,14 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	trim_quotes(t_toklst **token, enum e_token_type type, char *trim)
-{
-	char	*tmp;
-
-	tmp = ft_strtrim((*token)->token, trim);
-	free((*token)->token);
-	(*token)->token = tmp;
-	(*token)->type = type;
-}
-
-void	quote_join_back(t_toklst **token)
-{
-	// char		*tmp;
-
-	// tmp = ft_strdup((*token)->prev->token);
-	// free((*token)->prev->token);
-	(*token)->prev->token = ft_strjoinfree((*token)->prev->token, (*token)->token);
-	cmdlst_del_node(token);
-}
-
-void	quote_join_front(t_toklst **token)
-{
-	// char	*tmp;
-
-	// tmp = ft_strdup((*token)->token);
-	// free((*token)->token);
-	(*token)->token = ft_strjoinfree((*token)->token, (*token)->next->token);
-	*token = (*token)->next;
-	cmdlst_del_node(token);
-}
-
-void	handle_single_quote(t_toklst **token, \
-									enum e_state_space space_state)
+void	handle_single_quote(t_toklst **token, enum e_state_space space_state)
 {
 	trim_quotes(token, TOK_NAME, "\'");
 	if (space_state == NOSPACE)
-		quote_join_back(token);
-	if ((*token)->next && (*token)->next->type != TOK_SPACE && (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
-		quote_join_front(token);
+		quote_join(token, true);
+	if ((*token)->next && (*token)->next->type != TOK_SPACE && \
+	(*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
+		quote_join(token, false);
 }
 
 void	handle_double_quote(t_toklst **token, enum e_state_space space_state)
@@ -61,12 +30,14 @@ void	handle_double_quote(t_toklst **token, enum e_state_space space_state)
 	if (check_for_dollar((*token)->token))
 	{
 		// expansion(token);
-		ft_printf("\"expansion\"\n");
+		ft_printf("\033[31;1m\"expansion\"\033[0m needed for: %s\n", (*token)->token);
 	}
 	if (space_state == NOSPACE)
-		quote_join_back(token);
-	if ((*token)->next && (*token)->next->type != TOK_SPACE && (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
-		quote_join_front(token);
+		quote_join(token, true);
+	if ((*token)->next && (*token)->next->type != TOK_SPACE \
+	&& (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE \
+	&& (*token)->next->type != TOK_DOLLAR)
+		quote_join(token, false);
 }
 
 void	handle_quotes(t_toklst **token)
@@ -97,7 +68,7 @@ void	quotes(t_data *data)
 		else if (tmp->type == TOK_DOLLAR)
 		{
 			// expansion(&tmp);
-			ft_printf("expansion\n");
+			ft_printf("\033[31;1mexpansion\033[0m needed for: %s\n", tmp->token);
 			handle_quotes(&tmp);
 		}
 		tmp = tmp->next;

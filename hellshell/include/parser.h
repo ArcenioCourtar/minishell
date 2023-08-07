@@ -70,23 +70,36 @@ typedef struct s_varlist
 	struct s_varlist	*prev;
 }	t_varlist;
 
+typedef struct s_data	t_data;
+
+void		create_cmd_lst(t_data *data);
+
+// new node
+void		redirects_to_node(t_toklst *token, t_cmdlst *node);
+void		argv_to_node(t_toklst *token, t_cmdlst *node);
+// // utils
+int			argv_count(t_toklst *t_lst);
+int			count_redirs(t_toklst *token);
+bool		is_redirect(enum e_token_type type);
 void		redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
-int			count_redirs(t_toklst *token);
-int			argv_count(t_toklst *t_lst);
-bool		is_redirect(enum e_token_type type);
+
+// quotes
+void		quotes(t_data *data);
+void		quote_join(t_toklst **token, bool joinaddback);
+void		trim_quotes(t_toklst **token, enum e_token_type type, char *trim);
 
 // expansion
 bool		check_for_dollar(char *token);
 void		expansion(t_toklst **token);
 
 // command list functions
-t_cmdlst	**init_command_list(void);
 t_cmdlst	*cmdlst_new_node(void);
 void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
-void		cmdlst_del_node(t_toklst **token);
+void		toklst_del_node(t_toklst **token);
+void		cmdlst_free_node(t_cmdlst *node);
 
-
+//
 // testing
 void		printf_cmd_table(t_cmdlst **cmd_table_head);
 

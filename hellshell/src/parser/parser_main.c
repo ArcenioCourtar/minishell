@@ -33,35 +33,8 @@
  * 				delete quotes token from list
  */
 
-void	quotes(t_data *data);
-void	create_cmd_lst(t_data *data);
-
-t_parser_data	*init_parser_data(void)
-{
-	t_parser_data	*p_data;
-
-	p_data = (t_parser_data *)ft_calloc(1, sizeof(t_parser_data));
-	if (!p_data)
-		ft_error(errno, strerror(errno));
-	p_data->cmd_table = (t_cmdlst **)ft_calloc(1, sizeof(t_cmdlst *));
-	if (!p_data->cmd_table)
-		ft_error(errno, strerror(errno));
-	return (p_data);
-}
-
 void	parser(t_data *data)
 {
 	quotes(data);
 	create_cmd_lst(data);
-}
-
-t_cmdlst	**init_command_list(void)
-{
-	t_cmdlst	**cmd_lst_head;
-
-	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
-	if (!cmd_lst_head)
-		ft_error(errno, strerror(errno));
-	*cmd_lst_head = NULL;
-	return (cmd_lst_head);
 }
