@@ -56,20 +56,41 @@ void	handle_quotes(t_toklst **token)
 		handle_double_quote(token, space_state);
 }
 
-void	quotes(t_data *data)
+// void	quotes(t_data *data)
+// {
+// 	t_toklst	*tmp;
+
+// 	tmp = *(data->t_lst);
+// 	while (tmp)
+// 	{
+// 		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+// 			handle_quotes(&tmp);
+// 		else if (tmp->type == TOK_DOLLAR)
+// 		{
+// 			expansion(&tmp);
+// 			handle_quotes(&tmp);
+// 			if (!tmp->prev)
+// 				data->t_lst = &tmp;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }
+
+void	quotes(t_data *data, t_toklst **t_lst_head)
 {
 	t_toklst	*tmp;
 
-	tmp = *(data->t_lst);
+	tmp = *t_lst_head;
 	while (tmp)
 	{
 		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
 			handle_quotes(&tmp);
 		else if (tmp->type == TOK_DOLLAR)
 		{
-			// expansion(&tmp);
-			ft_printf("\033[31;1mexpansion\033[0m needed for: %s\n", tmp->token);
+			expansion(data, &tmp);
 			handle_quotes(&tmp);
+			if (!tmp->prev)
+				*t_lst_head = tmp;
 		}
 		tmp = tmp->next;
 	}

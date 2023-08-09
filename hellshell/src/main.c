@@ -44,7 +44,8 @@ int	main(int argc, char **argv, char **envp)
 		cmdlst_free(&dat);
 		free(dat.input);
 		free(dat.t_lst);
-		system("leaks -q hellshell");
+		free(dat.tokens);
+		// system("leaks -q hellshell");
 	}
 	exit(EXIT_SUCCESS);
 }

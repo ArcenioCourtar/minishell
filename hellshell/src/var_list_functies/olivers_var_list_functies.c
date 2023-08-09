@@ -1,56 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   token_list_functions.c                             :+:    :+:            */
+/*   var_list_functies.c                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/28 15:10:24 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2023/06/28 15:10:24 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/08/09 17:36:11 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/08/09 17:36:11 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+#include "parser.h"
 #include "lexer.h"
 #include "libft.h"
 
-t_toklst	*tlst_new_node(char *token)
+t_envlst	*varlst_new_node(char *variable)
 {
-	t_toklst	*new_node;
+	t_envlst	*new_node;
 
-	new_node = (t_toklst *)malloc(sizeof(t_toklst));
+	new_node = (t_envlst *)malloc(sizeof(t_envlst));
 	if (!new_node)
 		ft_error(errno, strerror(errno));
-	new_node->token = token;
-	new_node->type = get_token_type(token);
-	new_node->prev = NULL;
+	new_node->size = ft_strlen(variable) + 1;
 	new_node->next = NULL;
+	new_node->prev = NULL;
+	new_node->name = variable;
 	return (new_node);
 }
 
-static t_toklst	*token_lstlast(t_toklst *t_lst)
+t_envlst	*varlst_last(t_envlst *var_lst)
 {
-	if (!t_lst)
-		return (NULL);
-	else if (!t_lst->next)
-		return (t_lst);
+	if (!var_lst->next)
+		return (var_lst);
 	else
-		while (t_lst->next)
-			t_lst = t_lst->next;
-	return (t_lst);
+		while (var_lst->next)
+			var_lst = var_lst->next;
+	return (var_lst);
 }
 
-void	token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node)
+void	varlst_add_back(t_data *data, t_envlst *new_node)
 {
-	t_toklst	*tmp;
+	t_envlst	*tmp;
 
-	if (!*t_lst_head)
-	{
-		*t_lst_head = new_node;
-		return ;
-	}
+	if (!data->varlist)
+		data->varlist = new_node;
 	else
 	{
-		tmp = token_lstlast(*t_lst_head);
+		tmp = varlst_last(data->varlist);
 		tmp->next = new_node;
 		new_node->prev = tmp;
 	}

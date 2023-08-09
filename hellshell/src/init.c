@@ -26,4 +26,5 @@ void	init_dat(t_data *dat, char **envp)
 	dat->envp = set_envp(dat->envlist, dat->envp);
 	dat->h_lst = init_history_list();
 	dat->cmd_lst = init_command_list();
+	dat->varlist = NULL;
 }

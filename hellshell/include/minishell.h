@@ -31,6 +31,7 @@ typedef struct s_data
 	char				*input;
 	char				**envp;
 	struct s_envlst		*envlist;
+	struct s_envlst		*varlist;
 	char				**tokens;
 	int					tok_count;
 	struct s_toklst		**t_lst;

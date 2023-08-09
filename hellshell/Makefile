@@ -23,6 +23,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				lexer/lexer_main.c 				\
 				lexer/token_array_utils.c 		\
 				lexer/token_list_functions.c	\
+				lexer/token_list_node_utils.c	\
 				\
 				parser/cmd_lst/cmd_list_functions.c		\
 				parser/cmd_lst/cmd_list_node_utils.c	\

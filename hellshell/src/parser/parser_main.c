@@ -35,6 +35,6 @@
 
 void	parser(t_data *data)
 {
-	quotes(data);
+	quotes(data, data->t_lst);
 	create_cmd_lst(data);
 }

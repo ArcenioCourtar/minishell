@@ -85,13 +85,13 @@ void		redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
 
 // quotes
-void		quotes(t_data *data);
+void		quotes(t_data *data, t_toklst **t_lst_head);
 void		quote_join(t_toklst **token, bool joinaddback);
 void		trim_quotes(t_toklst **token, enum e_token_type type, char *trim);
 
 // expansion
 bool		check_for_dollar(char *token);
-void		expansion(t_toklst **token);
+void		expansion(t_data *data, t_toklst **token);
 
 // command list functions
 t_cmdlst	*cmdlst_new_node(void);

@@ -39,10 +39,7 @@ void	cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node)
 	t_cmdlst	*tmp;
 
 	if (!*cmd_lst_head)
-	{
 		*cmd_lst_head = new_node;
-		return ;
-	}
 	else
 	{
 		tmp = cmdlst_last(*cmd_lst_head);
@@ -65,6 +62,11 @@ void	toklst_del_node(t_toklst **token)
 		}
 		else
 			(*token)->prev->next = NULL;
+	}
+	else if ((*token)->next)
+	{
+		(*token)->next->prev = NULL;
+		current_tok = (*token)->next;
 	}
 	else
 		current_tok = NULL;
