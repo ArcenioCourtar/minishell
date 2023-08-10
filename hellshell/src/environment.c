@@ -15,12 +15,12 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_envlist	*newnode_env(char *envvar)
+t_envlst	*newnode_env(char *envvar)
 {
-	t_envlist	*new;
+	t_envlst	*new;
 	size_t		namesize;
 
-	new = malloc(sizeof(t_envlist));
+	new = malloc(sizeof(t_envlst));
 	if (new == NULL)
 		return (NULL);
 	if (ft_strchr(envvar, '=') == 0)
@@ -42,11 +42,11 @@ t_envlist	*newnode_env(char *envvar)
 	return (new);
 }
 
-t_envlist	*init_envlist(char **envp)
+t_envlst	*init_envlst(char **envp)
 {
-	t_envlist	*start;
-	t_envlist	*new;
-	t_envlist	*next;
+	t_envlst	*start;
+	t_envlst	*new;
+	t_envlst	*next;
 	int			i;
 
 	i = 0;
@@ -68,9 +68,9 @@ t_envlist	*init_envlist(char **envp)
 	return (start);
 }
 
-int	envlist_nodecount(t_envlist *start)
+int	envlist_nodecount(t_envlst *start)
 {
-	t_envlist	*tmp;
+	t_envlst	*tmp;
 	int			i;
 
 	i = 0;
@@ -83,7 +83,7 @@ int	envlist_nodecount(t_envlist *start)
 	return (i);
 }
 
-static void	cpy_contents(char *new, t_envlist *node)
+static void	cpy_contents(char *new, t_envlst *node)
 {
 	int	len_name;
 	int	len_val;
@@ -110,7 +110,7 @@ void	free_doubleptr(char **ptr)
 	free(ptr);
 }
 
-char	**set_envp(t_envlist *envlist, char **envp)
+char	**set_envp(t_envlst *envlist, char **envp)
 {
 	char	**new;
 	int		count;

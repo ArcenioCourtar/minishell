@@ -3,3 +3,5 @@ obj
 hellshell/hellshell
 .vscode
 test*
+valgrind_suppr.log
+*.dSYM

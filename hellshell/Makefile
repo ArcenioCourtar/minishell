@@ -14,15 +14,26 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= main.c history.c environment.c init.c \
+SRC_FILES	= 	main.c history.c environment.c init.c \
 				\
 				builtins/builtins.c 		\
 				builtins/builtins2.c 		\
 				builtins/builtins3.c 		\
 				\
-				lexer/lexer_main.c 			\
-				lexer/token_array_utils.c 	\
-				lexer/token_list_utils.c 	\
+				lexer/lexer_main.c 				\
+				lexer/token_array_utils.c 		\
+				lexer/token_list_functions.c	\
+				lexer/token_list_node_utils.c	\
+				\
+				parser/cmd_lst/cmd_list_functions.c		\
+				parser/cmd_lst/cmd_list_node_utils.c	\
+				parser/cmd_lst/cmd_list_node.c			\
+				parser/cmd_lst/command_table.c			\
+				parser/expansion.c			\
+				parser/parser_error.c		\
+				parser/parser_main.c		\
+				parser/quotes.c				\
+				parser/quotes_utils.c		\
 				\
 				testing.c
 
@@ -40,20 +51,20 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -g -Wall -Wextra -Werror $(FSAN)
+CFLAGS	= -g -Wall -Wextra -Werror
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------
 
-all: lib tmp $(NAME)
+all: lib objdir $(NAME)
 
 lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(FSAN) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
 
-tmp:
+objdir:
 	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

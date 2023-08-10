@@ -77,7 +77,7 @@ void	print_history_list(t_hislst **history_list)
 	}
 }
 
-t_hislst	**history_list_init(void)
+t_hislst	**init_history_list(void)
 {
 	t_hislst	**new_hlst;
 

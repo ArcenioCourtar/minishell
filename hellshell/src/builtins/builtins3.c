@@ -31,7 +31,7 @@ void	builtin_env(char **envp)
 
 void	builtin_echo(t_data *dat)
 {
-	t_envlist	*tmp;
+	t_envlst	*tmp;
 
 	tmp = dat->envlist;
 	if (dat->tokens[2][0] == '$')

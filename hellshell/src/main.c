@@ -21,7 +21,6 @@
 // if (!isatty(STDIN_FILENO))
 // 		rl_outstream = stdin;
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
@@ -37,9 +36,16 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		add_to_history_list(dat.h_lst, dat.input);
+		quotes_check(dat);
 		lexer(&dat);
+		parser(&dat); 
 		// print_token_list(dat);
 		execute_command(&dat);
+		cmdlst_free(&dat);
+		free(dat.input);
+		free(dat.t_lst);
+		free(dat.tokens);
+		// system("leaks -q hellshell");
 	}
 	exit(EXIT_SUCCESS);
 }

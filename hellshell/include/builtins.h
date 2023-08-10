@@ -19,7 +19,7 @@
 # include <stdbool.h>
 
 bool		compare_token(char **tokens, int n, const char *str);
-t_envlist	*newnode_env(char *envp);
+t_envlst	*newnode_env(char *envp);
 void		builtin_env(char **envp);
 void		builtin_pwd(void);
 void		builtin_cd(t_data *dat);
