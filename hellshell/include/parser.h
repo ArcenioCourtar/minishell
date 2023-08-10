@@ -14,6 +14,7 @@
 # define PARSER_H
 
 # include "minishell.h"
+# include <sys/types.h>
 
 enum e_state_space
 {
@@ -53,6 +54,12 @@ typedef struct s_cmdlst
 	enum e_cmd_type		type;
 	struct s_cmdlst		*prev;
 	struct s_cmdlst		*next;
+	int					pipe[2];
+	int					heredoc[2];
+	int					fd_in;
+	int					fd_out;
+	bool				abs_path;
+	pid_t				pid;
 }	t_cmdlst;
 
 typedef struct s_parser_data

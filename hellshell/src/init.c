@@ -18,6 +18,17 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	init_builtins_list(char builtin_index[7][10])
+{
+	ft_strlcpy(builtin_index[0], "echo", 10);
+	ft_strlcpy(builtin_index[1], "cd", 10);
+	ft_strlcpy(builtin_index[2], "pwd", 10);
+	ft_strlcpy(builtin_index[3], "export", 10);
+	ft_strlcpy(builtin_index[4], "unset", 10);
+	ft_strlcpy(builtin_index[5], "env", 10);
+	ft_strlcpy(builtin_index[6], "exit", 10);
+}
+
 void	init_dat(t_data *dat, char **envp)
 {
 	dat->input = NULL;
@@ -27,4 +38,6 @@ void	init_dat(t_data *dat, char **envp)
 	dat->h_lst = init_history_list();
 	dat->cmd_lst = init_command_list();
 	dat->varlist = NULL;
+	init_builtins_list(dat->builtin_index);
+	dat->builtin_amount = 7;
 }

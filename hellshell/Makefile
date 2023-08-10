@@ -35,6 +35,8 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				parser/quotes.c				\
 				parser/quotes_utils.c		\
 				\
+				executor/cmd_list_final.c	\
+				executor/executor_main.c	\
 				testing.c
 
 SRC_DIR		= src

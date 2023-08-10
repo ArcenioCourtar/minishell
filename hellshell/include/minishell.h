@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include "lexer.h"
+# include "executor.h"
 
 typedef struct s_hislst
 {
@@ -37,6 +38,9 @@ typedef struct s_data
 	struct s_toklst		**t_lst;
 	struct s_hislst		**h_lst;
 	struct s_cmdlst		**cmd_lst;
+	struct s_exec		exec;
+	char				builtin_index[7][10];
+	int					builtin_amount;
 }	t_data;
 
 typedef struct s_envlst
