@@ -49,7 +49,7 @@ void	printf_cmd_table(t_cmdlst **cmd_table_head)
 
 	i = 0;
 	tmp = *(cmd_table_head);
-	ft_printf("--First node-----------------------------------------------------------------------------\n");
+	ft_printf("--First node--------------------------------\n");
 	while (tmp)
 	{
 		ft_printf("[%i]\t type: %i\n", i, tmp->type);
@@ -76,9 +76,9 @@ void	printf_cmd_table(t_cmdlst **cmd_table_head)
 		}
 		tmp = tmp->next;
 		if (tmp)
-			ft_printf("\n\n||Pipe|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\n");
+			ft_printf("\n\n||Pipe||||||||||||||||||||||||||\n\n");
 		else
-			ft_printf("\n--End of list----------------------------------------------------------------------------\n");
+			ft_printf("\n--End of list------------------------\n");
 		i++;
 	}
 }
