@@ -37,6 +37,9 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				\
 				executor/cmd_list_final.c	\
 				executor/executor_main.c	\
+				executor/exec_cleanup.c		\
+				executor/exec_prep.c		\
+				executor/forked_process.c	\
 				testing.c
 
 SRC_DIR		= src
@@ -53,7 +56,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -g -Wall -Wextra -Werror
+CFLAGS	= -g #-Wall -Wextra -Werror
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------

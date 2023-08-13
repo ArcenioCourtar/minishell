@@ -53,10 +53,10 @@ void	builtin_echo(t_data *dat)
 
 void	builtin_pwd(void)
 {
-	char	buffer[1000];
+	char	buffer[MAX_PATH];
 
-	ft_bzero(buffer, 1000);
-	if (getcwd(buffer, 1000) == NULL)
+	ft_bzero(buffer, MAX_PATH);
+	if (getcwd(buffer, MAX_PATH) == NULL)
 		printf("%s\n", strerror(errno));
 	else
 		printf("%s\n", buffer);

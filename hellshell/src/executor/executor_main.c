@@ -19,36 +19,59 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-static int	count_forks(t_cmdlst **list)
+int	is_builtin(char builtin_index[BT_NUM][10], char *arg)
 {
-	t_cmdlst	*tmp;
-	int			count;
+	int	i;
 
-	tmp = *list;
-	count = 0;
-	while (tmp)
+	i = 0;
+	while (i < BT_NUM)
 	{
-		count++;
-		tmp = tmp->next;
+		if (strncmp(arg, builtin_index[i], 10) == 0)
+			return (i);
+		i++;
 	}
-	return (count);
+	return (i);
 }
 
-bool	check_builtin(t_data *dat)
+static bool	check_builtin(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*cmd;
 
 	cmd = *(dat->cmd_lst);
-	if (dat->exec.fork_num != 1)
+	if (exec->fork_num != 1)
 		return (false);
 	if (cmd->abs_path == true)
+		return (false);
+	if (is_builtin(dat->builtin_index, cmd->argv[0]) == BT_NUM)
 		return (false);
 	return (true);
 }
 
+/*
+	program flow notes:
+	Any error involving redirects prevents the associated command from running
+*/
 void	executor(t_data *dat)
 {
-	dat->exec.fork_num = count_forks(dat->cmd_lst);
-	if (check_builtin(dat))
+	t_exec	exec;
+
+	exec.fork_num = count_forks(dat->cmd_lst);
+	// Check redirect permissions here? I still need to create forks,
+	// but can skip execution and file creation if permissions or files not
+	// existing cause an error
+	if (check_builtin(dat, &exec))
+	{
+		printf("exec builtin\n");
+		// execute builtin in main process
 		return ;
+	}
+	else
+	{
+		printf("exec %i forks\n", exec.fork_num);
+		if (!find_pathvar(dat->envp, &exec))
+			exit(EXIT_FAILURE);
+		create_forks(dat, &exec);
+		close_and_free(dat, &exec);
+		wait_for_all(exec.fork_num);
+	}
 }

@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	init_builtins_list(char builtin_index[7][10])
+void	init_builtins_list(char builtin_index[BT_NUM][10])
 {
 	ft_strlcpy(builtin_index[0], "echo", 10);
 	ft_strlcpy(builtin_index[1], "cd", 10);
@@ -39,5 +39,4 @@ void	init_dat(t_data *dat, char **envp)
 	dat->cmd_lst = init_command_list();
 	dat->varlist = NULL;
 	init_builtins_list(dat->builtin_index);
-	dat->builtin_amount = 7;
 }

@@ -56,13 +56,13 @@ void	cmdlst_free(t_data *data)
 	t_cmdlst	*next;
 
 	tmp = *(data->cmd_lst);
-	*(data->cmd_lst) = NULL;
 	while (tmp)
 	{
 		next = tmp->next;
 		cmdlst_free_node(tmp);
 		tmp = next;
 	}
+	*(data->cmd_lst) = NULL;
 }
 
 void	create_cmd_lst(t_data *data)

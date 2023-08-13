@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define BT_NUM 7
 
 # include <errno.h>
 # include <string.h>
@@ -38,9 +39,7 @@ typedef struct s_data
 	struct s_toklst		**t_lst;
 	struct s_hislst		**h_lst;
 	struct s_cmdlst		**cmd_lst;
-	struct s_exec		exec;
-	char				builtin_index[7][10];
-	int					builtin_amount;
+	char				builtin_index[BT_NUM][10];
 }	t_data;
 
 typedef struct s_envlst
