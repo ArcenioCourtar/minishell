@@ -21,6 +21,8 @@
 # include "lexer.h"
 # include "executor.h"
 
+typedef void	(*t_builtin_func)(t_data *);
+
 typedef struct s_hislst
 {
 	int				n;
@@ -40,6 +42,8 @@ typedef struct s_data
 	struct s_hislst		**h_lst;
 	struct s_cmdlst		**cmd_lst;
 	char				builtin_index[BT_NUM][10];
+	t_builtin_func		builtin_ptrs[BT_NUM];
+	t_builtin_func		test;
 }	t_data;
 
 typedef struct s_envlst

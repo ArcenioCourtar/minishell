@@ -29,6 +29,17 @@ void	init_builtins_list(char builtin_index[BT_NUM][10])
 	ft_strlcpy(builtin_index[6], "exit", 10);
 }
 
+void	init_builtin_ptrs(t_builtin_func builtin_ptrs[BT_NUM])
+{
+	builtin_ptrs[0] = &builtin_echo;
+	builtin_ptrs[1] = &builtin_cd;
+	builtin_ptrs[2] = &builtin_pwd;
+	builtin_ptrs[3] = &builtin_export;
+	builtin_ptrs[4] = &builtin_unset;
+	builtin_ptrs[5] = &builtin_env;
+	builtin_ptrs[6] = &builtin_exit;
+}
+
 void	init_dat(t_data *dat, char **envp)
 {
 	dat->input = NULL;
@@ -39,4 +50,5 @@ void	init_dat(t_data *dat, char **envp)
 	dat->cmd_lst = init_command_list();
 	dat->varlist = NULL;
 	init_builtins_list(dat->builtin_index);
+	init_builtin_ptrs(dat->builtin_ptrs);
 }

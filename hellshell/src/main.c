@@ -41,7 +41,6 @@ int	main(int argc, char **argv, char **envp)
 		quotes_check(dat);
 		lexer(&dat);
 		parser(&dat);
-		execute_command(&dat);
 		finalize_cmd_list(dat.cmd_lst);
 		executor(&dat);
 		cmdlst_free(&dat);

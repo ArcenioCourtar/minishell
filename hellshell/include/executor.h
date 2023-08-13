@@ -36,5 +36,8 @@ bool	find_pathvar(char **envp, t_exec *exec);
 int		count_forks(t_cmdlst **list);
 void	create_forks(t_data *dat, t_exec *exec);
 void	exec_fork(t_data *dat, t_exec *exec);
+// maybe put in builtins header? also change arguments to just *dat?
+int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
+void	run_builtin(t_data *dat);
 
 #endif

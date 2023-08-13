@@ -56,7 +56,7 @@ LIBFT		= libft
 LIBS		= -L $(LIBFT) -lft -lreadline
 
 CC		= gcc
-CFLAGS	= -g #-Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 FSAN	= -fsanitize=address
 
 #--RULES------------------------------------------------------------------------

@@ -23,33 +23,3 @@ bool	compare_token(char **tokens, int n, const char *str)
 		return (true);
 	return (false);
 }
-
-void	execute_command(t_data *dat)
-{
-	if (dat->tok_count == 0)
-	{
-		printf("no commands\n");
-		return ;
-	}
-	if (compare_token(dat->tokens, 0, "env"))
-		builtin_env(dat->envp);
-	if (compare_token(dat->tokens, 0, "export"))
-	{
-		if (dat->tok_count >= 3)
-			builtin_export(dat);
-		else
-			builtin_env(dat->envp);
-	}
-	if (compare_token(dat->tokens, 0, "history"))
-		print_history_list(dat->h_lst);
-	if (compare_token(dat->tokens, 0, "pwd"))
-		builtin_pwd();
-	if (compare_token(dat->tokens, 0, "cd") && dat->tok_count >= 3)
-		builtin_cd(dat);
-	if (compare_token(dat->tokens, 0, "exit"))
-		builtin_exit();
-	if (compare_token(dat->tokens, 0, "unset") && dat->tok_count >= 3)
-		builtin_unset(dat);
-	if (compare_token(dat->tokens, 0, "echo") && dat->tok_count >= 3)
-		builtin_echo(dat);
-}

@@ -17,14 +17,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	builtin_env(char **envp)
+void	builtin_env(t_data *dat)
 {
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	while (dat->envp[i])
 	{
-		printf("%s\n", envp[i]);
+		printf("%s\n", dat->envp[i]);
 		i++;
 	}
 }
@@ -51,10 +51,11 @@ void	builtin_echo(t_data *dat)
 		printf("%s\n", dat->tokens[2]);
 }
 
-void	builtin_pwd(void)
+void	builtin_pwd(t_data *dat)
 {
 	char	buffer[MAX_PATH];
 
+	(void) dat;
 	ft_bzero(buffer, MAX_PATH);
 	if (getcwd(buffer, MAX_PATH) == NULL)
 		printf("%s\n", strerror(errno));
@@ -72,7 +73,8 @@ void	builtin_cd(t_data *dat)
 	}
 }
 
-void	builtin_exit(void)
+void	builtin_exit(t_data *dat)
 {
+	(void) dat;
 	exit(EXIT_SUCCESS);
 }

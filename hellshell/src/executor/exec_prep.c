@@ -22,7 +22,6 @@
 bool	find_pathvar(char **envp, t_exec *exec)
 {
 	int		i;
-	char	**path_list;
 
 	i = 0;
 	exec->path_avail = false;

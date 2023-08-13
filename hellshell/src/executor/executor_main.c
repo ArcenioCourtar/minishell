@@ -47,6 +47,16 @@ static bool	check_builtin(t_data *dat, t_exec *exec)
 	return (true);
 }
 
+void	run_builtin(t_data *dat)
+{
+	int			index;
+	t_cmdlst	*cmd;
+
+	cmd = *(dat->cmd_lst);
+	index = is_builtin(dat->builtin_index, cmd->argv[0]);
+	dat->builtin_ptrs[index](dat);
+}
+
 /*
 	program flow notes:
 	Any error involving redirects prevents the associated command from running
@@ -61,13 +71,11 @@ void	executor(t_data *dat)
 	// existing cause an error
 	if (check_builtin(dat, &exec))
 	{
-		printf("exec builtin\n");
-		// execute builtin in main process
+		run_builtin(dat);
 		return ;
 	}
 	else
 	{
-		printf("exec %i forks\n", exec.fork_num);
 		if (!find_pathvar(dat->envp, &exec))
 			exit(EXIT_FAILURE);
 		create_forks(dat, &exec);

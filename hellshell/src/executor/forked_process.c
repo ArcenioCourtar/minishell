@@ -19,9 +19,22 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	forked_builtin(t_data *dat)
+{
+	t_cmdlst	*tmp;
+
+	tmp = *(dat->cmd_lst);
+	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
+	{
+		printf("run builtin in child.\n");
+		run_builtin(dat);
+	}
+}
+
 void	exec_fork(t_data *dat, t_exec *exec)
 {
-	printf("child, my node %p\n", exec->my_node);
+	(void) exec;
+	forked_builtin(dat);
 	exit(EXIT_SUCCESS);
 }
 
