@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define BT_NUM 7
-
 # include <errno.h>
 # include <string.h>
 # include <stdio.h>
@@ -22,6 +21,7 @@
 # include "executor.h"
 
 typedef void	(*t_builtin_func)(t_data *);
+typedef struct	s_cmdlst t_cmdlst;
 
 typedef struct s_hislst
 {
@@ -54,8 +54,6 @@ typedef struct s_envlst
 	struct s_envlst		*next;
 	struct s_envlst		*prev;
 }	t_envlst;
-
-typedef struct s_cmdlst	t_cmdlst;
 
 /* history------------------------------------------------------------------- */
 t_hislst	**init_history_list(void);

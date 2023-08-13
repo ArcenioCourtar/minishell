@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	init_dat(&dat, envp);
 	while (1)
 	{
-		dat.input = readline("hellshell-0.1$ ");
+		dat.input = readline("\x1b[31mhellshell-0.2$\x1b[37m ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
