@@ -19,7 +19,6 @@ void	trim_quotes(t_toklst **token, enum e_token_type type, char *trim)
 	char	*tmp;
 
 	tmp = ft_strtrim((*token)->token, trim);
-	free((*token)->token);
 	(*token)->token = tmp;
 	(*token)->type = type;
 }

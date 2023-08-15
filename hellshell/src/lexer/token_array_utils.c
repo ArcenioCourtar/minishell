@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer_array_utils.c                                :+:    :+:            */
+/*   token_array_utils.c                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -24,6 +24,8 @@ int	is_delimiter(char c)
 	{
 		if (c == delimiter[i])
 			return (delimiter[i]);
+		if (ft_iswhitespace(c))
+			return (DEL_SPACE);
 		i++;
 	}
 	return (-1);

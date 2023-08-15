@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   token_list_utils.c                                 :+:    :+:            */
+/*   token_list_node_utils.c                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -59,6 +59,8 @@ enum e_token_type	get_token_type(char *token)
 	}
 	else if (is_equal_token(token))
 		return (TOK_EQUAL);
+	else if (ft_iswhitespace(token[0]))
+		return (TOK_SPACE);
 	else
 		return (TOK_NAME);
 }

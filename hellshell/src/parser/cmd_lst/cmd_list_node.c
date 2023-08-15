@@ -22,6 +22,8 @@ void	redirects_to_node(t_toklst *token, t_cmdlst *node)
 
 	tmp = token;
 	rdr_count = count_redirs(tmp);
+	if (!rdr_count)
+		return ;
 	node->redirect = (t_redirect *)malloc(sizeof(t_redirect) * (rdr_count + 1));
 	r = 0;
 	while (r < rdr_count)

@@ -23,6 +23,22 @@
 // if (!isatty(STDIN_FILENO))
 // 		rl_outstream = stdin;
 
+void	free_current_input(t_data *data)
+{
+	int	i;
+
+	cmdlst_free(data);
+	free(data->input);
+	free(data->t_lst);
+	i = 0;
+	while (data->tokens[i])
+	{
+		free(data->tokens[i]);
+		i++;
+	}
+	free(data->tokens);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
@@ -43,10 +59,7 @@ int	main(int argc, char **argv, char **envp)
 		parser(&dat);
 		finalize_cmd_list(dat.cmd_lst);
 		executor(&dat);
-		cmdlst_free(&dat);
-		free(dat.input);
-		free(dat.t_lst);
-		free(dat.tokens);
+		free_current_input(&dat);
 	}
 	exit(EXIT_SUCCESS);
 }

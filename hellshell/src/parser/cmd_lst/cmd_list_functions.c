@@ -77,15 +77,8 @@ void	toklst_del_node(t_toklst **token)
 
 void	cmdlst_free_node(t_cmdlst *node)
 {
-	int	i;
-
-	i = 0;
-	while (node->argv[i])
-	{
-		free(node->argv[i]);
-		i++;
-	}
 	free(node->argv);
-	free(node->redirect);
+	if (node->redirect)
+		free(node->redirect);
 	free(node);
 }

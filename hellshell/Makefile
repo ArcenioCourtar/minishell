@@ -83,7 +83,9 @@ fclean: clean
 	@rm -rf $(OBJ_DIR) $(NAME)
 	$(MAKE) -C $(LIBFT) fclean
 
-
 re: fclean all
 
 .PHONY: all, lib, tmp, clean, fclean, re
+
+valg: all
+	valgrind --suppressions=../valgrind_suppr.log --leak-check=full ./hellshell

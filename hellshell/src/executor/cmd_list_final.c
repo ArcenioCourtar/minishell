@@ -36,7 +36,7 @@ void	finalize_cmd_list(t_cmdlst **list)
 		i = 0;
 		if (tmp->next != NULL)
 			pipe(tmp->pipe);
-		while (tmp->redirect[i].name != NULL)
+		while (tmp->redirect && tmp->redirect[i].name != NULL)
 		{
 			if (tmp->redirect[i].type == CMD_HEREDOC)
 			{

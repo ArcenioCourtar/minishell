@@ -20,8 +20,8 @@
 # include "lexer.h"
 # include "executor.h"
 
-typedef void	(*t_builtin_func)(t_data *);
-typedef struct	s_cmdlst t_cmdlst;
+typedef void			(*t_builtin_func)(t_data *);
+typedef struct s_cmdlst	t_cmdlst;
 
 typedef struct s_hislst
 {
