@@ -23,7 +23,7 @@
 // if (!isatty(STDIN_FILENO))
 // 		rl_outstream = stdin;
 
-void	free_current_input(t_data *data)
+void	free_current_input_data(t_data *data)
 {
 	int	i;
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 		parser(&dat);
 		finalize_cmd_list(dat.cmd_lst);
 		executor(&dat);
-		free_current_input(&dat);
+		free_current_input_data(&dat);
 	}
 	exit(EXIT_SUCCESS);
 }

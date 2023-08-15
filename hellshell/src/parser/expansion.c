@@ -22,21 +22,22 @@ bool	check_for_dollar(char *token)
 	i = 0;
 	while (token[i])
 	{
-		if (token[i] == TOK_DOLLAR && token[i + 1] && token[i + 1] != ' ') //is that all??
+		if (token[i] == TOK_DOLLAR && token[i + 1] && token[i + 1] != ' ')
 			return (true);
 		i++;
 	}
 	return (false);
 }
 
-// void	expand_from_varlst(t_data *data, t_toklst *token, char **to_expand)
+// void	expand_from_varlst(t_data *data, t_toklst *token, char *to_expand)
 // {
 // 	t_envlst	*tmp;
 
 // 	tmp = data->varlist;
 // 	while (tmp)
 // 	{
-// 		if (ft_strncmp(tmp->name))
+// 		if (ft_strncmp(tmp->name, to_expand, ))
+// 			ft_printf("variable found\n");
 // 		tmp = tmp->next;
 // 	}
 // }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cmd_list_utils.c                                   :+:    :+:            */
+/*   cmd_list_node_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -63,7 +63,6 @@ int	argv_count(t_toklst *t_lst)
 			t_lst = t_lst->next;
 		}
 	}
-	ft_printf("args count: %i\n", count);
 	return (count);
 }
 

@@ -70,7 +70,6 @@ void	toklst_del_node(t_toklst **token)
 	}
 	else
 		current_tok = NULL;
-	free((*token)->token);
 	free(*token);
 	*token = current_tok;
 }
