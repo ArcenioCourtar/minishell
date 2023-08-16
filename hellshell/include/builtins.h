@@ -20,12 +20,12 @@
 
 bool		compare_token(char **tokens, int n, const char *str);
 t_envlst	*newnode_env(char *envp);
-void		builtin_env(t_data *dat);
-void		builtin_pwd(t_data *dat);
-void		builtin_cd(t_data *dat);
-void		builtin_exit(t_data *dat);
-void		builtin_export(t_data *dat);
-void		builtin_unset(t_data *dat);
-void		builtin_echo(t_data *dat);
+void		builtin_env(t_data *dat, t_exec *exec);
+void		builtin_pwd(t_data *dat, t_exec *exec);
+void		builtin_cd(t_data *dat, t_exec *exec);
+void		builtin_exit(t_data *dat, t_exec *exec);
+void		builtin_export(t_data *dat, t_exec *exec);
+void		builtin_unset(t_data *dat, t_exec *exec);
+void		builtin_echo(t_data *dat, t_exec *exec);
 
 #endif

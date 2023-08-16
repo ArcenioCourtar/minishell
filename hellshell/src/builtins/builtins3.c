@@ -17,10 +17,11 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	builtin_env(t_data *dat)
+void	builtin_env(t_data *dat, t_exec *exec)
 {
 	int	i;
 
+	(void) exec;
 	i = 0;
 	while (dat->envp[i])
 	{
@@ -29,52 +30,55 @@ void	builtin_env(t_data *dat)
 	}
 }
 
-void	builtin_echo(t_data *dat)
+void	builtin_echo(t_data *dat, t_exec *exec)
 {
-	t_envlst	*tmp;
+	char	**argv;
+	int		i;
 
-	tmp = dat->envlist;
-	if (dat->tokens[2][0] == '$')
+	(void) dat;
+	argv = exec->my_node->argv;
+	i = 1;
+	while (argv[i])
 	{
-		while (tmp && dat->tok_count == 4)
-		{
-			if (!ft_strnstr(tmp->name, dat->tokens[3], ft_strlen(tmp->name)))
-			{
-				printf("%s\n", tmp->value);
-				return ;
-			}
-			tmp = tmp->next;
-		}
-		printf("\n");
+		printf("%s ", argv[i]);
+		i++;
 	}
-	else
-		printf("%s\n", dat->tokens[2]);
+	printf("\n");
 }
 
-void	builtin_pwd(t_data *dat)
+void	builtin_pwd(t_data *dat, t_exec *exec)
 {
 	char	buffer[MAX_PATH];
 
 	(void) dat;
+	(void) exec;
 	ft_bzero(buffer, MAX_PATH);
 	if (getcwd(buffer, MAX_PATH) == NULL)
-		printf("%s\n", strerror(errno));
+	{
+		ft_fd_printf(STDERR_FILENO, "Hellshell: %s\n", strerror(errno));
+		// set ? var
+	}
 	else
 		printf("%s\n", buffer);
 }
 
-// TODO: handle CDPATH
-void	builtin_cd(t_data *dat)
+// maybe handle CDPATH later? :)
+void	builtin_cd(t_data *dat, t_exec *exec)
 {
-	if (dat->tok_count > 1)
+	(void) dat;
+	if (!exec->my_node->argv[1])
+		return ;
+	if (chdir(exec->my_node->argv[1]))
 	{
-		if (chdir(dat->tokens[2]) == -1)
-			printf("%s\n", strerror(errno));
+		ft_fd_printf(STDERR_FILENO, "Hellshell: %s: %s\n", \
+		exec->my_node->argv[1], strerror(errno));
+		// assign errno to ?
 	}
 }
 
-void	builtin_exit(t_data *dat)
+void	builtin_exit(t_data *dat, t_exec *exec)
 {
+	(void) exec;
 	(void) dat;
 	exit(EXIT_SUCCESS);
 }

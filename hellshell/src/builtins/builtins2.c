@@ -50,20 +50,34 @@ void	envlist_addback(t_envlst **list, t_envlst *new)
 	}
 }
 
-// TODO: prevent duplicate variables
-// use the function you created to initialize this type xd dumbo
-// for that you need to implement the check for the '=' operator in that func
-void	builtin_export(t_data *dat)
+static t_envlst	*check_var_existence(t_data *dat, t_exec *exec)
+{
+	t_envlst	*tmp;
+	char		*newvar;
+	int			namelen;
+
+	tmp = dat->envlist;
+	newvar = exec->my_node->argv[1];
+	namelen = ft_strchr(newvar, '=') - newvar;
+	printf("len = %i\n", namelen);
+	while (tmp)
+	{
+		tmp = tmp->next;
+	}
+	return (tmp);
+}
+
+void	builtin_export(t_data *dat, t_exec *exec)
 {
 	t_envlst	*new;
 
-	if (dat->tokens[2][0] == '=')
+	(void) new;
+	(void) dat;
+	if (exec->my_node->argv[1] == NULL)
 		return ;
-	new = newnode_env(dat->tokens[2]);
-	if (!new)
-		ft_error(errno, "malloc\n");
-	envlist_addback(&dat->envlist, new);
-	dat->envp = set_envp(dat->envlist, dat->envp);
+	if (ft_strchr(exec->my_node->argv[1], '=') == NULL)
+		return ;
+	check_var_existence(dat, exec);
 }
 
 void	remove_envnode(t_envlst *start, t_envlst *node)
@@ -85,10 +99,11 @@ void	remove_envnode(t_envlst *start, t_envlst *node)
 }
 
 // TODO add non-env variable declaration, and unsetting
-void	builtin_unset(t_data *dat)
+void	builtin_unset(t_data *dat, t_exec *exec)
 {
 	t_envlst	*p;
 
+	(void) exec;
 	p = dat->envlist;
 	while (p)
 	{

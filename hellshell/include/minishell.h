@@ -20,8 +20,9 @@
 # include "lexer.h"
 # include "executor.h"
 
-typedef void	(*t_builtin_func)(t_data *);
-typedef struct	s_cmdlst t_cmdlst;
+typedef struct s_exec	t_exec;
+typedef struct s_cmdlst	t_cmdlst;
+typedef void	(*t_builtin_func)(t_data *, t_exec *);
 
 typedef struct s_hislst
 {
@@ -75,6 +76,7 @@ t_cmdlst	**init_command_list(void);
 
 /* error checking------------------------------------------------------------ */
 void		quotes_check(t_data data);
+int			ft_fd_printf(int fd, const char *s, ...);
 
 /* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);

@@ -40,6 +40,9 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				executor/exec_cleanup.c		\
 				executor/exec_prep.c		\
 				executor/forked_process.c	\
+				\
+				err_handling/ft_fd_printf_utils.c \
+				err_handling/ft_fd_printf.c \
 				testing.c
 
 SRC_DIR		= src

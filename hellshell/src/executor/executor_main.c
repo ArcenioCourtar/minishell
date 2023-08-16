@@ -47,14 +47,19 @@ static bool	check_builtin(t_data *dat, t_exec *exec)
 	return (true);
 }
 
-void	run_builtin(t_data *dat)
+void	run_builtin(t_data *dat, t_exec *exec)
 {
 	int			index;
 	t_cmdlst	*cmd;
 
 	cmd = *(dat->cmd_lst);
 	index = is_builtin(dat->builtin_index, cmd->argv[0]);
-	dat->builtin_ptrs[index](dat);
+	dat->builtin_ptrs[index](dat, exec);
+}
+
+void	builtin_prep(t_data *dat, t_exec *exec)
+{
+	exec->my_node = *(dat->cmd_lst);
 }
 
 /*
@@ -71,7 +76,8 @@ void	executor(t_data *dat)
 	// existing cause an error
 	if (check_builtin(dat, &exec))
 	{
-		run_builtin(dat);
+		builtin_prep(dat, &exec);
+		run_builtin(dat, &exec);
 		return ;
 	}
 	else

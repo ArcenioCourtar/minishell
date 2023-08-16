@@ -19,7 +19,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	forked_builtin(t_data *dat)
+void	forked_builtin(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
 
@@ -27,14 +27,13 @@ void	forked_builtin(t_data *dat)
 	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
 	{
 		printf("run builtin in child.\n");
-		run_builtin(dat);
+		run_builtin(dat, exec);
 	}
 }
 
 void	exec_fork(t_data *dat, t_exec *exec)
 {
-	(void) exec;
-	forked_builtin(dat);
+	forked_builtin(dat, exec);
 	exit(EXIT_SUCCESS);
 }
 
