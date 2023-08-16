@@ -18,7 +18,7 @@
 
 typedef struct s_data	t_data;
 
-enum e_state_space
+enum e_st_space
 {
 	SPACE,
 	NOSPACE,

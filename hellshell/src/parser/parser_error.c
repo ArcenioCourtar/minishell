@@ -17,9 +17,10 @@
 void	redirect_error(t_toklst *token)
 {
 	if (token)
-		ft_printf("syntax error near unexpected token '%s'\n", token->token);
+		ft_printf("hellshell: syntax error near unexpected token '%s'\n", \
+																token->token);
 	else
-		ft_printf("syntax error near unexpected token 'newline'\n");
+		ft_printf("hellshell: syntax error near unexpected token 'newline'\n");
 	exit(258);
 }
 
@@ -58,3 +59,10 @@ void	quotes_check(t_data data)
 		i++;
 	}
 }
+
+/** SYNTAX ERRORS
+ * '| test'
+ * 'echo < >'
+ * 'echo | |'
+ * '<'
+ */

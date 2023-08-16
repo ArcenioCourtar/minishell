@@ -29,20 +29,36 @@ bool	check_for_dollar(char *token)
 	return (false);
 }
 
-// void	expand_from_varlst(t_data *data, t_toklst *token, char *to_expand)
-// {
-// 	t_envlst	*tmp;
+static char	*envlst_iter(t_envlst *lst, char *to_expand)
+{
+	int	i;
 
-// 	tmp = data->varlist;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(tmp->name, to_expand, ))
-// 			ft_printf("variable found\n");
-// 		tmp = tmp->next;
-// 	}
-// }
+	while (lst)
+	{
+		i = 0;
+		while (lst->name[i] && to_expand[i] && lst->name[i] == to_expand[i])
+			i++;
+		if (lst->name[i] == to_expand[i])
+			return (lst->value);
+		lst = lst->next;
+	}
+	return (NULL);
+}
 
-void	expand_in_quotes(t_data *data, t_toklst *token)
+static char	*getvar(t_data *data, char *to_expand)
+{
+	char	*var_value;
+
+	var_value = envlst_iter(data->envlist, to_expand);
+	if (!var_value)
+		var_value = envlst_iter(data->varlist, to_expand);
+	if (var_value)
+		return (var_value);
+	else
+		return ("");
+}
+
+static void	expand_in_quotes(t_data *data, t_toklst *token)
 {
 	int		i;
 	int		start;
@@ -51,16 +67,20 @@ void	expand_in_quotes(t_data *data, t_toklst *token)
 	i = 0;
 	while (token->token[i])
 	{
-		while (token->token[i] != TOK_DOLLAR)
+		while (token->token[i] && token->token[i] != TOK_DOLLAR)
 			i++;
+		if (!token->token[i])
+			break ;
 		i++;
 		start = i;
 		while (token->token[i] && token->token[i] != ' ' \
 										&& token->token[i] != '$')
 			i++;
 		to_expand = ft_substr(token->token, start, i - start);
-		//find_in_varlist_and_expand(data, token, to_expand)
-		ft_printf("tokcount: %i\nvar to expand: %s\n", data->tok_count, to_expand);
+		if (!to_expand)
+			ft_error(errno, strerror(errno));
+		token->token = getvar(data, to_expand);
+		free(to_expand);
 	}
 }
 
@@ -79,8 +99,10 @@ void	expansion(t_data *data, t_toklst **token)
 			toklst_del_node(token);
 		else
 		{
-			//find_in_varlist_and_expand(data, token, (*token)->next->token)
-			ft_printf("var to expand: $%s\n", (*token)->next->token);
+			(*token)->next->token = getvar(data, (*token)->next->token);
+			toklst_del_node(token);
+			if ((*token)->type != TOK_SPACE)
+				quote_join(token, false);
 		}
 	}
 }
