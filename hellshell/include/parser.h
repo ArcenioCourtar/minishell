@@ -91,8 +91,14 @@ void		quote_join(t_toklst **token, bool joinaddback);
 void		trim_quotes(t_toklst **token, enum e_token_type type, char *trim);
 
 //--expansion===================================================================
-bool		check_for_dollar(char *token);
 void		expansion(t_data *data, t_toklst **token);
+bool		check_for_dollar(char *token);
+char		*getvar(t_data *data, char *to_expand);
+////--quotes====================================================================
+void		expand_in_quotes(t_data *data, t_toklst *token);
+int			count_dollar_signs(char *token);
+int			exp_strlen(char *token, char **expansions);
+void		cpy_expansion(char **exp_str, int *i, char *expansion);
 
 //--command list functions======================================================
 t_cmdlst	*cmdlst_new_node(void);

@@ -29,7 +29,9 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				parser/cmd_lst/cmd_list_node_utils.c	\
 				parser/cmd_lst/cmd_list_node.c			\
 				parser/cmd_lst/command_table.c			\
-				parser/expansion.c			\
+				parser/expansion/exp_quotes.c		\
+				parser/expansion/exp_quotes_utils.c	\
+				parser/expansion/exp_main.c			\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\

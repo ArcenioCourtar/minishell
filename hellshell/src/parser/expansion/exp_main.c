@@ -45,43 +45,21 @@ static char	*envlst_iter(t_envlst *lst, char *to_expand)
 	return (NULL);
 }
 
-static char	*getvar(t_data *data, char *to_expand)
+char	*getvar(t_data *data, char *to_expand)
 {
 	char	*var_value;
 
 	var_value = envlst_iter(data->envlist, to_expand);
 	if (!var_value)
 		var_value = envlst_iter(data->varlist, to_expand);
-	if (var_value)
-		return (var_value);
-	else
-		return ("");
-}
-
-static void	expand_in_quotes(t_data *data, t_toklst *token)
-{
-	int		i;
-	int		start;
-	char	*to_expand;
-
-	i = 0;
-	while (token->token[i])
+	if (!var_value)
 	{
-		while (token->token[i] && token->token[i] != TOK_DOLLAR)
-			i++;
-		if (!token->token[i])
-			break ;
-		i++;
-		start = i;
-		while (token->token[i] && token->token[i] != ' ' \
-										&& token->token[i] != '$')
-			i++;
-		to_expand = ft_substr(token->token, start, i - start);
-		if (!to_expand)
+		var_value = (char *)malloc(sizeof(char));
+		if (!var_value)
 			ft_error(errno, strerror(errno));
-		token->token = getvar(data, to_expand);
-		free(to_expand);
+		var_value[0] = '\0';
 	}
+	return (var_value);
 }
 
 void	expansion(t_data *data, t_toklst **token)
