@@ -50,21 +50,31 @@ void	envlist_addback(t_envlst **list, t_envlst *new)
 	}
 }
 
-static t_envlst	*check_var_existence(t_data *dat, t_exec *exec)
+static t_envlst	*check_var_existence(t_data *dat, char *var)
 {
 	t_envlst	*tmp;
-	char		*newvar;
 	int			namelen;
 
 	tmp = dat->envlist;
-	newvar = exec->my_node->argv[1];
-	namelen = ft_strchr(newvar, '=') - newvar;
-	printf("len = %i\n", namelen);
+	if (ft_strchr(var, '=') == NULL)
+		namelen = ft_strlen(var);
+	else
+		namelen = ft_strchr(var, '=') - var;
 	while (tmp)
 	{
+		if (ft_strncmp(var, tmp->name, namelen) == 0)
+			return (NULL);
 		tmp = tmp->next;
 	}
 	return (tmp);
+}
+
+void	*change_existing_val(t_envlst *node, char *var)
+{
+	(void) node;
+	var = ft_strchr(var, '=');
+	printf("test: %s\n", var);
+	return (NULL);
 }
 
 void	builtin_export(t_data *dat, t_exec *exec)
@@ -75,9 +85,15 @@ void	builtin_export(t_data *dat, t_exec *exec)
 	(void) dat;
 	if (exec->my_node->argv[1] == NULL)
 		return ;
-	if (ft_strchr(exec->my_node->argv[1], '=') == NULL)
-		return ;
-	check_var_existence(dat, exec);
+	new = check_var_existence(dat, exec->my_node->argv[1]);
+	if (new == NULL)
+	{
+		newnode_env(exec->my_node->argv[1]);
+	}
+	else
+	{
+		change_existing_val(new, exec->my_node->argv[1]);
+	}
 }
 
 void	remove_envnode(t_envlst *start, t_envlst *node)
