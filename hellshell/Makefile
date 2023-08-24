@@ -43,6 +43,8 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				\
 				err_handling/ft_fd_printf_utils.c \
 				err_handling/ft_fd_printf.c \
+				\
+				var_list_functies/olivers_var_list_functies.c \
 				testing.c
 
 SRC_DIR		= src

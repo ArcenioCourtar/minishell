@@ -82,3 +82,12 @@ void	printf_cmd_table(t_cmdlst **cmd_table_head)
 		i++;
 	}
 }
+
+void	print_envlst(t_envlst *start)
+{
+	while (start)
+	{
+		printf("name: %s, value: %s, size: %i\n", start->name, start->value, start->size);
+		start = start->next;
+	}
+}

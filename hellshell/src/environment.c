@@ -23,16 +23,10 @@ t_envlst	*newnode_env(char *envvar)
 	new = malloc(sizeof(t_envlst));
 	if (new == NULL)
 		return (NULL);
-	if (ft_strchr(envvar, '=') == 0)
-		new->size = ft_strlen(envvar) + 1; // ??
-	else
-		new->size = ft_strlen(envvar);
+	new->size = ft_strlen(envvar);
 	new->next = NULL;
 	new->prev = NULL;
-	if (ft_strchr(envvar, '=') == 0)
-		namesize = new->size - 1; // ??
-	else
-		namesize = ft_strchr(envvar, '=') - envvar;
+	namesize = ft_strchr(envvar, '=') - envvar;
 	new->name = ft_substr(envvar, 0, namesize);
 	if (new->name == NULL)
 		ft_error(errno, "malloc\n");

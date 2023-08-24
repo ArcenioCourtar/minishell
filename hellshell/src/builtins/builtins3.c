@@ -30,6 +30,7 @@ void	builtin_env(t_data *dat, t_exec *exec)
 	}
 }
 
+// still needs -n
 void	builtin_echo(t_data *dat, t_exec *exec)
 {
 	char	**argv;

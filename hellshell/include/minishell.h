@@ -62,9 +62,9 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlst	*init_envlst(char **envp);
+void		varlst_add_back(t_data *data, t_envlst *new_node);
 char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);
-void		execute_command(t_data *dat);
 
 void		lexer(t_data *data);
 
@@ -81,5 +81,6 @@ int			ft_fd_printf(int fd, const char *s, ...);
 /* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);
 void		print_token_list(t_data dat);
+void		print_envlst(t_envlst *start);
 
 #endif
