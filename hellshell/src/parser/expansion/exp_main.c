@@ -75,11 +75,11 @@ void	expansion(t_data *data, t_toklst **token)
 			(*token)->type = TOK_NAME;
 		else if ((*token)->next->type == TOK_DQUOTE \
 					|| (*token)->next->type == TOK_SQUOTE)
-			toklst_del_node(token);
+			token_lstdel_node(token);
 		else
 		{
 			(*token)->next->token = getvar(data, (*token)->next->token);
-			toklst_del_node(token);
+			token_lstdel_node(token);
 			if ((*token)->type != TOK_SPACE)
 				quote_join(data, token, false);
 		}

@@ -35,6 +35,21 @@
 
 void	parser(t_data *data)
 {
-	quotes(data, data->t_lst);
+	t_toklst	*tmp;
+
+	syntax_error_checks(data);
+	tmp = *(data->t_lst);
+	while (tmp)
+	{
+		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+			handle_quotes(data, &tmp);
+		else if (tmp->type == TOK_DOLLAR)
+		{
+			expansion(data, &tmp);
+			if (!tmp->prev)
+				*(data->t_lst) = tmp;
+		}
+		tmp = tmp->next;
+	}
 	create_cmd_lst(data);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-staic t_freelst	*to_freelstnew(char *content)
+static t_freelst	*to_freelstnew(char *content)
 {
 	t_freelst	*newlst;
 

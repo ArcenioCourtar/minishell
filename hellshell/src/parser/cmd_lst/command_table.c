@@ -15,17 +15,6 @@
 #include "parser.h"
 #include <stdlib.h>
 
-t_cmdlst	**init_command_list(void)
-{
-	t_cmdlst	**cmd_lst_head;
-
-	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
-	if (!cmd_lst_head)
-		ft_error(errno, strerror(errno));
-	*cmd_lst_head = NULL;
-	return (cmd_lst_head);
-}
-
 static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 											enum e_cmd_type type)
 {
@@ -36,33 +25,6 @@ static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 	redirects_to_node(token, new_node);
 	argv_to_node(token, new_node);
 	cmdlst_add_back(cmd_lst_head, new_node);
-}
-
-static void	toklst_free(t_toklst **t_lst)
-{
-	t_toklst	*tmp;
-
-	while (*t_lst)
-	{
-		tmp = (*t_lst)->next;
-		free(*t_lst);
-		*t_lst = tmp;
-	}
-}
-
-void	cmdlst_free(t_data *data)
-{
-	t_cmdlst	*tmp;
-	t_cmdlst	*next;
-
-	tmp = *(data->cmd_lst);
-	while (tmp)
-	{
-		next = tmp->next;
-		cmdlst_free_node(tmp);
-		tmp = next;
-	}
-	*(data->cmd_lst) = NULL;
 }
 
 void	create_cmd_lst(t_data *data)
@@ -85,6 +47,6 @@ void	create_cmd_lst(t_data *data)
 		while (current_token && current_token->type != TOK_PIPE)
 			current_token = current_token->next;
 	}
-	toklst_free(data->t_lst);
+	token_lstfree(data->t_lst);
 	printf_cmd_table(data->cmd_lst);
 }

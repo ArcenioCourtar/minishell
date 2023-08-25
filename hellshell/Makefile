@@ -36,7 +36,6 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\
-				parser/quotes_utils.c		\
 				\
 				executor/cmd_list_final.c	\
 				executor/executor_main.c	\
