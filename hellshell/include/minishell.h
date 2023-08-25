@@ -12,7 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define BT_NUM 7
+# define BT_NUM 9
 # include <errno.h>
 # include <string.h>
 # include <stdio.h>
@@ -62,6 +62,7 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlst	*init_envlst(char **envp);
+void		envlst_addback(t_envlst *list, t_envlst *new);
 void		varlst_add_back(t_data *data, t_envlst *new_node);
 char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);

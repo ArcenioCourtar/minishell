@@ -50,7 +50,7 @@ void	envlist_addback(t_envlst **list, t_envlst *new)
 	}
 }
 
-static t_envlst	*check_var_existence(t_envlst *list, char *var)
+t_envlst	*check_var_existence(t_envlst *list, char *var)
 {
 	int			namelen;
 
@@ -101,32 +101,53 @@ void	envlst_free_node(t_envlst *del)
 	free(del);
 }
 
+// move target node from one list to the other
+void	envlst_move_node(t_envlst *node, t_envlst *dst)
+{
+	if (node->next)
+		node->next->prev = node->prev;
+	if (node->prev)
+		node->prev->next = node->next;
+	envlst_addback(dst, node);
+}
+
+// need to check for invalid var names and return an error
+// also need to check the other list for existence of var
+// add env functionality when calling with no extra args
 void	builtin_export(t_data *dat, t_exec *exec)
 {
 	t_envlst	*new;
 
-	(void) new;
-	(void) dat;
-	if (exec->my_node->argv[1] == NULL || exec->my_node->argv[1][0] == '=' || \
-	ft_strchr(exec->my_node->argv[1], '=') == 0)
+	if (exec->my_node->argv[1] == NULL || exec->my_node->argv[1][0] == '=')
+		return ;
+	if (ft_strchr(exec->my_node->argv[1], '=') == 0)
 	{
-		printf("invalid input\n");
+		new = check_var_existence(dat->varlist, exec->my_node->argv[1]);
+		if (new)
+		{
+			envlst_move_node(new, dat->envlist);
+			dat->envp = set_envp(dat->envlist, dat->envp);
+		}
 		return ;
 	}
 	new = check_var_existence(dat->envlist, exec->my_node->argv[1]);
 	if (new == NULL)
 	{
-		printf("new var\n");
-		new = newnode_env(exec->my_node->argv[1]);
-		envlst_addback(dat->envlist, new);
-		dat->envp = set_envp(dat->envlist, dat->envp);
+		new = check_var_existence(dat->varlist, exec->my_node->argv[1]);
+		if (new)
+		{
+			envlst_move_node(new, dat->envlist);
+			change_existing_val(new, exec->my_node->argv[1]);
+		}
+		else
+		{
+			new = newnode_env(exec->my_node->argv[1]);
+			envlst_addback(dat->envlist, new);
+		}
 	}
 	else
-	{
-		printf("existing var\n");
 		change_existing_val(new, exec->my_node->argv[1]);
-		dat->envp = set_envp(dat->envlist, dat->envp);
-	}
+	dat->envp = set_envp(dat->envlist, dat->envp);
 }
 
 void	remove_envnode(t_envlst *start, t_envlst *node)
@@ -156,6 +177,8 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 		return ;
 	node = check_var_existence(dat->envlist, exec->my_node->argv[1]);
 	if (node)
+	{
 		envlst_free_node(node);
-	dat->envp = set_envp(dat->envlist, dat->envp);
+		dat->envp = set_envp(dat->envlist, dat->envp);
+	}
 }

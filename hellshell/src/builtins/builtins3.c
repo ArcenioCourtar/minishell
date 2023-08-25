@@ -63,7 +63,7 @@ void	builtin_pwd(t_data *dat, t_exec *exec)
 		printf("%s\n", buffer);
 }
 
-// maybe handle CDPATH later? :)
+// add OLDPWD to env upon use
 void	builtin_cd(t_data *dat, t_exec *exec)
 {
 	(void) dat;
@@ -82,4 +82,34 @@ void	builtin_exit(t_data *dat, t_exec *exec)
 	(void) exec;
 	(void) dat;
 	exit(EXIT_SUCCESS);
+}
+
+void	builtin_var_assign(t_data *dat, t_exec *exec)
+{
+	t_envlst	*new;
+
+	new = check_var_existence(dat->varlist, exec->my_node->argv[0]);
+	if (new == NULL)
+	{
+		new = check_var_existence(dat->envlist, exec->my_node->argv[0]);
+		if (new == NULL)
+		{
+			new = newnode_env(exec->my_node->argv[0]);
+			envlst_addback(dat->varlist, new);
+		}
+		else
+		{
+			change_existing_val(new, exec->my_node->argv[0]);
+			dat->envp = set_envp(dat->envlist, dat->envp);
+		}
+	}
+	else
+	{
+		change_existing_val(new, exec->my_node->argv[0]);
+	}
+}
+void	builtin_var(t_data *dat, t_exec *exec)
+{
+	(void) exec;
+	print_envlst(dat->varlist);
 }

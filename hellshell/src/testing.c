@@ -87,7 +87,7 @@ void	print_envlst(t_envlst *start)
 {
 	while (start)
 	{
-		printf("name: %s, value: %s, size: %i\n", start->name, start->value, start->size);
+		printf("%s=%s\n", start->name, start->value);
 		start = start->next;
 	}
 }
