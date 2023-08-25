@@ -14,28 +14,29 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	handle_single_quote(t_toklst **token, enum e_st_space st_space)
+void	handle_single_quote(t_data *data, t_toklst **token, \
+													enum e_st_space st_space)
 {
-	trim_quotes(token, TOK_NAME, "\'");
+	trim_quotes(data, token, TOK_NAME, "\'");
 	if (st_space == NOSPACE)
-		quote_join(token, true);
+		quote_join(data, token, true);
 	if ((*token)->next && (*token)->next->type != TOK_SPACE && \
 	(*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
-		quote_join(token, false);
+		quote_join(data, token, false);
 }
 
 void	handle_double_quote(t_data *data, t_toklst **token, \
 													enum e_st_space st_space)
 {
-	trim_quotes(token, TOK_DQUOTE, "\"");
+	trim_quotes(data, token, TOK_DQUOTE, "\"");
 	if (check_for_dollar((*token)->token))
 		expansion(data, token);
 	if (st_space == NOSPACE)
-		quote_join(token, true);
+		quote_join(data, token, true);
 	if ((*token)->next && (*token)->next->type != TOK_SPACE \
 	&& (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE \
 	&& (*token)->next->type != TOK_DOLLAR)
-		quote_join(token, false);
+		quote_join(data, token, false);
 }
 
 void	handle_quotes(t_data *data, t_toklst **token)
@@ -49,7 +50,7 @@ void	handle_quotes(t_data *data, t_toklst **token)
 	else
 		st_space = FIRST;
 	if ((*token)->type == TOK_SQUOTE)
-		handle_single_quote(token, st_space);
+		handle_single_quote(data, token, st_space);
 	else if ((*token)->type == TOK_DQUOTE)
 		handle_double_quote(data, token, st_space);
 }

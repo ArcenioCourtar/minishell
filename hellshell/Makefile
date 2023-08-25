@@ -32,6 +32,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c \
 				parser/expansion/exp_quotes.c		\
 				parser/expansion/exp_quotes_utils.c	\
 				parser/expansion/exp_main.c			\
+				parser/free_list_functions.c	\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\

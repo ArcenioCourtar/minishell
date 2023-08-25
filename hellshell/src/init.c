@@ -49,6 +49,9 @@ void	init_dat(t_data *dat, char **envp)
 	dat->h_lst = init_history_list();
 	dat->cmd_lst = init_command_list();
 	dat->varlist = NULL;
+	dat->free_lst = (t_freelst **)ft_calloc(1, sizeof(t_freelst *));
+	if (!dat->free_lst)
+		ft_error(errno, strerror(errno));
 	init_builtins_list(dat->builtin_index);
 	init_builtin_ptrs(dat->builtin_ptrs);
 }

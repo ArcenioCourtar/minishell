@@ -30,10 +30,12 @@ void	free_current_input_data(t_data *data)
 	cmdlst_free(data);
 	free(data->input);
 	free(data->t_lst);
+	to_freelstfree(data->free_lst);
 	i = 0;
 	while (data->tokens[i])
 	{
 		free(data->tokens[i]);
+		data->tokens[i] = NULL;
 		i++;
 	}
 	free(data->tokens);

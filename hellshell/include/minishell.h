@@ -30,6 +30,12 @@ typedef struct s_hislst
 	struct s_hislst	*next;
 }	t_hislst;
 
+typedef struct s_freelst
+{
+	char				*string;
+	struct s_freelst	*next;
+}	t_freelst;
+
 typedef struct s_data
 {
 	char				*input;
@@ -44,6 +50,7 @@ typedef struct s_data
 	char				builtin_index[BT_NUM][10];
 	t_builtin_func		builtin_ptrs[BT_NUM];
 	t_builtin_func		test;
+	struct s_freelst	**free_lst;
 }	t_data;
 
 typedef struct s_envlst
@@ -75,6 +82,9 @@ t_cmdlst	**init_command_list(void);
 
 /* error checking------------------------------------------------------------ */
 void		quotes_check(t_data data);
+
+/* free---------------------------------------------------------------------- */
+void		to_freelstfree(t_freelst **lst);
 
 /* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);

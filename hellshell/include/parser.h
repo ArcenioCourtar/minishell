@@ -87,8 +87,8 @@ void		skip_redirects(t_toklst **token);
 
 //--quotes======================================================================
 void		quotes(t_data *data, t_toklst **t_lst_head);
-void		quote_join(t_toklst **token, bool joinaddback);
-void		trim_quotes(t_toklst **token, enum e_token_type type, char *trim);
+void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
+void		trim_quotes(t_data *data, t_toklst **token, enum e_token_type type, char *trim);
 
 //--expansion===================================================================
 void		expansion(t_data *data, t_toklst **token);
@@ -105,6 +105,9 @@ t_cmdlst	*cmdlst_new_node(void);
 void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
 void		toklst_del_node(t_toklst **token);
 void		cmdlst_free_node(t_cmdlst *node);
+
+//--rest========================================================================
+void		add_to_free_lst(t_data *data, char *content);
 
 //--testing=====================================================================
 void		printf_cmd_table(t_cmdlst **cmd_table_head);

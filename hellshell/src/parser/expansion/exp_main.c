@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expansion.c                                        :+:    :+:            */
+/*   exp_main.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -58,6 +58,7 @@ char	*getvar(t_data *data, char *to_expand)
 		if (!var_value)
 			ft_error(errno, strerror(errno));
 		var_value[0] = '\0';
+		add_to_free_lst(data, var_value);
 	}
 	return (var_value);
 }
@@ -80,7 +81,7 @@ void	expansion(t_data *data, t_toklst **token)
 			(*token)->next->token = getvar(data, (*token)->next->token);
 			toklst_del_node(token);
 			if ((*token)->type != TOK_SPACE)
-				quote_join(token, false);
+				quote_join(data, token, false);
 		}
 	}
 }
