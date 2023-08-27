@@ -83,9 +83,6 @@ void	executor(t_data *dat)
 	t_exec	exec;
 
 	exec.fork_num = count_forks(dat->cmd_lst);
-	// Check redirect permissions here? I still need to create forks,
-	// but can skip execution and file creation if permissions or files not
-	// existing cause an error
 	if (check_builtin(dat, &exec))
 	{
 		builtin_prep(dat, &exec);

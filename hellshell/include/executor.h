@@ -23,7 +23,9 @@ typedef struct s_exec
 	char		path[MAX_PATH];
 	int			fork_num;
 	char		**path_list;
+	size_t		path_maxlen;
 	bool		path_avail;
+	char		*cmd;
 	t_cmdlst	*my_node;
 }	t_exec;
 

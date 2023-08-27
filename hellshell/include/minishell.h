@@ -44,7 +44,6 @@ typedef struct s_data
 	struct s_cmdlst		**cmd_lst;
 	char				builtin_index[BT_NUM][10];
 	t_builtin_func		builtin_ptrs[BT_NUM];
-	t_builtin_func		test;
 }	t_data;
 
 typedef struct s_envlst

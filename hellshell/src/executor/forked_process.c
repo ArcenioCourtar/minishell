@@ -25,15 +25,67 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 
 	tmp = *(dat->cmd_lst);
 	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
-	{
-		printf("run builtin in child.\n");
 		run_builtin(dat, exec);
+}
+
+// TODO: more robust error handling
+// norm
+void	find_path(t_exec *exec)
+{
+	int		i;
+
+	exec->cmd = malloc(exec->path_maxlen + \
+	ft_strlen(exec->my_node->argv[0]) + 2);
+	if (!exec->cmd)
+		ft_error(errno, "hellshell: malloc");
+	if (exec->path_avail == 0 || exec->my_node->abs_path == true)
+	{
+		ft_strlcpy(exec->cmd, exec->my_node->argv[0], \
+		ft_strlen(exec->my_node->argv[0]) + 1);
+		if (access(exec->my_node->argv[0], X_OK) == -1)
+			ft_error(errno, "hellshell: command not found");
+		return ;
+	}
+	i = 0;
+	while (exec->path_list[i])
+	{
+		ft_strlcpy(exec->cmd, exec->path_list[i], \
+		ft_strlen(exec->path_list[i]) + 1);
+		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]), "/", 2);
+		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]) + 1, \
+		exec->my_node->argv[0], ft_strlen(exec->my_node->argv[0]) + 1);
+		if (access(exec->cmd, X_OK) == 0)
+			return ;
+		i++;
+	}
+	ft_error(errno, "hellshell: command not found");
+}
+
+void	dup_pipes(t_exec *exec)
+{
+	t_cmdlst	*my_node;
+
+	my_node = exec->my_node;
+	if (my_node->prev)
+	{
+		close(my_node->prev->pipe[1]);
+		dup2(my_node->prev->pipe[0], my_node->fd_in);
+		close(my_node->prev->pipe[0]);
+	}
+	if (my_node->next)
+	{
+		close(my_node->pipe[0]);
+		dup2(my_node->pipe[1], my_node->fd_out);
+		close(my_node->pipe[1]);
 	}
 }
 
 void	exec_fork(t_data *dat, t_exec *exec)
 {
+	dup_pipes(exec);
 	forked_builtin(dat, exec);
+	find_path(exec);
+	execve(exec->cmd, exec->my_node->argv, dat->envp);
 	exit(EXIT_SUCCESS);
 }
 
