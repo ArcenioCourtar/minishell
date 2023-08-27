@@ -96,6 +96,10 @@ void	executor(t_data *dat)
 	{
 		if (!find_pathvar(dat->envp, &exec))
 			exit(EXIT_FAILURE);
+		if (exec.path_avail)
+			printf("there's a path\n");
+		else
+			printf("there's no path\n");
 		create_forks(dat, &exec);
 		close_and_free(dat, &exec);
 		wait_for_all(exec.fork_num);

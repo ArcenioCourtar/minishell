@@ -51,6 +51,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 SRC_DIR		= src
 OBJ_DIR		= obj
 
+# $(shell brew --prefix readline)
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 SRCSUBD		= $(shell find $(SRC_DIR) -type d)
