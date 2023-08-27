@@ -62,7 +62,10 @@ void		add_to_history_list(t_hislst **history_list, char *input);
 void		print_history_list(t_hislst **history_list);
 
 t_envlst	*init_envlst(char **envp);
+t_envlst	*newnode_env(char *envp);
 void		envlst_addback(t_envlst *list, t_envlst *new);
+void		envlst_move_node(t_envlst *node, t_envlst *dst);
+void		envlst_free_node(t_envlst *del);
 void		varlst_add_back(t_data *data, t_envlst *new_node);
 char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);

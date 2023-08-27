@@ -14,11 +14,12 @@
 
 NAME 		= hellshell
 
-SRC_FILES	= 	main.c history.c environment.c init.c \
+SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
-				builtins/builtins.c 		\
-				builtins/builtins2.c 		\
-				builtins/builtins3.c 		\
+				builtins/builtin_env_variable_helpers.c \
+				builtins/builtin_cd_echo_exit_pwd.c 	\
+				builtins/builtin_env_var_assign.c 		\
+				builtins/builtin_export_unset.c			\
 				\
 				lexer/lexer_main.c 				\
 				lexer/token_array_utils.c 		\

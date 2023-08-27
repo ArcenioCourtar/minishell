@@ -18,8 +18,6 @@
 # include <stdio.h>
 # include <stdbool.h>
 
-bool		compare_token(char **tokens, int n, const char *str);
-t_envlst	*newnode_env(char *envp);
 // return address of node with same name, or NULL if it doesn't exist
 t_envlst	*check_var_existence(t_envlst *list, char *var);
 bool		change_existing_val(t_envlst *node, char *var);

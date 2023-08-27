@@ -15,27 +15,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_envlst	*newnode_env(char *envvar)
-{
-	t_envlst	*new;
-	size_t		namesize;
-
-	new = malloc(sizeof(t_envlst));
-	if (new == NULL)
-		return (NULL);
-	new->size = ft_strlen(envvar);
-	new->next = NULL;
-	new->prev = NULL;
-	namesize = ft_strchr(envvar, '=') - envvar;
-	new->name = ft_substr(envvar, 0, namesize);
-	if (new->name == NULL)
-		ft_error(errno, "malloc\n");
-	new->value = ft_substr(envvar, namesize + 1, new->size - namesize);
-	if (new->name == NULL)
-		ft_error(errno, "malloc\n");
-	return (new);
-}
-
 t_envlst	*init_envlst(char **envp)
 {
 	t_envlst	*start;
