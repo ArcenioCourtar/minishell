@@ -37,7 +37,6 @@ int	main(int argc, char **argv, char **envp)
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
-		add_to_history_list(dat.h_lst, dat.input);
 		quotes_check(dat);
 		lexer(&dat);
 		parser(&dat);
