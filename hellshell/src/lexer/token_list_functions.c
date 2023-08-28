@@ -74,14 +74,17 @@ void	token_lstdel_node(t_toklst **token)
 
 	if ((*token)->prev)
 	{
-		current_tok = (*token)->prev;
 		if ((*token)->next)
 		{
+			current_tok = (*token)->next;
 			(*token)->prev->next = (*token)->next;
 			(*token)->next->prev = (*token)->prev;
 		}
 		else
+		{
+			current_tok = (*token)->prev;
 			(*token)->prev->next = NULL;
+		}
 	}
 	else if ((*token)->next)
 	{

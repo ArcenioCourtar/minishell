@@ -80,8 +80,8 @@ void	expansion(t_data *data, t_toklst **token)
 		{
 			(*token)->next->token = getvar(data, (*token)->next->token);
 			token_lstdel_node(token);
-			if ((*token)->type != TOK_SPACE)
-				quote_join(data, token, false);
+			if ((*token)->prev && (*token)->prev->type != TOK_SPACE)
+				quote_join(data, token, true);
 		}
 	}
 }
