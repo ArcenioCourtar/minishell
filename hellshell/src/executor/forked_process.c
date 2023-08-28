@@ -92,16 +92,39 @@ void	exec_fork(t_data *dat, t_exec *exec)
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
+	// int			i;
 
 	tmp = *(dat->cmd_lst);
 	while (tmp)
 	{
+		// i = 0;
+		if (tmp->next != NULL)
+			pipe(tmp->pipe);
+		// while (tmp->redirect[i].name != NULL)
+		// {
+		// 	if (tmp->redirect[i].type == CMD_HEREDOC)
+		// 	{
+		// 		pipe(tmp->heredoc);
+		// 		break ;
+		// 	}
+		// 	i++;
+		// }
+		if (tmp->prev != NULL && tmp->prev->prev != NULL)
+		{
+			close(tmp->prev->prev->pipe[0]);
+			close(tmp->prev->prev->pipe[1]);
+		}
 		exec->my_node = tmp;
 		tmp->pid = fork();
 		if (tmp->pid == -1)
 			exit(EXIT_FAILURE);
 		if (tmp->pid == 0)
 			exec_fork(dat, exec);
+		if (tmp->next == NULL && tmp->prev)
+		{
+			close(tmp->prev->pipe[0]);
+			close(tmp->prev->pipe[1]);
+		}
 		tmp = tmp->next;
 	}
 }
