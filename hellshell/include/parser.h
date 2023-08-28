@@ -73,16 +73,16 @@ typedef struct s_varlist
 	struct s_varlist	*prev;
 }	t_varlist;
 
-void		create_cmd_lst(t_data *data);
+int			create_cmd_lst(t_data *data);
 
 //--new node====================================================================
-void		redirects_to_node(t_toklst *token, t_cmdlst *node);
+int			redirects_to_node(t_toklst *token, t_cmdlst *node);
 void		argv_to_node(t_toklst *token, t_cmdlst *node);
 ////--utils=====================================================================
 int			argv_count(t_toklst *t_lst);
 int			count_redirs(t_toklst *token);
 bool		is_redirect(enum e_token_type type);
-void		redirect_error(t_toklst *token);
+void		print_redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
 
 //--quotes======================================================================
@@ -108,6 +108,7 @@ void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
 void		add_to_free_lst(t_data *data, char *content);
 void		token_lstfree(t_toklst **t_lst);
 void		token_lstdel_node(t_toklst **token);
+int			syntax_error_checks(t_data *data);
 
 //--testing=====================================================================
 void		printf_cmd_table(t_cmdlst **cmd_table_head);

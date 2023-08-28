@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "lexer.h"
 #include "minishell.h"
 #include "libft.h"
+#include "exit_codes.h"
 
 /** PARSING ORDER
  * quotes
@@ -33,11 +35,15 @@
  * 				delete quotes token from list
  */
 
-void	parser(t_data *data)
+int	parser(t_data *data)
 {
 	t_toklst	*tmp;
 
-	syntax_error_checks(data);
+	if (syntax_error_checks(data))
+	{
+		token_lstfree(data->t_lst);
+		return (ERR_SYNTAX);
+	}
 	tmp = *(data->t_lst);
 	while (tmp)
 	{
@@ -51,5 +57,5 @@ void	parser(t_data *data)
 		}
 		tmp = tmp->next;
 	}
-	create_cmd_lst(data);
+	return (create_cmd_lst(data));
 }

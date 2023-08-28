@@ -56,11 +56,12 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		add_to_history_list(dat.h_lst, dat.input);
-		quotes_check(dat);
 		lexer(&dat);
-		parser(&dat);
-		finalize_cmd_list(dat.cmd_lst);
-		executor(&dat);
+		if (!parser(&dat))
+		{
+			finalize_cmd_list(dat.cmd_lst);
+			executor(&dat);
+		}
 		free_current_input_data(&dat);
 	}
 	exit(EXIT_SUCCESS);

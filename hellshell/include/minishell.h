@@ -74,14 +74,14 @@ void		execute_command(t_data *dat);
 
 void		lexer(t_data *data);
 
-void		parser(t_data *data);
+int			parser(t_data *data);
 void		cmdlst_free(t_data *data);
 
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
 
 /* error checking------------------------------------------------------------ */
-void		quotes_check(t_data data);
+int			quotes_check(t_data data);
 
 /* free---------------------------------------------------------------------- */
 void		to_freelstfree(t_freelst **lst);
