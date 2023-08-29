@@ -17,6 +17,7 @@
 # include <string.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <signal.h>
 # include "lexer.h"
 # include "executor.h"
 
@@ -79,9 +80,6 @@ void		cmdlst_free(t_data *data);
 
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
-
-/* error checking------------------------------------------------------------ */
-int			quotes_check(t_data data);
 
 /* free---------------------------------------------------------------------- */
 void		to_freelstfree(t_freelst **lst);
