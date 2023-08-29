@@ -57,7 +57,5 @@ int	create_cmd_lst(t_data *data)
 			current_token = current_token->next;
 	}
 	token_lstfree(data->t_lst);
-	if (!ret_value)
-		printf_cmd_table(data->cmd_lst);
 	return (ret_value);
 }

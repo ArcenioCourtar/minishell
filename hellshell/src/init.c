@@ -55,3 +55,14 @@ void	init_dat(t_data *dat, char **envp)
 	init_builtins_list(dat->builtin_index);
 	init_builtin_ptrs(dat->builtin_ptrs);
 }
+
+t_hislst	**init_history_list(void)
+{
+	t_hislst	**new_hlst;
+
+	new_hlst = (t_hislst **)malloc(sizeof(t_hislst *));
+	if (!new_hlst)
+		ft_error(errno, strerror(errno));
+	*new_hlst = NULL;
+	return (new_hlst);
+}

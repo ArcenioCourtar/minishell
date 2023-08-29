@@ -47,7 +47,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argv;
 	(void) argc;
-
 	init_dat(&dat, envp);
 	while (1)
 	{
@@ -59,6 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		lexer(&dat);
 		if (!parser(&dat))
 		{
+			printf_cmd_table(dat.cmd_lst);
 			finalize_cmd_list(dat.cmd_lst);
 			executor(&dat);
 		}

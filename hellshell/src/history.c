@@ -76,14 +76,3 @@ void	print_history_list(t_hislst **history_list)
 		tmp = tmp->next;
 	}
 }
-
-t_hislst	**init_history_list(void)
-{
-	t_hislst	**new_hlst;
-
-	new_hlst = (t_hislst **)malloc(sizeof(t_hislst *));
-	if (!new_hlst)
-		ft_error(errno, strerror(errno));
-	*new_hlst = NULL;
-	return (new_hlst);
-}

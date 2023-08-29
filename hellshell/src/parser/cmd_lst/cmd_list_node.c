@@ -30,33 +30,40 @@ static int	assign_redirect_name(t_toklst *token, t_cmdlst *node, int i)
 	return (0);
 }
 
+static int	loop_redirs_to_node(t_toklst *token, t_cmdlst *command, int rdr_count)
+{
+	int	i;
+	int	ret_value;
+
+	i = 0;
+	ret_value = 0;
+	while (i < rdr_count)
+	{
+		while (!is_redirect(token->type))
+			token = token->next;
+		command->redirect[i].type = (enum e_redir_type)token->type;
+		token = token->next;
+		ret_value = assign_redirect_name(token, command, i);
+		if (ret_value)
+			break ;
+		i++;
+	}
+	return (ret_value);
+}
+
 int	redirects_to_node(t_toklst *token, t_cmdlst *node)
 {
-	int			rdr_count;
-	int			r;
-	t_toklst	*tmp;
-	int			ret_value;
+	int	ret_value;
+	int	rdr_count;
 
 	ret_value = 0;
-	tmp = token;
-	rdr_count = count_redirs(tmp);
+	rdr_count = count_redirs(token);
 	if (!rdr_count)
 		return (ret_value);
 	node->redirect = (t_redirect *)malloc(sizeof(t_redirect) * (rdr_count + 1));
 	if (!node->redirect)
 		ft_error(errno, strerror(errno));
-	r = 0;
-	while (r < rdr_count)
-	{
-		while (!is_redirect(tmp->type))
-			tmp = tmp->next;
-		node->redirect[r].type = (enum e_redir_type)tmp->type;
-		tmp = tmp->next;
-		ret_value = assign_redirect_name(tmp, node, r);
-		if (ret_value)
-			return (ret_value);
-		r++;
-	}
+	ret_value = loop_redirs_to_node(token, node, rdr_count);
 	node->redirect[rdr_count].name = NULL;
 	return (ret_value);
 }
