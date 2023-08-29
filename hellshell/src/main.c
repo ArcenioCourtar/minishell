@@ -48,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	(void) argc;
 	init_dat(&dat, envp);
+	signals();
 	while (1)
 	{
 		dat.input = readline("\x1b[31mhellshell-0.2$\x1b[37m ");

@@ -82,6 +82,8 @@ void		lexer(t_data *data);
 int			parser(t_data *data);
 void		cmdlst_free(t_data *data);
 
+void		signals(void);
+
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
 

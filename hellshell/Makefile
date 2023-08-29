@@ -47,6 +47,8 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				err_handling/ft_fd_printf_utils.c \
 				err_handling/ft_fd_printf.c \
 				\
+				signals.c					\
+				\
 				testing.c
 
 HDR_FILES	=	exit_codes.h	parser.h		libft.h \
