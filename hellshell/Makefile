@@ -5,14 +5,14 @@
 #                                                      +:+                     #
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/06/28 19:08:38 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/28 19:08:38 by ovan-rhe      ########   odam.nl          #
+#    Created: 2023/08/29 16:00:49 by ovan-rhe      #+#    #+#                  #
+#    Updated: 2023/08/29 16:00:49 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 #--VARIABLES--------------------------------------------------------------------
 
-NAME 		= hellshell
+NAME 		=	hellshell
 
 SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
@@ -49,23 +49,27 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
 				testing.c
 
-SRC_DIR		= src
-OBJ_DIR		= obj
+HDR_FILES	=	exit_codes.h	parser.h		libft.h \
+				executor.h		ft_printf.h		lexer.h \
+				minishell.h		builtins.h		get_next_line.h
 
-# $(shell brew --prefix readline)
-OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+SRC_DIR	= src
+OBJ_DIR	= obj
+INC_DIR	= include
+RDL_DIR = $(shell brew --prefix readline)
 
-SRCSUBD		= $(shell find $(SRC_DIR) -type d)
-OBJSUBD		= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
+OBJS	= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+HEADERS	= $(addprefix $(INC_DIR)/, $(HDR_FILES))
 
-HEADERS		= -I include
+SRCSUBD	= $(shell find $(SRC_DIR) -type d)
+OBJSUBD	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
 
-LIBFT		= libft
-LIBS		= -L $(LIBFT) -lft -lreadline
+LIBFT	= libft
+LIBS	= -L$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
 
 CC		= gcc
 CFLAGS	= -g -Wall -Wextra -Werror
-FSAN	= -fsanitize=address
+FSAN	= -fsanitize=address 
 
 #--RULES------------------------------------------------------------------------
 
@@ -75,13 +79,13 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(HEADERS) $(LIBS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@
 
 objdir:
 	@mkdir -p $(OBJSUBD)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
 
 clean:
 	@rm -rf $(OBJ_DIR)

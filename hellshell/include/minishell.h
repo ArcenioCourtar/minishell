@@ -23,7 +23,7 @@
 
 typedef struct s_exec	t_exec;
 typedef struct s_cmdlst	t_cmdlst;
-typedef void	(*t_builtin_func)(t_data *, t_exec *);
+typedef void			(*t_builtin_func)(t_data *, t_exec *);
 
 typedef struct s_hislst
 {
