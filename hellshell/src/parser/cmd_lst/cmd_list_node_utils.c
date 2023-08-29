@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cmd_list_utils.c                                   :+:    :+:            */
+/*   cmd_list_node_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -55,7 +55,7 @@ int	argv_count(t_toklst *t_lst)
 	{
 		while (t_lst && t_lst->type == TOK_SPACE)
 			t_lst = t_lst->next;
-		if (t_lst && is_redirect(t_lst->type))
+		while (t_lst && is_redirect(t_lst->type))
 			skip_redirects(&t_lst);
 		if (t_lst && t_lst->type != TOK_SPACE && t_lst->type != TOK_PIPE)
 		{
@@ -63,7 +63,6 @@ int	argv_count(t_toklst *t_lst)
 			t_lst = t_lst->next;
 		}
 	}
-	ft_printf("args count: %i\n", count);
 	return (count);
 }
 

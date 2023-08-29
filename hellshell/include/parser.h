@@ -16,7 +16,9 @@
 # include "minishell.h"
 # include <sys/types.h>
 
-enum e_state_space
+typedef struct s_data	t_data;
+
+enum e_st_space
 {
 	SPACE,
 	NOSPACE,
@@ -62,12 +64,6 @@ typedef struct s_cmdlst
 	pid_t				pid;
 }	t_cmdlst;
 
-typedef struct s_parser_data
-{
-	struct s_cmdlst	**cmd_table;
-	char			**redirect_files;
-}	t_parser_data;
-
 typedef struct s_varlist
 {
 	int					size;
@@ -77,37 +73,44 @@ typedef struct s_varlist
 	struct s_varlist	*prev;
 }	t_varlist;
 
-typedef struct s_data	t_data;
+int			create_cmd_lst(t_data *data);
 
-void		create_cmd_lst(t_data *data);
-
-// new node
-void		redirects_to_node(t_toklst *token, t_cmdlst *node);
+//--new node====================================================================
+int			redirects_to_node(t_toklst *token, t_cmdlst *node);
 void		argv_to_node(t_toklst *token, t_cmdlst *node);
-// // utils
+////--utils=====================================================================
 int			argv_count(t_toklst *t_lst);
 int			count_redirs(t_toklst *token);
 bool		is_redirect(enum e_token_type type);
-void		redirect_error(t_toklst *token);
+void		print_redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
 
-// quotes
+//--quotes======================================================================
+void		handle_quotes(t_data *data, t_toklst **token);
 void		quotes(t_data *data, t_toklst **t_lst_head);
-void		quote_join(t_toklst **token, bool joinaddback);
-void		trim_quotes(t_toklst **token, enum e_token_type type, char *trim);
+void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 
-// expansion
-bool		check_for_dollar(char *token);
+//--expansion===================================================================
 void		expansion(t_data *data, t_toklst **token);
+bool		check_for_dollar(char *token);
+char		*getvar(t_data *data, char *to_expand);
+////--quotes====================================================================
+void		expand_in_quotes(t_data *data, t_toklst *token);
+int			count_dollar_signs(char *token);
+int			exp_strlen(char *token, char **expansions);
+void		cpy_expansion(char **exp_str, int *i, char *expansion);
 
-// command list functions
+//--command list functions======================================================
 t_cmdlst	*cmdlst_new_node(void);
 void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
-void		toklst_del_node(t_toklst **token);
-void		cmdlst_free_node(t_cmdlst *node);
 
-//
-// testing
+//--rest========================================================================
+void		add_to_free_lst(t_data *data, char *content);
+void		token_lstfree(t_toklst **t_lst);
+void		token_lstdel_node(t_toklst **token);
+int			syntax_error_checks(t_data *data);
+
+//--testing=====================================================================
 void		printf_cmd_table(t_cmdlst **cmd_table_head);
 
 #endif

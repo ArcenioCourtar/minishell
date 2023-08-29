@@ -49,6 +49,8 @@ int		ft_isascii(int c);
 int		ft_isdigit(int c);
 // Check if input character is printable ('space' is a printable char)
 int		ft_isprint(int c);
+// Check if input character is a whitespace ('\f', '\n', '\r', '\t', '\v', ' ')
+int		ft_iswhitespace(int c);
 // Scans n bytes of memory for first instance of c. (interpr as uchar)
 void	*ft_memchr(const void *s, int c, size_t n);
 // memcmp is strcmp without the str. xDDDDD

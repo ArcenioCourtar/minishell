@@ -23,13 +23,30 @@
 // if (!isatty(STDIN_FILENO))
 // 		rl_outstream = stdin;
 
+void	free_current_input_data(t_data *data)
+{
+	int	i;
+
+	cmdlst_free(data);
+	free(data->input);
+	free(data->t_lst);
+	to_freelstfree(data->free_lst);
+	i = 0;
+	while (data->tokens[i])
+	{
+		free(data->tokens[i]);
+		data->tokens[i] = NULL;
+		i++;
+	}
+	free(data->tokens);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
 
 	(void) argv;
 	(void) argc;
-
 	init_dat(&dat, envp);
 	while (1)
 	{
@@ -37,15 +54,14 @@ int	main(int argc, char **argv, char **envp)
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
-		quotes_check(dat);
 		lexer(&dat);
-		parser(&dat);
-		finalize_cmd_list(dat.cmd_lst);
-		executor(&dat);
-		cmdlst_free(&dat);
-		free(dat.input);
-		free(dat.t_lst);
-		free(dat.tokens);
+		if (!parser(&dat))
+		{
+			printf_cmd_table(dat.cmd_lst);
+			finalize_cmd_list(dat.cmd_lst);
+			executor(&dat);
+		}
+		free_current_input_data(&dat);
 	}
 	exit(EXIT_SUCCESS);
 }

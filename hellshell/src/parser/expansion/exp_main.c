@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expansion.c                                        :+:    :+:            */
+/*   exp_main.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
@@ -22,45 +22,45 @@ bool	check_for_dollar(char *token)
 	i = 0;
 	while (token[i])
 	{
-		if (token[i] == TOK_DOLLAR && token[i + 1] && token[i + 1] != ' ') //is that all??
+		if (token[i] == TOK_DOLLAR && token[i + 1] && token[i + 1] != ' ')
 			return (true);
 		i++;
 	}
 	return (false);
 }
 
-// void	expand_from_varlst(t_data *data, t_toklst *token, char **to_expand)
-// {
-// 	t_envlst	*tmp;
-
-// 	tmp = data->varlist;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp(tmp->name))
-// 		tmp = tmp->next;
-// 	}
-// }
-
-void	expand_in_quotes(t_data *data, t_toklst *token)
+static char	*envlst_iter(t_envlst *lst, char *to_expand)
 {
-	int		i;
-	int		start;
-	char	*to_expand;
+	int	i;
 
-	i = 0;
-	while (token->token[i])
+	while (lst)
 	{
-		while (token->token[i] != TOK_DOLLAR)
+		i = 0;
+		while (lst->name[i] && to_expand[i] && lst->name[i] == to_expand[i])
 			i++;
-		i++;
-		start = i;
-		while (token->token[i] && token->token[i] != ' ' \
-										&& token->token[i] != '$')
-			i++;
-		to_expand = ft_substr(token->token, start, i - start);
-		//find_in_varlist_and_expand(data, token, to_expand)
-		ft_printf("tokcount: %i\nvar to expand: %s\n", data->tok_count, to_expand);
+		if (lst->name[i] == to_expand[i])
+			return (lst->value);
+		lst = lst->next;
 	}
+	return (NULL);
+}
+
+char	*getvar(t_data *data, char *to_expand)
+{
+	char	*var_value;
+
+	var_value = envlst_iter(data->envlist, to_expand);
+	if (!var_value)
+		var_value = envlst_iter(data->varlist, to_expand);
+	if (!var_value)
+	{
+		var_value = (char *)malloc(sizeof(char));
+		if (!var_value)
+			ft_error(errno, strerror(errno));
+		var_value[0] = '\0';
+		add_to_free_lst(data, var_value);
+	}
+	return (var_value);
 }
 
 void	expansion(t_data *data, t_toklst **token)
@@ -75,11 +75,13 @@ void	expansion(t_data *data, t_toklst **token)
 			(*token)->type = TOK_NAME;
 		else if ((*token)->next->type == TOK_DQUOTE \
 					|| (*token)->next->type == TOK_SQUOTE)
-			toklst_del_node(token);
+			token_lstdel_node(token);
 		else
 		{
-			//find_in_varlist_and_expand(data, token, (*token)->next->token)
-			ft_printf("var to expand: $%s\n", (*token)->next->token);
+			(*token)->next->token = getvar(data, (*token)->next->token);
+			token_lstdel_node(token);
+			if ((*token)->prev && (*token)->prev->type != TOK_SPACE)
+				quote_join(data, token, true);
 		}
 	}
 }

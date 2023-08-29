@@ -14,84 +14,74 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	handle_single_quote(t_toklst **token, enum e_state_space space_state)
+static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type, \
+																	char *trim)
 {
-	trim_quotes(token, TOK_NAME, "\'");
-	if (space_state == NOSPACE)
-		quote_join(token, true);
-	if ((*token)->next && (*token)->next->type != TOK_SPACE && \
-	(*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
-		quote_join(token, false);
+	char	*tmp;
+
+	tmp = ft_strtrim((*token)->token, trim);
+	add_to_free_lst(data, tmp);
+	(*token)->token = tmp;
+	(*token)->type = type;
 }
 
-void	handle_double_quote(t_toklst **token, enum e_state_space space_state)
+void	quote_join(t_data *data, t_toklst **token, bool joinaddback)
 {
-	trim_quotes(token, TOK_DQUOTE, "\"");
-	if (check_for_dollar((*token)->token))
+	if (!*token)
+		return ;
+	if (joinaddback)
 	{
-		// expansion(token);
-		ft_printf("\033[31;1m\"expansion\"\033[0m needed for: %s\n", (*token)->token);
+		(*token)->prev->token = ft_strjoin((*token)->prev->token, \
+														(*token)->token);
+		add_to_free_lst(data, (*token)->prev->token);
 	}
-	if (space_state == NOSPACE)
-		quote_join(token, true);
+	else
+	{
+		(*token)->token = ft_strjoin((*token)->token, \
+													(*token)->next->token);
+		add_to_free_lst(data, (*token)->token);
+		*token = (*token)->next;
+	}
+	token_lstdel_node(token);
+}
+
+static void	handle_single_quote(t_data *data, t_toklst **token, \
+													enum e_st_space st_space)
+{
+	trim_quotes(data, token, TOK_NAME, "\'");
+	if (st_space == NOSPACE)
+		quote_join(data, token, true);
+	if ((*token)->next && (*token)->next->type != TOK_SPACE && \
+	(*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE)
+		quote_join(data, token, false);
+}
+
+static void	handle_double_quote(t_data *data, t_toklst **token, \
+													enum e_st_space st_space)
+{
+	trim_quotes(data, token, TOK_DQUOTE, "\"");
+	if (check_for_dollar((*token)->token))
+		expansion(data, token);
+	if (st_space == NOSPACE)
+		quote_join(data, token, true);
 	if ((*token)->next && (*token)->next->type != TOK_SPACE \
 	&& (*token)->next->type != TOK_SQUOTE && (*token)->next->type != TOK_DQUOTE \
 	&& (*token)->next->type != TOK_DOLLAR)
-		quote_join(token, false);
+		quote_join(data, token, false);
 }
 
-void	handle_quotes(t_toklst **token)
+void	handle_quotes(t_data *data, t_toklst **token)
 {
-	enum e_state_space	space_state;
+	enum e_st_space	st_space;
 
 	if ((*token)->prev && (*token)->prev->type == TOK_SPACE)
-		space_state = SPACE;
+		st_space = SPACE;
 	else if ((*token)->prev)
-		space_state = NOSPACE;
+		st_space = NOSPACE;
 	else
-		space_state = FIRST;
+		st_space = FIRST;
 	if ((*token)->type == TOK_SQUOTE)
-		handle_single_quote(token, space_state);
+		handle_single_quote(data, token, st_space);
 	else if ((*token)->type == TOK_DQUOTE)
-		handle_double_quote(token, space_state);
-}
-
-// void	quotes(t_data *data)
-// {
-// 	t_toklst	*tmp;
-
-// 	tmp = *(data->t_lst);
-// 	while (tmp)
-// 	{
-// 		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-// 			handle_quotes(&tmp);
-// 		else if (tmp->type == TOK_DOLLAR)
-// 		{
-// 			expansion(&tmp);
-// 			handle_quotes(&tmp);
-// 			if (!tmp->prev)
-// 				data->t_lst = &tmp;
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// }
-
-void	quotes(t_data *data, t_toklst **t_lst_head)
-{
-	t_toklst	*tmp;
-
-	tmp = *t_lst_head;
-	while (tmp)
-	{
-		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-			handle_quotes(&tmp);
-		else if (tmp->type == TOK_DOLLAR)
-		{
-			expansion(data, &tmp);
-			handle_quotes(&tmp);
-			if (!tmp->prev)
-				*t_lst_head = tmp;
-		}
-		tmp = tmp->next;
-	}
+		handle_double_quote(data, token, st_space);
 }

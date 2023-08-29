@@ -66,13 +66,16 @@ void	printf_cmd_table(t_cmdlst **cmd_table_head)
 		ft_printf("\n");
 		ft_printf("redirects: \r\e[15C");
 		j = 0;
-		while (tmp->redirect[j].name)
+		if (tmp->redirect)
 		{
-			if (tmp->redirect[j + 1].name)
-				ft_printf("%s [%i], ", tmp->redirect[j].name, tmp->redirect[j].type);
-			else
-				ft_printf("%s [%i]", tmp->redirect[j].name, tmp->redirect[j].type);
-			j++;
+			while (tmp->redirect[j].name)
+			{
+				if (tmp->redirect[j + 1].name)
+					ft_printf("%s [%i], ", tmp->redirect[j].name, tmp->redirect[j].type);
+				else
+					ft_printf("%s [%i]", tmp->redirect[j].name, tmp->redirect[j].type);
+				j++;
+			}
 		}
 		tmp = tmp->next;
 		if (tmp)

@@ -30,11 +30,13 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				parser/cmd_lst/cmd_list_node_utils.c	\
 				parser/cmd_lst/cmd_list_node.c			\
 				parser/cmd_lst/command_table.c			\
-				parser/expansion.c			\
+				parser/expansion/exp_quotes.c		\
+				parser/expansion/exp_quotes_utils.c	\
+				parser/expansion/exp_main.c			\
+				parser/free_list_functions.c	\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
 				parser/quotes.c				\
-				parser/quotes_utils.c		\
 				\
 				executor/cmd_list_final.c	\
 				executor/executor_main.c	\
@@ -90,7 +92,9 @@ fclean: clean
 	@rm -rf $(OBJ_DIR) $(NAME)
 	$(MAKE) -C $(LIBFT) fclean
 
-
 re: fclean all
 
 .PHONY: all, lib, tmp, clean, fclean, re
+
+valg: all
+	valgrind --suppressions=../valgrind_suppr.log --leak-check=full ./hellshell

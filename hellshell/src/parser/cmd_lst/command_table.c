@@ -15,61 +15,30 @@
 #include "parser.h"
 #include <stdlib.h>
 
-t_cmdlst	**init_command_list(void)
-{
-	t_cmdlst	**cmd_lst_head;
-
-	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
-	if (!cmd_lst_head)
-		ft_error(errno, strerror(errno));
-	*cmd_lst_head = NULL;
-	return (cmd_lst_head);
-}
-
-static void	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
+static int	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 											enum e_cmd_type type)
 {
 	t_cmdlst	*new_node;
+	int			ret_value;
 
+	ret_value = 0;
 	new_node = cmdlst_new_node();
-	new_node->type = type;
-	redirects_to_node(token, new_node);
-	argv_to_node(token, new_node);
 	cmdlst_add_back(cmd_lst_head, new_node);
+	new_node->type = type;
+	ret_value = redirects_to_node(token, new_node);
+	if (ret_value)
+		return (ret_value);
+	argv_to_node(token, new_node);
+	return (ret_value);
 }
 
-static void	toklst_free(t_toklst **t_lst)
-{
-	t_toklst	*tmp;
-
-	while (*t_lst)
-	{
-		tmp = (*t_lst)->next;
-		free(*t_lst);
-		*t_lst = tmp;
-	}
-}
-
-void	cmdlst_free(t_data *data)
-{
-	t_cmdlst	*tmp;
-	t_cmdlst	*next;
-
-	tmp = *(data->cmd_lst);
-	while (tmp)
-	{
-		next = tmp->next;
-		cmdlst_free_node(tmp);
-		tmp = next;
-	}
-	*(data->cmd_lst) = NULL;
-}
-
-void	create_cmd_lst(t_data *data)
+int	create_cmd_lst(t_data *data)
 {
 	t_toklst		*current_token;
 	enum e_cmd_type	type;
+	int				ret_value;
 
+	ret_value = 0;
 	type = CMD_FIRST;
 	current_token = *(data->t_lst);
 	while (current_token)
@@ -80,11 +49,13 @@ void	create_cmd_lst(t_data *data)
 			current_token = current_token->next;
 		if (!current_token)
 			break ;
-		parse_chunk(current_token, data->cmd_lst, type);
+		ret_value = parse_chunk(current_token, data->cmd_lst, type);
+		if (ret_value)
+			break ;
 		type = CMD_PIPE;
 		while (current_token && current_token->type != TOK_PIPE)
 			current_token = current_token->next;
 	}
-	toklst_free(data->t_lst);
-	printf_cmd_table(data->cmd_lst);
+	token_lstfree(data->t_lst);
+	return (ret_value);
 }

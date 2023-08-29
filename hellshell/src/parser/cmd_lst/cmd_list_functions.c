@@ -14,6 +14,17 @@
 #include "minishell.h"
 #include "libft.h"
 
+t_cmdlst	**init_command_list(void)
+{
+	t_cmdlst	**cmd_lst_head;
+
+	cmd_lst_head = (t_cmdlst **)malloc(sizeof(t_cmdlst *));
+	if (!cmd_lst_head)
+		ft_error(errno, strerror(errno));
+	*cmd_lst_head = NULL;
+	return (cmd_lst_head);
+}
+
 t_cmdlst	*cmdlst_new_node(void)
 {
 	t_cmdlst	*new_node;
@@ -48,44 +59,20 @@ void	cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node)
 	}
 }
 
-void	toklst_del_node(t_toklst **token)
+void	cmdlst_free(t_data *data)
 {
-	t_toklst	*current_tok;
+	t_cmdlst	*tmp;
+	t_cmdlst	*next;
 
-	if ((*token)->prev)
+	tmp = *(data->cmd_lst);
+	while (tmp)
 	{
-		current_tok = (*token)->prev;
-		if ((*token)->next)
-		{
-			(*token)->prev->next = (*token)->next;
-			(*token)->next->prev = (*token)->prev;
-		}
-		else
-			(*token)->prev->next = NULL;
+		next = tmp->next;
+		free(tmp->argv);
+		if (tmp->redirect)
+			free(tmp->redirect);
+		free(tmp);
+		tmp = next;
 	}
-	else if ((*token)->next)
-	{
-		(*token)->next->prev = NULL;
-		current_tok = (*token)->next;
-	}
-	else
-		current_tok = NULL;
-	free((*token)->token);
-	free(*token);
-	*token = current_tok;
-}
-
-void	cmdlst_free_node(t_cmdlst *node)
-{
-	int	i;
-
-	i = 0;
-	while (node->argv[i])
-	{
-		free(node->argv[i]);
-		i++;
-	}
-	free(node->argv);
-	free(node->redirect);
-	free(node);
+	*(data->cmd_lst) = NULL;
 }

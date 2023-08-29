@@ -13,7 +13,7 @@
 #include "lexer.h"
 #include "libft.h"
 
-t_toklst	*tlst_new_node(char *token)
+t_toklst	*token_lstnew_node(char *token)
 {
 	t_toklst	*new_node;
 
@@ -54,4 +54,45 @@ void	token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node)
 		tmp->next = new_node;
 		new_node->prev = tmp;
 	}
+}
+
+void	token_lstfree(t_toklst **t_lst)
+{
+	t_toklst	*tmp;
+
+	while (*t_lst)
+	{
+		tmp = (*t_lst)->next;
+		free(*t_lst);
+		*t_lst = tmp;
+	}
+}
+
+void	token_lstdel_node(t_toklst **token)
+{
+	t_toklst	*current_tok;
+
+	if ((*token)->prev)
+	{
+		if ((*token)->next)
+		{
+			current_tok = (*token)->next;
+			(*token)->prev->next = (*token)->next;
+			(*token)->next->prev = (*token)->prev;
+		}
+		else
+		{
+			current_tok = (*token)->prev;
+			(*token)->prev->next = NULL;
+		}
+	}
+	else if ((*token)->next)
+	{
+		(*token)->next->prev = NULL;
+		current_tok = (*token)->next;
+	}
+	else
+		current_tok = NULL;
+	free(*token);
+	*token = current_tok;
 }

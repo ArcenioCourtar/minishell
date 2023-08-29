@@ -92,7 +92,7 @@ static void	token_array_to_list(t_data *data, char **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		new_token_node = tlst_new_node(tokens[i]);
+		new_token_node = token_lstnew_node(tokens[i]);
 		token_lstadd_back((*data).t_lst, new_token_node);
 		i++;
 	}
