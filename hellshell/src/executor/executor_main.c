@@ -45,16 +45,11 @@ int	is_builtin(char builtin_index[BT_NUM][10], char *arg)
 	return (i);
 }
 
-static bool	check_builtin(t_data *dat, t_exec *exec)
+static bool	check_builtin(t_data *dat, t_cmdlst *node)
 {
-	t_cmdlst	*cmd;
-
-	cmd = *(dat->cmd_lst);
-	if (exec->fork_num != 1)
+	if (node->abs_path == true)
 		return (false);
-	if (cmd->abs_path == true)
-		return (false);
-	if (is_builtin(dat->builtin_index, cmd->argv[0]) == BT_NUM)
+	if (is_builtin(dat->builtin_index, node->argv[0]) == BT_NUM)
 		return (false);
 	return (true);
 }
@@ -64,7 +59,7 @@ void	run_builtin(t_data *dat, t_exec *exec)
 	int			index;
 	t_cmdlst	*cmd;
 
-	cmd = *(dat->cmd_lst);
+	cmd = exec->my_node;
 	index = is_builtin(dat->builtin_index, cmd->argv[0]);
 	dat->builtin_ptrs[index](dat, exec);
 }
@@ -73,6 +68,11 @@ void	builtin_prep(t_data *dat, t_exec *exec)
 {
 	exec->my_node = *(dat->cmd_lst);
 }
+
+// void	set_redirects(t_data *dat, t_exec *exec)
+// {
+
+// }
 
 /*
 	program flow notes:
@@ -83,9 +83,9 @@ void	executor(t_data *dat)
 	t_exec	exec;
 
 	exec.fork_num = count_forks(dat->cmd_lst);
-	if (check_builtin(dat, &exec))
+	builtin_prep(dat, &exec);
+	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
 	{
-		builtin_prep(dat, &exec);
 		run_builtin(dat, &exec);
 		return ;
 	}
@@ -93,10 +93,6 @@ void	executor(t_data *dat)
 	{
 		if (!find_pathvar(dat->envp, &exec))
 			exit(EXIT_FAILURE);
-		if (exec.path_avail)
-			printf("there's a path\n");
-		else
-			printf("there's no path\n");
 		create_forks(dat, &exec);
 		close_and_free(dat, &exec);
 		wait_for_all(exec.fork_num);

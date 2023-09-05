@@ -23,9 +23,12 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
 
-	tmp = *(dat->cmd_lst);
+	tmp = exec->my_node;
 	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
+	{
 		run_builtin(dat, exec);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 // TODO: more robust error handling
@@ -84,6 +87,7 @@ void	exec_fork(t_data *dat, t_exec *exec)
 {
 	dup_pipes(exec);
 	forked_builtin(dat, exec);
+	ft_fd_printf(STDERR_FILENO, "non-builtin\n");
 	find_path(exec);
 	execve(exec->cmd, exec->my_node->argv, dat->envp);
 	exit(EXIT_SUCCESS);

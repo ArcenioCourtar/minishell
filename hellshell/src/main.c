@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		lexer(&dat);
 		if (!parser(&dat))
 		{
-			printf_cmd_table(dat.cmd_lst);
+			// printf_cmd_table(dat.cmd_lst);
 			finalize_cmd_list(dat.cmd_lst);
 			executor(&dat);
 		}

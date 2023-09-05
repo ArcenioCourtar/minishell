@@ -29,7 +29,6 @@ void	wait_for_all(int fork_amount)
 		wait(0);
 		i++;
 	}
-	printf("done waiting\n");
 }
 
 void	close_and_free(t_data *dat, t_exec *exec)
