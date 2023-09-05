@@ -83,11 +83,31 @@ void	dup_pipes(t_exec *exec)
 	}
 }
 
+void	redirects(t_exec *exec)
+{
+	t_cmdlst	*node;
+	int			i;
+
+	node = exec->my_node;
+	if (node->redirect == NULL)
+		return ;
+	i = 0;
+	while (node->redirect[i].name)
+	{
+		if (node->redirect[i].type == REDIN)
+			node->fd_in = open(node->redirect[i].name, O_RDONLY);
+		if (node->fd_in == -1)
+			ft_error(errno, "Hellshell: ");
+		i++;
+	}
+	printf("\n");
+}
+
 void	exec_fork(t_data *dat, t_exec *exec)
 {
 	dup_pipes(exec);
+	redirects(exec);
 	forked_builtin(dat, exec);
-	ft_fd_printf(STDERR_FILENO, "non-builtin\n");
 	find_path(exec);
 	execve(exec->cmd, exec->my_node->argv, dat->envp);
 	exit(EXIT_SUCCESS);
@@ -96,23 +116,12 @@ void	exec_fork(t_data *dat, t_exec *exec)
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
-	// int			i;
 
 	tmp = *(dat->cmd_lst);
 	while (tmp)
 	{
-		// i = 0;
 		if (tmp->next != NULL)
 			pipe(tmp->pipe);
-		// while (tmp->redirect[i].name != NULL)
-		// {
-		// 	if (tmp->redirect[i].type == CMD_HEREDOC)
-		// 	{
-		// 		pipe(tmp->heredoc);
-		// 		break ;
-		// 	}
-		// 	i++;
-		// }
 		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 		{
 			close(tmp->prev->prev->pipe[0]);

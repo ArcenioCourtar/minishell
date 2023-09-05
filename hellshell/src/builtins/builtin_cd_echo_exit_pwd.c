@@ -28,7 +28,9 @@ void	builtin_echo(t_data *dat, t_exec *exec)
 	i = 1;
 	while (argv[i])
 	{
-		printf("%s ", argv[i]);
+		if (i != 1)
+			printf(" ");
+		printf("%s", argv[i]);
 		i++;
 	}
 	printf("\n");
