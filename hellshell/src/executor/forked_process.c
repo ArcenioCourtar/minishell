@@ -64,6 +64,7 @@ void	find_path(t_exec *exec)
 	ft_error(errno, "hellshell: command not found");
 }
 
+// Do I need to close the other ends of the pipe after dup2?
 void	dup_pipes(t_exec *exec)
 {
 	t_cmdlst	*my_node;
@@ -73,13 +74,11 @@ void	dup_pipes(t_exec *exec)
 	{
 		close(my_node->prev->pipe[1]);
 		dup2(my_node->prev->pipe[0], my_node->fd_in);
-		close(my_node->prev->pipe[0]);
 	}
 	if (my_node->next)
 	{
 		close(my_node->pipe[0]);
 		dup2(my_node->pipe[1], my_node->fd_out);
-		close(my_node->pipe[1]);
 	}
 }
 
@@ -95,12 +94,26 @@ void	redirects(t_exec *exec)
 	while (node->redirect[i].name)
 	{
 		if (node->redirect[i].type == REDIN)
+		{
 			node->fd_in = open(node->redirect[i].name, O_RDONLY);
-		if (node->fd_in == -1)
-			ft_error(errno, "Hellshell: ");
+			if (node->fd_in == -1)
+				ft_error(errno, "Hellshell: infile problem");
+		}
+		if (node->redirect[i].type == REDOUT || \
+		node->redirect[i].type == REDAPPEND)
+		{
+			if (node->redirect[i].type == REDOUT)
+				node->fd_out = open(node->redirect[i].name, O_WRONLY | O_CREAT);
+			else
+				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
+				O_CREAT | O_APPEND);
+			if (node->fd_out == -1)
+				ft_error(errno, "Hellshell: outfile problem");
+		}
 		i++;
 	}
-	printf("\n");
+	dup2(node->fd_in, STDIN_FILENO);
+	dup2(node->fd_out, STDOUT_FILENO);
 }
 
 void	exec_fork(t_data *dat, t_exec *exec)
