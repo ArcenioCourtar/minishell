@@ -36,15 +36,21 @@ static int	iter_pipe_str(char *str, int *i)
 	while (str[*i] && ft_iswhitespace(str[*i]))
 		(*i)++;
 	if (str[*i] == TOK_PIPE)
+		return (TOK_PIPE);
+	else if (!str[*i])
 		return (1);
 	(*i)--;
 	return (0);
 }
 
-//returns "/' value in case of unclosed "/', 0 on succes
+/** returns 39('), 34(") in case of unclosed quotes
+ * 	returns 124, 1 in case of syntax error regarding '|'
+ *	returns 0 on succes
+*/
 static int	pipe_quote_check(t_data data)
 {
 	int	i;
+	int	errnum;
 
 	i = 0;
 	while (data.input[i] && ft_iswhitespace(data.input[i]))
@@ -59,8 +65,12 @@ static int	pipe_quote_check(t_data data)
 		else if (data.input[i] == TOK_DQUOTE \
 			&& iter_quoted_str(data.input, TOK_DQUOTE, &i))
 			return (TOK_DQUOTE);
-		else if (data.input[i] == TOK_PIPE && iter_pipe_str(data.input, &i))
-			return (TOK_PIPE);
+		else if (data.input[i] == TOK_PIPE)
+		{
+			errnum = iter_pipe_str(data.input, &i);
+			if (errnum)
+				return (errnum);
+		}
 		i++;
 	}
 	return (0);
@@ -72,17 +82,19 @@ int	syntax_error_checks(t_data *data)
 
 	errnumber = pipe_quote_check(*data);
 	if (errnumber == TOK_PIPE)
-		ft_printf("hellshell: syntax error near unexpected token `|'\n");
+		printf("hellshell: syntax error near unexpected token `|'\n");
 	else if (errnumber)
-		ft_printf("minishell: syntax error: unclosed %c\n", errnumber);
+		printf("hellshell: syntax error near unexpected token `newline'\n");
+	else if (errnumber == TOK_DQUOTE || errnumber == TOK_SQUOTE)
+		printf("minishell: syntax error: unclosed %c\n", errnumber);
 	return (errnumber);
 }
 
 void	print_redirect_error(t_toklst *token)
 {
 	if (token)
-		ft_printf("hellshell: syntax error near unexpected token `%s'\n", \
+		printf("hellshell: syntax error near unexpected token `%s'\n", \
 																token->token);
 	else
-		ft_printf("hellshell: syntax error near unexpected token `newline'\n");
+		printf("hellshell: syntax error near unexpected token `newline'\n");
 }
