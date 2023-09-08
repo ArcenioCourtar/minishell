@@ -69,11 +69,6 @@ void	builtin_prep(t_data *dat, t_exec *exec)
 	exec->my_node = *(dat->cmd_lst);
 }
 
-// void	set_redirects(t_data *dat, t_exec *exec)
-// {
-
-// }
-
 /*
 	program flow notes:
 	Any error involving redirects prevents the associated command from running
@@ -82,6 +77,8 @@ void	executor(t_data *dat)
 {
 	t_exec	exec;
 
+	if (*(dat->cmd_lst) == NULL)
+		return ;
 	exec.fork_num = count_forks(dat->cmd_lst);
 	builtin_prep(dat, &exec);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)

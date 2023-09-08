@@ -15,7 +15,6 @@
 #include <readline/readline.h>
 #include <stdio.h>
 
-
 // CTRL+C in process
 // acts like bash
 

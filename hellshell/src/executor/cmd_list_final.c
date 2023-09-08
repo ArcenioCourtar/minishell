@@ -30,6 +30,8 @@ void	finalize_cmd_list(t_cmdlst **list)
 	t_cmdlst	*tmp;
 
 	tmp = *list;
+	if (tmp == NULL)
+		return ;
 	while (tmp)
 	{
 		tmp->fd_in = STDIN_FILENO;
