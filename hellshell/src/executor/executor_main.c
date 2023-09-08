@@ -31,6 +31,8 @@ int	is_builtin(char builtin_index[BT_NUM][10], char *arg)
 {
 	int	i;
 
+	if (arg == NULL)
+		return (BT_NUM);
 	if (is_var_assignment(arg) == true)
 	{
 		return (0);
@@ -64,14 +66,10 @@ void	run_builtin(t_data *dat, t_exec *exec)
 	dat->builtin_ptrs[index](dat, exec);
 }
 
-void	builtin_prep(t_data *dat, t_exec *exec)
-{
-	exec->my_node = *(dat->cmd_lst);
-}
-
 /*
 	program flow notes:
 	Any error involving redirects prevents the associated command from running
+	TODO: Generating files with outfile redirects without a command before it.
 */
 void	executor(t_data *dat)
 {
@@ -80,7 +78,7 @@ void	executor(t_data *dat)
 	if (*(dat->cmd_lst) == NULL)
 		return ;
 	exec.fork_num = count_forks(dat->cmd_lst);
-	builtin_prep(dat, &exec);
+	exec.my_node = *(dat->cmd_lst);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
 	{
 		run_builtin(dat, &exec);

@@ -32,7 +32,6 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 }
 
 // TODO: more robust error handling
-// norm
 void	find_path(t_exec *exec)
 {
 	int		i;
@@ -103,10 +102,11 @@ void	redirects(t_exec *exec)
 		node->redirect[i].type == REDAPPEND)
 		{
 			if (node->redirect[i].type == REDOUT)
-				node->fd_out = open(node->redirect[i].name, O_WRONLY | O_CREAT);
+				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
+				O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			else
 				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT | O_APPEND);
+				O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if (node->fd_out == -1)
 				ft_error(errno, "Hellshell: outfile problem");
 		}
@@ -120,6 +120,8 @@ void	exec_fork(t_data *dat, t_exec *exec)
 {
 	dup_pipes(exec);
 	redirects(exec);
+	if (exec->my_node->argv[0] == NULL)
+		exit(EXIT_SUCCESS);
 	forked_builtin(dat, exec);
 	find_path(exec);
 	execve(exec->cmd, exec->my_node->argv, dat->envp);

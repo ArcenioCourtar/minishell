@@ -20,6 +20,8 @@
 
 bool	check_path(char *path)
 {
+	if (path == NULL)
+		return (false);
 	if (ft_strchr(path, '/') != NULL)
 		return (true);
 	return (false);
