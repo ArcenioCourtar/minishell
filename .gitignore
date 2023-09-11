@@ -5,3 +5,5 @@ hellshell/hellshell
 test*
 valgrind_suppr.log
 *.dSYM
+minishell
+minishell_tester
