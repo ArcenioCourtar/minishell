@@ -41,6 +41,10 @@ void	free_current_input_data(t_data *data)
 	free(data->tokens);
 }
 
+/** readline return values
+ * 	returns NULL if EOF is encountered and input is empty
+ * 	EOF is treated as newline is string is not empty
+ */
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
@@ -48,9 +52,9 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	(void) argc;
 	init_dat(&dat, envp);
-	signals();
 	while (1)
 	{
+		signals_interactive_mode();
 		dat.input = readline("\x1b[31mhellshell-0.2$\x1b[37m ");
 		if (!dat.input)
 			break ;

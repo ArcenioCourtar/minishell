@@ -83,6 +83,7 @@ void	executor(t_data *dat)
 	t_exec	exec;
 
 	exec.fork_num = count_forks(dat->cmd_lst);
+	signals_in_process();
 	if (check_builtin(dat, &exec))
 	{
 		builtin_prep(dat, &exec);
