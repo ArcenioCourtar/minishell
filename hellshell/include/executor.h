@@ -27,6 +27,7 @@ typedef struct s_exec
 	bool		path_avail;
 	char		*cmd;
 	t_cmdlst	*my_node;
+	int			in_out_fd[2];
 }	t_exec;
 
 bool	check_path(char *path);
@@ -41,5 +42,6 @@ void	exec_fork(t_data *dat, t_exec *exec);
 // maybe put in builtins header? also change arguments to just *dat?
 int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
 void	run_builtin(t_data *dat, t_exec *exec);
+void	redirects(t_exec *exec);
 
 #endif

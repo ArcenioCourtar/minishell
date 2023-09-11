@@ -66,6 +66,19 @@ void	run_builtin(t_data *dat, t_exec *exec)
 	dat->builtin_ptrs[index](dat, exec);
 }
 
+void	save_old_fds(t_exec *exec)
+{
+	exec->in_out_fd[0] = dup(STDIN_FILENO);
+	exec->in_out_fd[1] = dup(STDOUT_FILENO);
+}
+
+void	restore_old_fds(t_exec *exec)
+{
+	dup2(exec->in_out_fd[0], STDIN_FILENO);
+	dup2(exec->in_out_fd[1], STDOUT_FILENO);
+	close(exec->in_out_fd[0]);
+	close(exec->in_out_fd[1]);
+}
 /*
 	program flow notes:
 	Any error involving redirects prevents the associated command from running
@@ -81,7 +94,10 @@ void	executor(t_data *dat)
 	exec.my_node = *(dat->cmd_lst);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
 	{
+		save_old_fds(&exec);
+		redirects(&exec);
 		run_builtin(dat, &exec);
+		restore_old_fds(&exec);
 		return ;
 	}
 	else

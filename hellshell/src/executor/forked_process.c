@@ -81,6 +81,8 @@ void	dup_pipes(t_exec *exec)
 	}
 }
 
+// Need to modify this for running in the main process as well
+// Should not exit upon error. NEW ERROR FUNCTION NEEDED!
 void	redirects(t_exec *exec)
 {
 	t_cmdlst	*node;
@@ -103,7 +105,7 @@ void	redirects(t_exec *exec)
 		{
 			if (node->redirect[i].type == REDOUT)
 				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+				O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			else
 				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
 				O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);

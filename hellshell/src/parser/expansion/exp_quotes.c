@@ -109,6 +109,5 @@ void	expand_in_quotes(t_data *data, t_toklst *token)
 		i++;
 	}
 	expansions[i] = "\0";
-	ft_printf("strlen: %i\n", exp_strlen(token->token, expansions));
 	token->token = add_expans_to_token(token->token, expansions);
 }
