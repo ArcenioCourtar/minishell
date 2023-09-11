@@ -29,14 +29,16 @@ void	print_token_array(t_data dat)
 
 void	print_token_list(t_data dat)
 {
-	int		i;
+	int			i;
+	t_toklst	*tmp;
 
 	i = 0;
-	while ((*dat.t_lst))
+	tmp = *dat.t_lst;
+	while (tmp)
 	{
-		ft_printf("%i: '%s'\r\e[27Ctype: %i\n", i, (*dat.t_lst)->token, \
-		(*dat.t_lst)->type);
-		(*dat.t_lst) = (*dat.t_lst)->next;
+		ft_printf("%i: '%s'\r\e[27Ctype: %i\n", i, tmp->token, \
+		tmp->type);
+		tmp = tmp->next;
 		i++;
 	}
 }

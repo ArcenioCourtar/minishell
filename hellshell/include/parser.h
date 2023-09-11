@@ -99,6 +99,7 @@ void		expand_in_quotes(t_data *data, t_toklst *token);
 int			count_dollar_signs(char *token);
 int			exp_strlen(char *token, char **expansions);
 void		cpy_expansion(char **exp_str, int *i, char *expansion);
+bool		is_valid_var(char c);
 
 //--command list functions======================================================
 t_cmdlst	*cmdlst_new_node(void);

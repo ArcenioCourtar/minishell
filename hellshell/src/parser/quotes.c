@@ -45,10 +45,24 @@ void	quote_join(t_data *data, t_toklst **token, bool joinaddback)
 	token_lstdel_node(token);
 }
 
+void	join_empty_quotes(t_data *data, t_toklst **token)
+{
+	(*token)->prev->token = ft_strjoin((*token)->prev->token, \
+													(*token)->next->token);
+	add_to_free_lst(data, (*token)->prev->token);
+	token_lstdel_node(token);
+	token_lstdel_node(token);
+}
+
 static void	handle_single_quote(t_data *data, t_toklst **token, \
 													enum e_st_space st_space)
 {
 	trim_quotes(data, token, TOK_NAME, "\'");
+	if (!(*token)->token[0] && (*token)->prev && (*token)->next)
+	{
+		join_empty_quotes(data, token);
+		return ;
+	}
 	if (st_space == NOSPACE)
 		quote_join(data, token, true);
 	if ((*token)->next && (*token)->next->type != TOK_SPACE && \
@@ -60,6 +74,11 @@ static void	handle_double_quote(t_data *data, t_toklst **token, \
 													enum e_st_space st_space)
 {
 	trim_quotes(data, token, TOK_DQUOTE, "\"");
+	if (!(*token)->token[0] && (*token)->prev && (*token)->next)
+	{
+		join_empty_quotes(data, token);
+		return ;
+	}
 	if (check_for_dollar((*token)->token))
 		expansion(data, token);
 	if (st_space == NOSPACE)

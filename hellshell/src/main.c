@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(dat.input);
 		lexer(&dat);
+		// print_token_list(dat);
 		if (!parser(&dat))
 		{
 			// printf_cmd_table(dat.cmd_lst);

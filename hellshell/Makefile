@@ -12,7 +12,7 @@
 
 #--VARIABLES--------------------------------------------------------------------
 
-NAME 		=	hellshell
+NAME 		=	minishell
 
 SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
