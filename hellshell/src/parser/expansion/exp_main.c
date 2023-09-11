@@ -85,10 +85,15 @@ void	expansion(t_data *data, t_toklst **token)
 	else if ((*token)->type == TOK_DOLLAR)
 	{
 		if (!(*token)->next || (*token)->next->type == TOK_SPACE)
+		{
 			(*token)->type = TOK_NAME;
+			*token = (*token)->next;
+		}
 		else if ((*token)->next->type == TOK_DQUOTE \
 					|| (*token)->next->type == TOK_SQUOTE)
+		{
 			token_lstdel_node(token);
+		}
 		else
 		{
 			(*token)->next->token = getvar(data, (*token)->next->token);
@@ -96,7 +101,6 @@ void	expansion(t_data *data, t_toklst **token)
 			if ((*token)->prev && (*token)->prev->type != TOK_SPACE)
 			{
 				quote_join(data, token, true);
-				*token = (*token)->prev;
 			}
 		}
 	}

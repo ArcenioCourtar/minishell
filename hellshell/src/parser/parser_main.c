@@ -47,15 +47,18 @@ int	parser(t_data *data)
 	tmp = *(data->t_lst);
 	while (tmp)
 	{
-		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-			handle_quotes(data, &tmp);
-		else if (tmp->type == TOK_DOLLAR)
+		if (tmp->type == TOK_DOLLAR)
 		{
 			expansion(data, &tmp);
-			if (!tmp->prev)
+			if (tmp && !tmp->prev)
 				*(data->t_lst) = tmp;
 		}
-		tmp = tmp->next;
+		else
+		{
+			if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+				handle_quotes(data, &tmp);
+			tmp = tmp->next;
+		}
 	}
 	return (create_cmd_lst(data));
 }

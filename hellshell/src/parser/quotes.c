@@ -95,7 +95,8 @@ void	handle_quotes(t_data *data, t_toklst **token)
 
 	if ((*token)->prev && (*token)->prev->type == TOK_SPACE)
 		st_space = SPACE;
-	else if ((*token)->prev)
+	else if ((*token)->prev && !is_redirect((*token)->prev->type) \
+								&& (*token)->prev->type != TOK_PIPE)
 		st_space = NOSPACE;
 	else
 		st_space = FIRST;
