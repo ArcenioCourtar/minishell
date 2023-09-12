@@ -109,4 +109,6 @@ void	expand_in_quotes(t_data *data, t_toklst *token)
 	}
 	expansions[i] = "\0";
 	token->token = add_expans_to_token(token->token, expansions);
+	add_to_free_lst(data, token->token);
+	free(expansions);
 }
