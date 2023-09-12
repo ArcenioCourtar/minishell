@@ -87,16 +87,23 @@ void	restore_old_fds(t_exec *exec)
 void	executor(t_data *dat)
 {
 	t_exec	exec;
+	int		tmp;
 
 	if (*(dat->cmd_lst) == NULL)
 		return ;
+	exec.exit_code = dat->varlist;
 	exec.fork_num = count_forks(dat->cmd_lst);
 	signals_in_process();
 	exec.my_node = *(dat->cmd_lst);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
 	{
 		save_old_fds(&exec);
-		redirects(&exec);
+		tmp = redirects(&exec, true);
+		if (tmp != 0)
+		{
+			assign_exit_val(exec.exit_code, tmp);
+			return ;
+		}
 		run_builtin(dat, &exec);
 		restore_old_fds(&exec);
 		return ;
@@ -106,7 +113,8 @@ void	executor(t_data *dat)
 		if (!find_pathvar(dat->envp, &exec))
 			exit(EXIT_FAILURE);
 		create_forks(dat, &exec);
-		close_and_free(dat, &exec);
-		wait_for_all(exec.fork_num);
+		close_all_pipes(dat);
+		free_path_list(&exec);
+		wait_for_all(dat);
 	}
 }

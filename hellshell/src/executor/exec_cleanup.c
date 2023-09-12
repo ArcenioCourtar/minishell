@@ -19,22 +19,27 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	wait_for_all(int fork_amount)
+void	wait_for_all(t_data *dat)
 {
-	int	i;
+	int			status;
+	t_cmdlst	*tmp;
 
-	i = 0;
-	while (i < fork_amount)
+	tmp = *(dat->cmd_lst);
+	while (tmp != NULL)
 	{
-		wait(0);
-		i++;
+		waitpid(tmp->pid, &status, 0);
+		tmp = tmp->next;
 	}
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	else
+		status = 128 + WTERMSIG(status);
+	assign_exit_val(dat->varlist, status);
 }
 
-void	close_and_free(t_data *dat, t_exec *exec)
+void	close_all_pipes(t_data *dat)
 {
 	t_cmdlst	*tmp;
-	int			i;
 
 	tmp = *(dat->cmd_lst);
 	while (tmp->next != NULL)
@@ -43,6 +48,12 @@ void	close_and_free(t_data *dat, t_exec *exec)
 		close(tmp->pipe[1]);
 		tmp = tmp->next;
 	}
+}
+
+void	free_path_list(t_exec *exec)
+{
+	int	i;
+
 	i = 0;
 	while (exec->path_avail == true && exec->path_list[i])
 	{

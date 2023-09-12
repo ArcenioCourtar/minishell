@@ -12,7 +12,7 @@
 
 #--VARIABLES--------------------------------------------------------------------
 
-NAME 		=	hellshell
+NAME 		=	minishell
 
 SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
@@ -38,6 +38,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				parser/parser_main.c		\
 				parser/quotes.c				\
 				\
+				executor/error_handler.c	\
 				executor/cmd_list_final.c	\
 				executor/executor_main.c	\
 				executor/exec_cleanup.c		\
@@ -81,13 +82,13 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@
+	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@
 
 objdir:
 	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
 
 clean:
 	@rm -rf $(OBJ_DIR)

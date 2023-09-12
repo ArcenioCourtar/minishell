@@ -81,16 +81,15 @@ void	dup_pipes(t_exec *exec)
 	}
 }
 
-// Need to modify this for running in the main process as well
-// Should not exit upon error. NEW ERROR FUNCTION NEEDED!
-void	redirects(t_exec *exec)
+// 
+int	redirects(t_exec *exec, bool parent)
 {
 	t_cmdlst	*node;
 	int			i;
 
 	node = exec->my_node;
 	if (node->redirect == NULL)
-		return ;
+		return (0);
 	i = 0;
 	while (node->redirect[i].name)
 	{
@@ -98,7 +97,12 @@ void	redirects(t_exec *exec)
 		{
 			node->fd_in = open(node->redirect[i].name, O_RDONLY);
 			if (node->fd_in == -1)
-				ft_error(errno, "Hellshell: infile problem");
+			{
+				if (!parent)
+					msg_err_exit("hellshell", NULL, errno);
+				msg_err_noexit("hellshell", NULL, errno);
+				return (errno);
+			}
 		}
 		if (node->redirect[i].type == REDOUT || \
 		node->redirect[i].type == REDAPPEND)
@@ -110,18 +114,24 @@ void	redirects(t_exec *exec)
 				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
 				O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if (node->fd_out == -1)
-				ft_error(errno, "Hellshell: outfile problem");
+			{
+				if (!parent)
+					msg_err_exit("hellshell", NULL, errno);
+				msg_err_noexit("hellshell", NULL, errno);
+				return (errno);
+			}
 		}
 		i++;
 	}
 	dup2(node->fd_in, STDIN_FILENO);
 	dup2(node->fd_out, STDOUT_FILENO);
+	return (0);
 }
 
 void	exec_fork(t_data *dat, t_exec *exec)
 {
 	dup_pipes(exec);
-	redirects(exec);
+	redirects(exec, false);
 	if (exec->my_node->argv[0] == NULL)
 		exit(EXIT_SUCCESS);
 	forked_builtin(dat, exec);
