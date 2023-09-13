@@ -45,10 +45,23 @@ static char	*envlst_iter(t_envlst *lst, char *to_expand)
 	return (NULL);
 }
 
+char	*expand_question_join(t_data *data, char *to_expand)
+{
+	char	*expanded;
+	char	*exit_code;
+
+	exit_code = getvar(data, "?");
+	expanded = ft_strjoin(exit_code, to_expand + 1);
+	add_to_free_lst(data, expanded);
+	return (expanded);
+}
+
 char	*getvar(t_data *data, char *to_expand)
 {
 	char	*var_value;
 
+	if (to_expand[0] == '?' && to_expand[1] != '\0')
+		return (expand_question_join(data, to_expand));
 	var_value = envlst_iter(data->envlist, to_expand);
 	if (!var_value)
 		var_value = envlst_iter(data->varlist, to_expand);
@@ -72,16 +85,23 @@ void	expansion(t_data *data, t_toklst **token)
 	else if ((*token)->type == TOK_DOLLAR)
 	{
 		if (!(*token)->next || (*token)->next->type == TOK_SPACE)
+		{
 			(*token)->type = TOK_NAME;
+			*token = (*token)->next;
+		}
 		else if ((*token)->next->type == TOK_DQUOTE \
 					|| (*token)->next->type == TOK_SQUOTE)
+		{
 			token_lstdel_node(token);
+		}
 		else
 		{
 			(*token)->next->token = getvar(data, (*token)->next->token);
 			token_lstdel_node(token);
 			if ((*token)->prev && (*token)->prev->type != TOK_SPACE)
+			{
 				quote_join(data, token, true);
+			}
 		}
 	}
 }

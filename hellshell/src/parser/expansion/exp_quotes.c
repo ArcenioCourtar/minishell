@@ -43,8 +43,7 @@ char	*get_expansion(t_data *data, char *token)
 	expanded = NULL;
 	while (token[i])
 	{
-		if (token[i] == '$' && token[i + 1] && !ft_iswhitespace(token[i + 1]) \
-		&& (ft_isalnum(token[i + 1]) || token[i + 1] == '_'))
+		if (token[i] == '$' && token[i + 1] && is_valid_var(token[i + 1]))
 		{
 			expanded = get_var_string(data, token, &i);
 			break ;
@@ -110,4 +109,6 @@ void	expand_in_quotes(t_data *data, t_toklst *token)
 	}
 	expansions[i] = "\0";
 	token->token = add_expans_to_token(token->token, expansions);
+	add_to_free_lst(data, token->token);
+	free(expansions);
 }

@@ -13,10 +13,12 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "minishell.h"
 # include <sys/types.h>
+# include <stdbool.h>
 
 typedef struct s_data	t_data;
+typedef struct s_toklst	t_toklst;
+enum					e_token_type;
 
 enum e_st_space
 {
@@ -64,15 +66,6 @@ typedef struct s_cmdlst
 	pid_t				pid;
 }	t_cmdlst;
 
-typedef struct s_varlist
-{
-	int					size;
-	char				*name;
-	char				*value;
-	struct s_varlist	*next;
-	struct s_varlist	*prev;
-}	t_varlist;
-
 int			create_cmd_lst(t_data *data);
 
 //--new node====================================================================
@@ -87,7 +80,6 @@ void		skip_redirects(t_toklst **token);
 
 //--quotes======================================================================
 void		handle_quotes(t_data *data, t_toklst **token);
-void		quotes(t_data *data, t_toklst **t_lst_head);
 void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 
 //--expansion===================================================================
@@ -99,6 +91,7 @@ void		expand_in_quotes(t_data *data, t_toklst *token);
 int			count_dollar_signs(char *token);
 int			exp_strlen(char *token, char **expansions);
 void		cpy_expansion(char **exp_str, int *i, char *expansion);
+bool		is_valid_var(char c);
 
 //--command list functions======================================================
 t_cmdlst	*cmdlst_new_node(void);

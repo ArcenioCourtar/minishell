@@ -10,30 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include "lexer.h"
 #include "minishell.h"
-#include "libft.h"
+#include "parser.h"
 #include "exit_codes.h"
-
-/** PARSING ORDER
- * quotes
- * heredoc
- * pipes i guess
- * expanding
- * put everything together
- */
-
-/** QUOTES
- * state SPACE or NOSPACE before quote
- * if SPACE
- * 		in state S/D QUOTE 
- * 				something
- * if NOSPACE
- * 		in state S/D QUOTE
- * 				append to what's before
- * 				delete quotes token from list
- */
 
 int	parser(t_data *data)
 {
@@ -47,15 +26,18 @@ int	parser(t_data *data)
 	tmp = *(data->t_lst);
 	while (tmp)
 	{
-		if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-			handle_quotes(data, &tmp);
-		else if (tmp->type == TOK_DOLLAR)
+		if (tmp->type == TOK_DOLLAR)
 		{
 			expansion(data, &tmp);
-			if (!tmp->prev)
+			if (tmp && !tmp->prev)
 				*(data->t_lst) = tmp;
 		}
-		tmp = tmp->next;
+		else
+		{
+			if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+				handle_quotes(data, &tmp);
+			tmp = tmp->next;
+		}
 	}
 	return (create_cmd_lst(data));
 }

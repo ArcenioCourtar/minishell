@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "lexer.h"
 #include "libft.h"
 #include "builtins.h"
-#include "parser.h"
 #include "executor.h"
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -48,19 +46,26 @@ void	free_current_input_data(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
+	int		exit_status;
 
+	exit_status = 0;
 	(void) argv;
 	(void) argc;
 	init_dat(&dat, envp);
 	while (1)
 	{
 		signals_interactive_mode();
-		dat.input = readline("\x1b[31mhellshell-0.2$\x1b[37m ");
+		if (exit_status)
+			dat.input = readline("\e[1;31m➤ \e[0mhellshell-0.2$ ");
+		else
+			dat.input = readline("\e[1;32m➤ \e[0mhellshell-0.2$ ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
 		lexer(&dat);
-		if (!parser(&dat))
+		// print_token_list(dat);
+		exit_status = parser(&dat);
+		if (!exit_status)
 		{
 			// printf_cmd_table(dat.cmd_lst);
 			finalize_cmd_list(dat.cmd_lst);

@@ -10,10 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
-#include "lexer.h"
 #include "libft.h"
+#include <stdbool.h>
+
+bool	is_valid_var(char c)
+{
+	if (!ft_iswhitespace(c) && (ft_isalnum(c) || c == '_' || c == '?'))
+		return (true);
+	return (false);
+}
 
 int	count_dollar_signs(char *token)
 {
@@ -24,8 +29,7 @@ int	count_dollar_signs(char *token)
 	i = 0;
 	while (token[i])
 	{
-		if (token[i] == '$' && token[i + 1] && !ft_iswhitespace(token[i + 1]) \
-		&& (ft_isalnum(token[i + 1]) || token[i + 1] == '_'))
+		if (token[i] == '$' && token[i + 1] && is_valid_var(token[i + 1]))
 		{
 			count++;
 			if (token[i + 1] == '$')
