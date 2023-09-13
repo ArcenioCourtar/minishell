@@ -23,7 +23,7 @@ static char	*get_var_string(t_data *data, char *token, int *i)
 
 	(*i)++;
 	start = *i;
-	while (token[*i] && token[*i] != ' ' && token[*i] != '$')
+	while (token[*i] && is_valid_var(token[*i]))
 		(*i)++;
 	to_expand = ft_substr(token, start, (*i) - start);
 	if (!to_expand)
@@ -78,7 +78,7 @@ char	*add_expans_to_token(char *token, char **expansions)
 			&& token[j + 1] != '$')
 		{
 			j++;
-			while (token[j] && token[j] != ' ' && token[j] != '$')
+			while (token[j] && is_valid_var(token[j]))
 				j++;
 			cpy_expansion(&exp_str, &i, expansions[e++]);
 		}
