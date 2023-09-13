@@ -10,10 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
-#include "lexer.h"
 #include "libft.h"
+#include <stdbool.h>
 
 bool	is_valid_var(char c)
 {

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "minishell.h"
+#include "lexer.h"
 #include "libft.h"
 
 static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)

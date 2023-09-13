@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "lexer.h"
 #include "libft.h"
 #include "builtins.h"
-#include "parser.h"
 #include "executor.h"
 #include <readline/readline.h>
 #include <readline/history.h>

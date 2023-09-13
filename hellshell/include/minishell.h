@@ -13,11 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # define BT_NUM 9
-# include <errno.h>
-# include <string.h>
 # include <stdio.h>
-# include <stdbool.h>
-# include <signal.h>
 # include "lexer.h"
 # include "executor.h"
 

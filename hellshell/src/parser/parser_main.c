@@ -10,10 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include "lexer.h"
 #include "minishell.h"
-#include "libft.h"
+#include "parser.h"
 #include "exit_codes.h"
 
 int	parser(t_data *data)
