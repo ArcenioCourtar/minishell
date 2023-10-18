@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <sys/wait.h>
 # include "lexer.h"
 # include "executor.h"
 

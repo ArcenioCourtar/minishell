@@ -67,7 +67,7 @@ SRCSUBD	= $(shell find $(SRC_DIR) -type d)
 OBJSUBD	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
 
 LIBFT	= libft
-LIBS	= -L$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
+LIBS	= -L./$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
 
 CC		= gcc
 CFLAGS	= -g -Wall -Wextra -Werror
@@ -81,7 +81,7 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
 
 objdir:
 	@mkdir -p $(OBJSUBD)
