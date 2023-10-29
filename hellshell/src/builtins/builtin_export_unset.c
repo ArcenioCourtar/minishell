@@ -26,6 +26,12 @@ void	builtin_export(t_data *dat, t_exec *exec)
 
 	if (exec->my_node->argv[1] == NULL || exec->my_node->argv[1][0] == '=')
 		return ;
+	if (!identifier_check(exec->my_node->argv[1]))
+	{
+		ft_fd_printf(STDERR_FILENO, "%s: Not a valid identifier\n", \
+		exec->my_node->argv[1]);
+		return ;
+	}
 	if (ft_strchr(exec->my_node->argv[1], '=') == 0)
 	{
 		new = check_var_existence(dat->varlist, exec->my_node->argv[1]);
@@ -56,13 +62,18 @@ void	builtin_export(t_data *dat, t_exec *exec)
 	dat->envp = set_envp(dat->envlist, dat->envp);
 }
 
-// Need to check for invalid input
 void	builtin_unset(t_data *dat, t_exec *exec)
 {
 	t_envlst	*node;
 
 	if (exec->my_node->argv[1] == NULL)
 		return ;
+	if (!identifier_check(exec->my_node->argv[1]))
+	{
+		ft_fd_printf(STDERR_FILENO, "%s: Not a valid identifier\n", \
+		exec->my_node->argv[1]);
+		return ;
+	}
 	node = check_var_existence(dat->envlist, exec->my_node->argv[1]);
 	if (node)
 	{

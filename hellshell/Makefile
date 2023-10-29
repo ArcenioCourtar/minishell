@@ -20,6 +20,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				builtins/builtin_cd_echo_exit_pwd.c 	\
 				builtins/builtin_env_var_assign.c 		\
 				builtins/builtin_export_unset.c			\
+				builtins/builtin_commons.c				\
 				\
 				lexer/lexer_main.c 				\
 				lexer/token_array_utils.c 		\
@@ -55,7 +56,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 SRC_DIR	= src
 OBJ_DIR	= obj
 INC_DIR	= include
-RDL_DIR = $(shell brew --prefix readline)
+# RDL_DIR = $(shell brew --prefix readline)
 
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 DEP_FILES	= $(OBJS:.o=.d)
@@ -64,7 +65,7 @@ SRCSUBD	= $(shell find $(SRC_DIR) -type d)
 OBJSUBD	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
 
 LIBFT	= libft
-LIBS	= -L./$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
+LIBS	= -L./$(LIBFT) -lft -lreadline
 
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -MMD -MP
@@ -83,7 +84,7 @@ objdir:
 	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
+	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
 
 -include $(DEP_FILES)
 

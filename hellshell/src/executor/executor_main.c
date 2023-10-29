@@ -19,9 +19,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// need to check for invalid var names?
 bool	is_var_assignment(char *arg)
 {
+	if (!identifier_check(arg))
+		return (false);
 	if (arg[0] != '=' && ft_strchr(arg, '=') != 0)
 		return (true);
 	return (false);
@@ -34,9 +35,7 @@ int	is_builtin(char builtin_index[BT_NUM][10], char *arg)
 	if (arg == NULL)
 		return (BT_NUM);
 	if (is_var_assignment(arg) == true)
-	{
 		return (0);
-	}
 	i = 1;
 	while (i < BT_NUM)
 	{

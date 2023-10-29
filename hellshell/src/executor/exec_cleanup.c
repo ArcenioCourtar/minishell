@@ -31,7 +31,12 @@ void	wait_for_all(t_data *dat)
 		tmp = tmp->next;
 	}
 	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
+	{
+		if (WEXITSTATUS(status) != 0)
+			status = 1;
+		else
+			status = 0;
+	}
 	else
 		status = 128 + WTERMSIG(status);
 	assign_exit_val(dat->varlist, status);

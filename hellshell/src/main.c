@@ -56,9 +56,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signals_interactive_mode();
 		if (exit_status)
-			dat.input = readline("\e[1;31m➤ \e[0mhellshell-0.2$ ");
+			dat.input = readline("\e[1;31m➤ \e[0mhellshell-0.2.1$ ");
 		else
-			dat.input = readline("\e[1;32m➤ \e[0mhellshell-0.2$ ");
+			dat.input = readline("\e[1;32m➤ \e[0mhellshell-0.2.1$ ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
