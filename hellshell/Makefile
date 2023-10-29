@@ -52,27 +52,22 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
 				testing.c
 
-HDR_FILES	=	exit_codes.h	parser.h		libft.h \
-				executor.h		ft_printf.h		lexer.h \
-				minishell.h		builtins.h		get_next_line.h
-
 SRC_DIR	= src
 OBJ_DIR	= obj
 INC_DIR	= include
 RDL_DIR = $(shell brew --prefix readline)
 
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
-HEADERS	= $(addprefix $(INC_DIR)/, $(HDR_FILES))
+DEP_FILES	= $(OBJS:.o=.d)
 
 SRCSUBD	= $(shell find $(SRC_DIR) -type d)
 OBJSUBD	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRCSUBD))
 
 LIBFT	= libft
-LIBS	= -L$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
+LIBS	= -L./$(LIBFT) -lft -L$(RDL_DIR)/lib -lreadline
 
-CC		= gcc
-CFLAGS	= -g -Wall -Wextra -Werror
-FSAN	= -fsanitize=address 
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror -MMD -MP
 
 #--RULES------------------------------------------------------------------------
 
@@ -82,13 +77,15 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
 
 objdir:
 	@mkdir -p $(OBJSUBD)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
-	@$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(RDL_DIR)/include -o $@ -c $<
+
+-include $(DEP_FILES)
 
 clean:
 	@rm -rf $(OBJ_DIR)
@@ -100,7 +97,11 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all, lib, tmp, clean, fclean, re
+fsan: CFLAGS += -fsanitize=address
+debug: CFLAGS += -g
+asan tsan debug: re
+
+.PHONY: all lib tmp clean fclean re fsan debug
 
 valg: all
 	valgrind --suppressions=../valgrind_suppr.log --leak-check=full ./minishell
