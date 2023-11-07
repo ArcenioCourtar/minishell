@@ -45,7 +45,7 @@ void	builtin_pwd(t_data *dat, t_exec *exec)
 	ft_bzero(buffer, MAX_PATH);
 	if (getcwd(buffer, MAX_PATH) == NULL)
 	{
-		ft_fd_printf(STDERR_FILENO, "Hellshell: %s\n", strerror(errno));
+		ft_printf_err("Hellshell: %s\n", strerror(errno));
 		// set ? var
 	}
 	else
@@ -67,7 +67,7 @@ void	builtin_cd(t_data *dat, t_exec *exec)
 		return ;
 	if (chdir(exec->my_node->argv[1]) == -1)
 	{
-		ft_fd_printf(STDERR_FILENO, "Hellshell: %s: %s\n", \
+		ft_printf_err("Hellshell: %s: %s\n", \
 		exec->my_node->argv[1], strerror(errno));
 		// assign errno to ?
 	}

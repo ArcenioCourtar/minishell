@@ -28,7 +28,7 @@ void	builtin_export(t_data *dat, t_exec *exec)
 		return ;
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
-		ft_fd_printf(STDERR_FILENO, "%s: Not a valid identifier\n", \
+		ft_printf_err("%s: Not a valid identifier\n", \
 		exec->my_node->argv[1]);
 		return ;
 	}
@@ -70,7 +70,7 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 		return ;
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
-		ft_fd_printf(STDERR_FILENO, "%s: Not a valid identifier\n", \
+		ft_printf_err("%s: Not a valid identifier\n", \
 		exec->my_node->argv[1]);
 		return ;
 	}

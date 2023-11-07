@@ -91,6 +91,7 @@ t_cmdlst	**init_command_list(void);
 /* free---------------------------------------------------------------------- */
 void		to_freelstfree(t_freelst **lst);
 int			ft_fd_printf(int fd, const char *s, ...);
+int			ft_printf_err(const char *s, ...);
 
 /* testing------------------------------------------------------------------- */
 void		print_token_array(t_data dat);

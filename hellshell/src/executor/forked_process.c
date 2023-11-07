@@ -149,6 +149,7 @@ void	create_forks(t_data *dat, t_exec *exec)
 	{
 		if (tmp->next != NULL)
 			pipe(tmp->pipe);
+		// Do I need this???
 		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 		{
 			close(tmp->prev->prev->pipe[0]);

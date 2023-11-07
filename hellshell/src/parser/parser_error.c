@@ -92,13 +92,13 @@ int	syntax_error_checks(t_data *data)
 
 	errnumber = pipe_quote_check(data->input);
 	if (errnumber == TOK_PIPE)
-		ft_fd_printf(STDERR_FILENO, "hellshell: syntax error \
+		ft_printf_err("hellshell: syntax error \
 										near unexpected token `|'\n");
 	else if (errnumber)
-		ft_fd_printf(STDERR_FILENO, "hellshell: syntax error \
+		ft_printf_err("hellshell: syntax error \
 										near unexpected token `newline'\n");
 	else if (errnumber == TOK_DQUOTE || errnumber == TOK_SQUOTE)
-		ft_fd_printf(STDERR_FILENO, "minishell: syntax error: \
+		ft_printf_err("minishell: syntax error: \
 										unclosed %c\n", errnumber);
 	return (errnumber);
 }
@@ -107,9 +107,9 @@ int	syntax_error_checks(t_data *data)
 void	print_redirect_error(t_toklst *token)
 {
 	if (token)
-		ft_fd_printf(STDERR_FILENO, "hellshell: syntax error \
+		ft_printf_err("hellshell: syntax error \
 									near unexpected token `%s'\n", token->token);
 	else
-		ft_fd_printf(STDERR_FILENO, "hellshell: syntax error \
+		ft_printf_err("hellshell: syntax error \
 									near unexpected token `newline'\n");
 }
