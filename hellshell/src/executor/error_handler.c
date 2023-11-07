@@ -55,7 +55,6 @@ void	msg_err_cust_noexit(char *msg1, char *msg2, char *errmsg)
 		ft_printf_err("%s: %s: %s\n", msg1, msg2, errmsg);
 }
 
-// Make sure I cannot unset ?
 void	assign_exit_val(t_envlst *exit_code, int errnum)
 {
 	free(exit_code->value);

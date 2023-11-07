@@ -12,8 +12,11 @@
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
-# define MAX_PATH 4096// Should this be 1024 or 4096?
 # include "parser.h"
+# include <linux/limits.h> // LOOK INTO PATH_MAX, AND MAKING IT PORTABLE
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 typedef struct s_cmdlst	t_cmdlst;
 typedef struct s_data	t_data;
@@ -22,7 +25,7 @@ typedef struct s_envlst	t_envlst;
 
 typedef struct s_exec
 {
-	char				path[MAX_PATH];
+	char				path[PATH_MAX];
 	int					fork_num;
 	char				**path_list;
 	size_t				path_maxlen;
