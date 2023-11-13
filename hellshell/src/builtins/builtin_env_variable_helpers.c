@@ -37,6 +37,7 @@ t_envlst	*check_var_existence(t_envlst *list, char *var)
 }
 
 // Change the value of a an already existing node.
+// var has to come in the format of "NAME=VALUE".
 bool	change_existing_val(t_envlst *node, char *var)
 {
 	int	len;
@@ -48,6 +49,22 @@ bool	change_existing_val(t_envlst *node, char *var)
 	if (!node->value)
 		return (false);
 	ft_strlcpy(node->value, var, len + 1);
+	node->size = ft_strlen(node->name) + len + 1;
+	return (true);
+}
+
+// Change the value of a an already existing node.
+// Just pass along the node you want to change and the value it needs to have.
+bool	change_existing_val_alt(t_envlst *node, char *val)
+{
+	int	len;
+
+	free(node->value);
+	len = ft_strlen(val);
+	node->value = malloc(len + 1);
+	if (!node->value)
+		return (false);
+	ft_strlcpy(node->value, val, len + 1);
 	node->size = ft_strlen(node->name) + len + 1;
 	return (true);
 }

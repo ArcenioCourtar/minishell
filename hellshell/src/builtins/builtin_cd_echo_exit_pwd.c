@@ -90,16 +90,34 @@ void	builtin_exit(t_data *dat, t_exec *exec)
 	exit(i);
 }
 
-// TODO: add OLDPWD to env upon use
+// Move to different folder.
 void	builtin_cd(t_data *dat, t_exec *exec)
 {
+	t_envlst	*oldpwd;
+	char		buffer[PATH_MAX];
+
 	(void) dat;
 	if (!exec->my_node->argv[1])
 		return ;
+	ft_bzero(buffer, PATH_MAX);
+	if (getcwd(buffer, PATH_MAX) == NULL)
+	{
+		ft_printf_err("Hellshell: %s\n", strerror(errno));
+		assign_exit_val(dat->varlist, errno);
+	}
 	if (chdir(exec->my_node->argv[1]) == -1)
 	{
 		ft_printf_err("Hellshell: %s: %s\n", \
 		exec->my_node->argv[1], strerror(errno));
 		assign_exit_val(dat->varlist, errno);
 	}
+	oldpwd = check_var_existence(dat->envlist, "OLDPWD");
+	if (oldpwd)
+		change_existing_val_alt(oldpwd, buffer);
+	else
+	{
+		oldpwd = newnode_env_alt("OLDPWD", buffer);
+		envlst_addback(dat->envlist, oldpwd);
+	}
+	dat->envp = set_envp(dat->envlist, dat->envp);
 }

@@ -21,6 +21,7 @@
 // return address of node with same name, or NULL if it doesn't exist
 t_envlst	*check_var_existence(t_envlst *list, char *var);
 bool		change_existing_val(t_envlst *node, char *var);
+bool		change_existing_val_alt(t_envlst *node, char *val);
 bool		identifier_check(char *arg);
 
 void		builtin_env(t_data *dat, t_exec *exec);

@@ -65,16 +65,42 @@ t_envlst	*newnode_env(char *envvar)
 	new->name = ft_substr(envvar, 0, namesize);
 	if (new->name == NULL)
 	{
-		ft_error(errno, "malloc\n");
 		free(new);
 		return (NULL);
 	}
 	new->value = ft_substr(envvar, namesize + 1, new->size - namesize);
 	if (new->name == NULL)
 	{
-		ft_error(errno, "malloc\n");
 		free(new->name);
 		free(new);
+		return (NULL);
+	}
+	return (new);
+}
+
+// create a new node with "name" and "value"
+t_envlst	*newnode_env_alt(char *name, char *value)
+{
+	t_envlst	*new;
+
+	new = malloc(sizeof(t_envlst));
+	if (new == NULL)
+		return (NULL);
+	new->size = ft_strlen(name) + ft_strlen(value) + 1;
+	new->next = NULL;
+	new->prev = NULL;
+	new->name = ft_substr(name, 0, ft_strlen(name));
+	if (new->name == NULL)
+	{
+		free(new);
+		return (NULL);
+	}
+	new->value = ft_substr(value, 0, ft_strlen(value));
+	if (new->name == NULL)
+	{
+		free(new->name);
+		free(new);
+		return (NULL);
 	}
 	return (new);
 }
