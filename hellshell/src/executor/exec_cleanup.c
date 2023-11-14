@@ -39,7 +39,7 @@ void	wait_for_all(t_data *dat)
 	}
 	else
 		status = 128 + WTERMSIG(status);
-	assign_exit_val(dat->varlist, status);
+	assign_exit_val(dat->exit_code, status);
 }
 
 void	close_all_pipes(t_data *dat)

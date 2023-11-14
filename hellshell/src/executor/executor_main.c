@@ -67,6 +67,7 @@ void	restore_old_fds(t_exec *exec)
 	close(exec->in_out_fd[0]);
 	close(exec->in_out_fd[1]);
 }
+
 /*
 	program flow notes:
 	Any error involving redirects prevents the associated command from running
@@ -79,7 +80,7 @@ void	executor(t_data *dat)
 
 	if (*(dat->cmd_lst) == NULL)
 		return ;
-	exec.exit_code = dat->varlist;
+	exec.exit_code = dat->exit_code;
 	exec.fork_num = count_forks(dat->cmd_lst);
 	signals_in_process();
 	exec.my_node = *(dat->cmd_lst);

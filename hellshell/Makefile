@@ -53,7 +53,6 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
 				signals.c					\
 				\
-				testing.c
 
 SRC_DIR	= src
 OBJ_DIR	= obj

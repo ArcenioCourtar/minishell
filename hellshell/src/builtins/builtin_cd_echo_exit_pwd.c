@@ -19,30 +19,30 @@
 
 void	builtin_echo(t_data *dat, t_exec *exec)
 {
-	char	**argv;
 	int		i;
 	int		start;
 
 	(void) dat;
-	argv = exec->my_node->argv;
-	if (!argv[1])
+	if (!exec->my_node->argv[1])
 	{
 		printf("\n");
+		assign_exit_val(dat->exit_code, 0);
 		return ;
 	}
 	start = 1;
-	if (ft_strncmp("-n", argv[1], 2) == 0)
+	if (ft_strncmp("-n", exec->my_node->argv[1], 2) == 0)
 		start = 2;
 	i = start;
-	while (argv[i])
+	while (exec->my_node->argv[i])
 	{
 		if (i != start)
 			printf(" ");
-		printf("%s", argv[i]);
+		printf("%s", exec->my_node->argv[i]);
 		i++;
 	}
 	if (start == 1)
 		printf("\n");
+	assign_exit_val(dat->exit_code, 0);
 }
 
 void	builtin_pwd(t_data *dat, t_exec *exec)
@@ -55,10 +55,13 @@ void	builtin_pwd(t_data *dat, t_exec *exec)
 	if (getcwd(buffer, PATH_MAX) == NULL)
 	{
 		ft_printf_err("Hellshell: %s\n", strerror(errno));
-		assign_exit_val(dat->varlist, errno);
+		assign_exit_val(dat->exit_code, errno);
 	}
 	else
+	{
 		printf("%s\n", buffer);
+		assign_exit_val(dat->exit_code, 0);
+	}
 }
 
 void	builtin_exit(t_data *dat, t_exec *exec)
@@ -90,10 +93,34 @@ void	builtin_exit(t_data *dat, t_exec *exec)
 	exit(i);
 }
 
+static void	oldpwd_assignment(t_data *dat, t_exec *exec, char *buffer)
+{
+	t_envlst	*oldpwd;
+
+	oldpwd = check_var_existence(dat->envlist, "OLDPWD");
+	if (oldpwd)
+	{
+		if (!change_existing_val_alt(oldpwd, buffer))
+		{
+			ft_printf_err("Hellshell: %s\n", strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		oldpwd = newnode_env_alt("OLDPWD", buffer);
+		if (!oldpwd)
+		{
+			ft_printf_err("Hellshell: %s\n", strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+		envlst_addback(dat->envlist, oldpwd);
+	}
+}
+
 // Move to different folder.
 void	builtin_cd(t_data *dat, t_exec *exec)
 {
-	t_envlst	*oldpwd;
 	char		buffer[PATH_MAX];
 
 	(void) dat;
@@ -103,21 +130,15 @@ void	builtin_cd(t_data *dat, t_exec *exec)
 	if (getcwd(buffer, PATH_MAX) == NULL)
 	{
 		ft_printf_err("Hellshell: %s\n", strerror(errno));
-		assign_exit_val(dat->varlist, errno);
+		assign_exit_val(dat->exit_code, errno);
 	}
 	if (chdir(exec->my_node->argv[1]) == -1)
 	{
 		ft_printf_err("Hellshell: %s: %s\n", \
 		exec->my_node->argv[1], strerror(errno));
-		assign_exit_val(dat->varlist, errno);
+		assign_exit_val(dat->exit_code, errno);
 	}
-	oldpwd = check_var_existence(dat->envlist, "OLDPWD");
-	if (oldpwd)
-		change_existing_val_alt(oldpwd, buffer);
-	else
-	{
-		oldpwd = newnode_env_alt("OLDPWD", buffer);
-		envlst_addback(dat->envlist, oldpwd);
-	}
+	oldpwd_assignment(dat, exec, buffer);
 	dat->envp = set_envp(dat->envlist, dat->envp);
+	assign_exit_val(dat->exit_code, 0);
 }

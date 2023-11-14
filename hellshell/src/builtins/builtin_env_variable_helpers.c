@@ -53,7 +53,7 @@ bool	change_existing_val(t_envlst *node, char *var)
 	return (true);
 }
 
-// Change the value of a an already existing node.
+// Change the value of an already existing node.
 // Just pass along the node you want to change and the value it needs to have.
 bool	change_existing_val_alt(t_envlst *node, char *val)
 {

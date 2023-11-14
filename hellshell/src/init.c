@@ -48,7 +48,7 @@ void	init_dat(t_data *dat, char **envp)
 	dat->envp = set_envp(dat->envlist, dat->envp);
 	dat->h_lst = init_history_list();
 	dat->cmd_lst = init_command_list();
-	dat->varlist = newnode_env("?=0");
+	dat->exit_code = newnode_env("?=0");
 	dat->free_lst = (t_freelst **)ft_calloc(1, sizeof(t_freelst *));
 	if (!dat->free_lst)
 		ft_error(errno, strerror(errno));

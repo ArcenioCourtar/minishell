@@ -52,22 +52,21 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signals_interactive_mode();
 		if (exit_status)
-			dat.input = readline("\e[1;31m➤ \e[0mhellshell-0.2.1$ ");
+			dat.input = readline("\e[1;31m➤\e[0mhellshell-0.2.1$ ");
 		else
-			dat.input = readline("\e[1;32m➤ \e[0mhellshell-0.2.1$ ");
+			dat.input = readline("\e[1;32m➤\e[0mhellshell-0.2.1$ ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
 		lexer(&dat);
-		// print_token_list(dat);
 		exit_status = parser(&dat);
 		if (!exit_status)
 		{
-			// printf_cmd_table(dat.cmd_lst);
 			finalize_cmd_list(dat.cmd_lst);
 			executor(&dat);
 		}
 		free_current_input_data(&dat);
+		exit_status = ft_atoi(dat.exit_code->value);
 	}
 	exit(EXIT_SUCCESS);
 }

@@ -27,7 +27,7 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
 	{
 		run_builtin(dat, exec);
-		exit(EXIT_SUCCESS);
+		exit(ft_atoi(dat->exit_code->value));
 	}
 }
 
@@ -63,7 +63,6 @@ void	find_path(t_exec *exec)
 	ft_error(errno, "hellshell: command not found");
 }
 
-// Do I need to close the other ends of the pipe after dup2?
 void	dup_pipes(t_exec *exec)
 {
 	t_cmdlst	*my_node;
@@ -81,7 +80,6 @@ void	dup_pipes(t_exec *exec)
 	}
 }
 
-// 
 int	redirects(t_exec *exec, bool parent)
 {
 	t_cmdlst	*node;
@@ -149,7 +147,6 @@ void	create_forks(t_data *dat, t_exec *exec)
 	{
 		if (tmp->next != NULL)
 			pipe(tmp->pipe);
-		// Do I need this???
 		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 		{
 			close(tmp->prev->prev->pipe[0]);

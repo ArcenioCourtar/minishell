@@ -28,4 +28,5 @@ void	builtin_env(t_data *dat, t_exec *exec)
 		printf("%s\n", dat->envp[i]);
 		i++;
 	}
+	assign_exit_val(dat->exit_code, 0);
 }
