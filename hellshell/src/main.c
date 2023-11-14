@@ -17,10 +17,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// For tester compatibility
-// if (!isatty(STDIN_FILENO))
-// 		rl_outstream = stdin;
-
 void	free_current_input_data(t_data *data)
 {
 	int	i;
@@ -39,9 +35,9 @@ void	free_current_input_data(t_data *data)
 	free(data->tokens);
 }
 
-/** readline return values
+/*	readline return values
  * 	returns NULL if EOF is encountered and input is empty
- * 	EOF is treated as newline is string is not empty
+ * 	EOF is treated as newline if string is not empty
  */
 int	main(int argc, char **argv, char **envp)
 {

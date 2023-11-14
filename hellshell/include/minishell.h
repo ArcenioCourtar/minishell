@@ -12,7 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define BT_NUM 9
+# define BT_NUM 7
 # include <stdio.h>
 # include <stdbool.h>
 # include <signal.h>
@@ -84,7 +84,6 @@ void		cmdlst_free(t_data *data);
 
 void		signals_interactive_mode(void);
 void		signals_in_process(void);
-
 
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);

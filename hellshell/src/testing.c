@@ -87,12 +87,3 @@ void	printf_cmd_table(t_cmdlst **cmd_table_head)
 		i++;
 	}
 }
-
-void	print_envlst(t_envlst *start)
-{
-	while (start)
-	{
-		printf("%s=%s\n", start->name, start->value);
-		start = start->next;
-	}
-}

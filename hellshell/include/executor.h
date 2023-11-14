@@ -22,7 +22,6 @@ typedef struct s_cmdlst	t_cmdlst;
 typedef struct s_data	t_data;
 typedef struct s_envlst	t_envlst;
 
-
 typedef struct s_exec
 {
 	char				path[PATH_MAX];
