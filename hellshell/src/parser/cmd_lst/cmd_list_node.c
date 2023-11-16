@@ -30,7 +30,8 @@ static int	assign_redirect_name(t_toklst *token, t_cmdlst *node, int i)
 	return (0);
 }
 
-static int	loop_redirs_to_node(t_toklst *token, t_cmdlst *command, int rdr_count)
+static int	loop_redirs_to_node(t_toklst *token, t_cmdlst *command, \
+int rdr_count)
 {
 	int	i;
 	int	ret_value;

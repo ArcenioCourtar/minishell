@@ -19,38 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-bool	find_pathvar(char **envp, t_exec *exec)
-{
-	int		i;
-
-	i = 0;
-	exec->path_maxlen = 0;
-	exec->path_avail = false;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			break ;
-		i++;
-	}
-	if (envp[i] == NULL)
-	{
-		exec->path_list = NULL;
-		return (true);
-	}
-	exec->path_avail = true;
-	exec->path_list = ft_split(envp[i] + 5, ':');
-	if (exec->path_list == NULL)
-		return (false);
-	i = 0;
-	while (exec->path_list[i])
-	{
-		if (ft_strlen(exec->path_list[i]) > exec->path_maxlen)
-			exec->path_maxlen = ft_strlen(exec->path_list[i]);
-		i++;
-	}
-	return (true);
-}
-
 int	count_forks(t_cmdlst **list)
 {
 	t_cmdlst	*tmp;

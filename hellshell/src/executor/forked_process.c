@@ -31,38 +31,6 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 	}
 }
 
-// TODO: more robust error handling
-void	find_path(t_exec *exec)
-{
-	int		i;
-
-	exec->cmd = malloc(exec->path_maxlen + \
-	ft_strlen(exec->my_node->argv[0]) + 2);
-	if (!exec->cmd)
-		ft_error(errno, "hellshell: malloc");
-	if (exec->path_avail == 0 || exec->my_node->abs_path == true)
-	{
-		ft_strlcpy(exec->cmd, exec->my_node->argv[0], \
-		ft_strlen(exec->my_node->argv[0]) + 1);
-		if (access(exec->my_node->argv[0], X_OK) == -1)
-			ft_error(errno, "hellshell: command not found");
-		return ;
-	}
-	i = 0;
-	while (exec->path_list[i])
-	{
-		ft_strlcpy(exec->cmd, exec->path_list[i], \
-		ft_strlen(exec->path_list[i]) + 1);
-		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]), "/", 2);
-		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]) + 1, \
-		exec->my_node->argv[0], ft_strlen(exec->my_node->argv[0]) + 1);
-		if (access(exec->cmd, X_OK) == 0)
-			return ;
-		i++;
-	}
-	ft_error(errno, "hellshell: command not found");
-}
-
 void	dup_pipes(t_exec *exec)
 {
 	t_cmdlst	*my_node;
@@ -78,52 +46,6 @@ void	dup_pipes(t_exec *exec)
 		close(my_node->pipe[0]);
 		dup2(my_node->pipe[1], my_node->fd_out);
 	}
-}
-
-int	redirects(t_exec *exec, bool parent)
-{
-	t_cmdlst	*node;
-	int			i;
-
-	node = exec->my_node;
-	if (node->redirect == NULL)
-		return (0);
-	i = 0;
-	while (node->redirect[i].name)
-	{
-		if (node->redirect[i].type == REDIN)
-		{
-			node->fd_in = open(node->redirect[i].name, O_RDONLY);
-			if (node->fd_in == -1)
-			{
-				if (!parent)
-					msg_err_exit("hellshell", NULL, errno);
-				msg_err_noexit("hellshell", NULL, errno);
-				return (errno);
-			}
-		}
-		if (node->redirect[i].type == REDOUT || \
-		node->redirect[i].type == REDAPPEND)
-		{
-			if (node->redirect[i].type == REDOUT)
-				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			else
-				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			if (node->fd_out == -1)
-			{
-				if (!parent)
-					msg_err_exit("hellshell", NULL, errno);
-				msg_err_noexit("hellshell", NULL, errno);
-				return (errno);
-			}
-		}
-		i++;
-	}
-	dup2(node->fd_in, STDIN_FILENO);
-	dup2(node->fd_out, STDOUT_FILENO);
-	return (0);
 }
 
 void	exec_fork(t_data *dat, t_exec *exec)

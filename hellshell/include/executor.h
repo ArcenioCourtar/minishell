@@ -42,7 +42,6 @@ bool	find_pathvar(char **envp, t_exec *exec);
 int		count_forks(t_cmdlst **list);
 void	create_forks(t_data *dat, t_exec *exec);
 void	exec_fork(t_data *dat, t_exec *exec);
-// maybe put in builtins header? also change arguments to just *dat?
 int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
 void	run_builtin(t_data *dat, t_exec *exec);
 int		redirects(t_exec *exec, bool parent);
@@ -50,6 +49,11 @@ void	assign_exit_val(t_envlst *exit_code, int errnum);
 void	wait_for_all(t_data *dat);
 void	close_all_pipes(t_data *dat);
 void	free_path_list(t_exec *exec);
+void	find_path(t_exec *exec);
+int		redirects(t_exec *exec, bool parent);
+void	restore_old_fds(t_exec *exec);
+void	save_old_fds(t_exec *exec);
+bool	check_builtin(t_data *dat, t_cmdlst *node);
 
 void	msg_err_exit(char *msg1, char *msg2, int errnum);
 void	msg_err_noexit(char *msg1, char *msg2, int errnum);

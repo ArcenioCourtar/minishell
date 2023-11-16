@@ -45,6 +45,9 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				executor/exec_cleanup.c		\
 				executor/exec_prep.c		\
 				executor/forked_process.c	\
+				executor/path_handling.c	\
+				executor/redirects.c		\
+				executor/executor_utils.c	\
 				\
 				err_handling/ft_fd_printf_utils.c \
 				err_handling/ft_fd_printf.c \

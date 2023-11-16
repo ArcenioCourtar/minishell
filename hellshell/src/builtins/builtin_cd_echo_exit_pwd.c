@@ -93,7 +93,7 @@ void	builtin_exit(t_data *dat, t_exec *exec)
 	exit(i);
 }
 
-static void	oldpwd_assignment(t_data *dat, t_exec *exec, char *buffer)
+static void	oldpwd_assignment(t_data *dat, char *buffer)
 {
 	t_envlst	*oldpwd;
 
@@ -138,7 +138,7 @@ void	builtin_cd(t_data *dat, t_exec *exec)
 		exec->my_node->argv[1], strerror(errno));
 		assign_exit_val(dat->exit_code, errno);
 	}
-	oldpwd_assignment(dat, exec, buffer);
+	oldpwd_assignment(dat, buffer);
 	dat->envp = set_envp(dat->envlist, dat->envp);
 	assign_exit_val(dat->exit_code, 0);
 }

@@ -108,8 +108,8 @@ void	print_redirect_error(t_toklst *token)
 {
 	if (token)
 		ft_printf_err("hellshell: syntax error \
-									near unexpected token `%s'\n", token->token);
+								near unexpected token `%s'\n", token->token);
 	else
 		ft_printf_err("hellshell: syntax error \
-									near unexpected token `newline'\n");
+								near unexpected token `newline'\n");
 }

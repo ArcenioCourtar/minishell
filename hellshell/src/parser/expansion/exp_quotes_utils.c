@@ -54,7 +54,7 @@ int	exp_strlen(char *token, char **expansions)
 		if (token[i] == '$' && token[i + 1] && is_valid_var(token[i + 1]))
 		{
 			i++;
-			while (token[i]  && is_valid_var(token[i]))
+			while (token[i] && is_valid_var(token[i]))
 				i++;
 			len += ft_strlen(expansions[e]);
 			e++;

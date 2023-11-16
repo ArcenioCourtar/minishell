@@ -79,9 +79,7 @@ char	*getvar(t_data *data, char *to_expand)
 void	expansion(t_data *data, t_toklst **token)
 {
 	if ((*token)->type == TOK_DQUOTE)
-	{
 		expand_in_quotes(data, *token);
-	}
 	else if ((*token)->type == TOK_DOLLAR)
 	{
 		if (!(*token)->next || (*token)->next->type == TOK_SPACE)
