@@ -45,6 +45,7 @@ void	builtin_echo(t_data *dat, t_exec *exec)
 	assign_exit_val(dat->exit_code, 0);
 }
 
+// QUESTION, DO I NEED TO ZERO OuT THE BUFFER?
 void	builtin_pwd(t_data *dat, t_exec *exec)
 {
 	char	buffer[PATH_MAX];
@@ -126,7 +127,12 @@ void	builtin_cd(t_data *dat, t_exec *exec)
 	(void) dat;
 	if (!exec->my_node->argv[1])
 		return ;
-	ft_bzero(buffer, PATH_MAX);
+	if (exec->my_node->argv[2])
+	{
+		ft_printf_err("hellshell: cd: too many arguments\n");
+		assign_exit_val(dat->exit_code, 1);
+		return ;
+	}
 	if (getcwd(buffer, PATH_MAX) == NULL)
 	{
 		ft_printf_err("Hellshell: %s\n", strerror(errno));

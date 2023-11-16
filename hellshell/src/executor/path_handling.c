@@ -24,7 +24,7 @@ static void	absolute_path_wrapper(t_exec *exec, char *command)
 	ft_strlcpy(exec->cmd, command, ft_strlen(command) + 1);
 	if (access(command, X_OK) == -1)
 	{
-		ft_printf_err("hellshell: %s: %s\n", strerror(errno), command);
+		ft_printf_err("hellshell: %s: %s\n", command, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 }
@@ -45,7 +45,7 @@ static bool	relative_path_wrapper(t_exec *exec, char *command)
 		{
 			if (access(exec->cmd, X_OK) == 0)
 				return (true);
-			ft_printf_err("hellshell: %s: %s\n", strerror(errno), command);
+			ft_printf_err("hellshell: %s: %s\n", command, strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 		i++;
@@ -72,7 +72,7 @@ void	find_path(t_exec *exec)
 	}
 	if (relative_path_wrapper(exec, command))
 		return ;
-	ft_printf_err("hellshell: command not found: %s\n", command);
+	ft_printf_err("hellshell: %s: command not found\n", command);
 	exit(EXIT_FAILURE);
 }
 

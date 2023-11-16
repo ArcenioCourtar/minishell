@@ -29,7 +29,7 @@ bool	identifier_check(char *arg)
 	int	i;
 
 	i = 1;
-	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+	if ((!ft_isalpha(arg[0]) && arg[0] != '_') || arg[0] == '=')
 		return (false);
 	while (arg[i] != '\0' && arg[i] != '=')
 	{

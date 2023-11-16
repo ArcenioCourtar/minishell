@@ -26,12 +26,12 @@ static int	red_in_wrapper(t_cmdlst *node, bool parent, int i)
 	{
 		if (!parent)
 		{
-			ft_printf_err("hellshell: %s: %s", strerror(errno), \
-			node->redirect[i].name);
+			ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
+			strerror(errno));
 			exit(EXIT_FAILURE);
 		}
-		ft_printf_err("hellshell: %s: %s", strerror(errno), \
-		node->redirect[i].name);
+		ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
+		strerror(errno));
 		return (errno);
 	}
 	return (0);
@@ -49,12 +49,12 @@ static int	red_out_wrapper(t_cmdlst *node, bool parent, int i)
 	{
 		if (!parent)
 		{
-			ft_printf_err("hellshell: %s: %s", strerror(errno), \
-			node->redirect[i].name);
+			ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
+			strerror(errno));
 			exit(EXIT_FAILURE);
 		}
-		ft_printf_err("hellshell: %s: %s", strerror(errno), \
-		node->redirect[i].name);
+		ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
+		strerror(errno));
 		return (errno);
 	}
 	return (0);

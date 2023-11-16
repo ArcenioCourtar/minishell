@@ -21,11 +21,14 @@ void	builtin_export(t_data *dat, t_exec *exec)
 {
 	t_envlst	*new;
 
-	if (exec->my_node->argv[1] == NULL || exec->my_node->argv[1][0] == '=')
+	if (exec->my_node->argv[1] == NULL)
+	{
+		builtin_env(dat, exec);
 		return ;
+	}
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
-		ft_printf_err("%s: Not a valid identifier\n", exec->my_node->argv[1]);
+		ft_printf_err("%s: not a valid identifier\n", exec->my_node->argv[1]);
 		assign_exit_val(dat->exit_code, 1);
 		return ;
 	}
