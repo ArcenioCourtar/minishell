@@ -48,7 +48,6 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	program flow notes:
 	heredocs are generated and run before any other actions.
 	Any error involving redirects prevents the associated command from running
-	TODO: Generating files with outfile redirects without a command before it.
 */
 void	executor(t_data *dat)
 {
