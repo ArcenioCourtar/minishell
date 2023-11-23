@@ -107,4 +107,4 @@ fsan debug: re
 .PHONY: all lib tmp clean fclean re fsan debug
 
 valg: all
-	valgrind --suppressions=../valgrind_suppr.log --leak-check=full ./minishell
+	valgrind --suppressions=./vg_suppr/suppr_readline.log --leak-check=full ./minishell
