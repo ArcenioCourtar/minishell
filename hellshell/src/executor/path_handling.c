@@ -59,6 +59,11 @@ void	find_path(t_exec *exec)
 	char	*command;
 
 	command = exec->my_node->argv[0];
+	if (ft_strlen(command) == 0)
+	{
+		ft_printf_err("hellshell: %s: command not found\n", command);
+		exit(127);
+	}
 	exec->cmd = malloc(exec->path_maxlen + ft_strlen(command) + 2);
 	if (!exec->cmd)
 	{
@@ -73,7 +78,7 @@ void	find_path(t_exec *exec)
 	if (relative_path_wrapper(exec, command))
 		return ;
 	ft_printf_err("hellshell: %s: command not found\n", command);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 static void	find_max_pathlen(t_exec *exec)
