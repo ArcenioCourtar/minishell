@@ -43,6 +43,13 @@ int	create_cmd_lst(t_data *data)
 	current_token = *(data->t_lst);
 	while (current_token)
 	{
+		if (current_token->type == TOK_INVALID)
+		{
+			token_lstdel_node(&current_token);
+			*(data->t_lst) = current_token;
+		}
+		if (!current_token)
+			break ;
 		if (current_token->type == TOK_PIPE)
 			current_token = current_token->next;
 		while (current_token && current_token->type == TOK_SPACE)

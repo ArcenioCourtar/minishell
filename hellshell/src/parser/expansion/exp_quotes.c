@@ -28,7 +28,7 @@ static char	*get_var_string(t_data *data, char *token, int *i)
 	to_expand = ft_substr(token, start, (*i) - start);
 	if (!to_expand)
 		ft_error(errno, strerror(errno));
-	expanded = getvar(data, to_expand);
+	expanded = getvar(data, to_expand, true);
 	free(to_expand);
 	if (!token[*i])
 		*i = 0;
