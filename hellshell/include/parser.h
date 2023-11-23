@@ -85,7 +85,7 @@ void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 //--expansion===================================================================
 void		expansion(t_data *data, t_toklst **token);
 bool		check_for_dollar(char *token);
-char		*getvar(t_data *data, char *to_expand);
+char		*getvar(t_data *data, char *to_expand, bool in_quotes);
 ////--quotes====================================================================
 void		expand_in_quotes(t_data *data, t_toklst *token);
 int			count_dollar_signs(char *token);

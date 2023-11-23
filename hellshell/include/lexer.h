@@ -27,6 +27,7 @@ enum e_delims {
 };
 
 enum e_token_type {
+	TOK_INVALID,
 	TOK_DQUOTE = '"',
 	TOK_SQUOTE = '\'',
 	TOK_PIPE = '|',
