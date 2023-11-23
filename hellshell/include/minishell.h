@@ -12,11 +12,12 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define BT_NUM 9
+# define BT_NUM 7
 # include <stdio.h>
 # include <stdbool.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 # include "lexer.h"
 # include "executor.h"
 
@@ -42,7 +43,7 @@ typedef struct s_data
 	char				*input;
 	char				**envp;
 	struct s_envlst		*envlist;
-	struct s_envlst		*varlist;
+	struct s_envlst		*exit_code;
 	char				**tokens;
 	int					tok_count;
 	struct s_toklst		**t_lst;
@@ -85,7 +86,6 @@ void		cmdlst_free(t_data *data);
 void		signals_interactive_mode(void);
 void		signals_in_process(void);
 
-
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
 
@@ -93,10 +93,5 @@ t_cmdlst	**init_command_list(void);
 void		to_freelstfree(t_freelst **lst);
 int			ft_fd_printf(int fd, const char *s, ...);
 int			ft_printf_err(const char *s, ...);
-
-/* testing------------------------------------------------------------------- */
-void		print_token_array(t_data dat);
-void		print_token_list(t_data dat);
-void		print_envlst(t_envlst *start);
 
 #endif

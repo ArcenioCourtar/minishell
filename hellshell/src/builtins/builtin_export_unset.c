@@ -17,49 +17,33 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// TODO: need to check for invalid var names and return an error
-// - add env functionality when calling with no extra args
-// - norm
 void	builtin_export(t_data *dat, t_exec *exec)
 {
 	t_envlst	*new;
 
-	if (exec->my_node->argv[1] == NULL || exec->my_node->argv[1][0] == '=')
+	if (exec->my_node->argv[1] == NULL)
+	{
+		builtin_env(dat, exec);
 		return ;
+	}
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
-		ft_printf_err("%s: Not a valid identifier\n", \
-		exec->my_node->argv[1]);
+		ft_printf_err("%s: not a valid identifier\n", exec->my_node->argv[1]);
+		assign_exit_val(dat->exit_code, 1);
 		return ;
 	}
-	if (ft_strchr(exec->my_node->argv[1], '=') == 0)
-	{
-		new = check_var_existence(dat->varlist, exec->my_node->argv[1]);
-		if (new)
-		{
-			envlst_move_node(new, dat->envlist);
-			dat->envp = set_envp(dat->envlist, dat->envp);
-		}
+	if (ft_strchr(exec->my_node->argv[1], '=') == NULL)
 		return ;
-	}
 	new = check_var_existence(dat->envlist, exec->my_node->argv[1]);
 	if (new == NULL)
 	{
-		new = check_var_existence(dat->varlist, exec->my_node->argv[1]);
-		if (new)
-		{
-			envlst_move_node(new, dat->envlist);
-			change_existing_val(new, exec->my_node->argv[1]);
-		}
-		else
-		{
-			new = newnode_env(exec->my_node->argv[1]);
-			envlst_addback(dat->envlist, new);
-		}
+		new = newnode_env(exec->my_node->argv[1]);
+		envlst_addback(dat->envlist, new);
 	}
 	else
 		change_existing_val(new, exec->my_node->argv[1]);
 	dat->envp = set_envp(dat->envlist, dat->envp);
+	assign_exit_val(dat->exit_code, 0);
 }
 
 void	builtin_unset(t_data *dat, t_exec *exec)
@@ -67,11 +51,14 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 	t_envlst	*node;
 
 	if (exec->my_node->argv[1] == NULL)
+	{
+		assign_exit_val(dat->exit_code, 0);
 		return ;
+	}
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
-		ft_printf_err("%s: Not a valid identifier\n", \
-		exec->my_node->argv[1]);
+		ft_printf_err("%s: invalid parameter name\n", exec->my_node->argv[1]);
+		assign_exit_val(dat->exit_code, 1);
 		return ;
 	}
 	node = check_var_existence(dat->envlist, exec->my_node->argv[1]);
@@ -79,9 +66,8 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 	{
 		envlst_free_node(node);
 		dat->envp = set_envp(dat->envlist, dat->envp);
-		return ;
+		if (!dat->envp)
+			exit(EXIT_FAILURE);
 	}
-	node = check_var_existence(dat->varlist, exec->my_node->argv[1]);
-	if (node)
-		envlst_free_node(node);
+	assign_exit_val(dat->exit_code, 0);
 }

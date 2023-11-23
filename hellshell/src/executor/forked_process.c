@@ -27,43 +27,10 @@ void	forked_builtin(t_data *dat, t_exec *exec)
 	if (is_builtin(dat->builtin_index, tmp->argv[0]) != BT_NUM)
 	{
 		run_builtin(dat, exec);
-		exit(EXIT_SUCCESS);
+		exit(ft_atoi(dat->exit_code->value));
 	}
 }
 
-// TODO: more robust error handling
-void	find_path(t_exec *exec)
-{
-	int		i;
-
-	exec->cmd = malloc(exec->path_maxlen + \
-	ft_strlen(exec->my_node->argv[0]) + 2);
-	if (!exec->cmd)
-		ft_error(errno, "hellshell: malloc");
-	if (exec->path_avail == 0 || exec->my_node->abs_path == true)
-	{
-		ft_strlcpy(exec->cmd, exec->my_node->argv[0], \
-		ft_strlen(exec->my_node->argv[0]) + 1);
-		if (access(exec->my_node->argv[0], X_OK) == -1)
-			ft_error(errno, "hellshell: command not found");
-		return ;
-	}
-	i = 0;
-	while (exec->path_list[i])
-	{
-		ft_strlcpy(exec->cmd, exec->path_list[i], \
-		ft_strlen(exec->path_list[i]) + 1);
-		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]), "/", 2);
-		ft_strlcpy(exec->cmd + ft_strlen(exec->path_list[i]) + 1, \
-		exec->my_node->argv[0], ft_strlen(exec->my_node->argv[0]) + 1);
-		if (access(exec->cmd, X_OK) == 0)
-			return ;
-		i++;
-	}
-	ft_error(errno, "hellshell: command not found");
-}
-
-// Do I need to close the other ends of the pipe after dup2?
 void	dup_pipes(t_exec *exec)
 {
 	t_cmdlst	*my_node;
@@ -81,65 +48,35 @@ void	dup_pipes(t_exec *exec)
 	}
 }
 
-// 
-int	redirects(t_exec *exec, bool parent)
-{
-	t_cmdlst	*node;
-	int			i;
-
-	node = exec->my_node;
-	if (node->redirect == NULL)
-		return (0);
-	i = 0;
-	while (node->redirect[i].name)
-	{
-		if (node->redirect[i].type == REDIN)
-		{
-			node->fd_in = open(node->redirect[i].name, O_RDONLY);
-			if (node->fd_in == -1)
-			{
-				if (!parent)
-					msg_err_exit("hellshell", NULL, errno);
-				msg_err_noexit("hellshell", NULL, errno);
-				return (errno);
-			}
-		}
-		if (node->redirect[i].type == REDOUT || \
-		node->redirect[i].type == REDAPPEND)
-		{
-			if (node->redirect[i].type == REDOUT)
-				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			else
-				node->fd_out = open(node->redirect[i].name, O_WRONLY | \
-				O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			if (node->fd_out == -1)
-			{
-				if (!parent)
-					msg_err_exit("hellshell", NULL, errno);
-				msg_err_noexit("hellshell", NULL, errno);
-				return (errno);
-			}
-		}
-		i++;
-	}
-	dup2(node->fd_in, STDIN_FILENO);
-	dup2(node->fd_out, STDOUT_FILENO);
-	return (0);
-}
-
 void	exec_fork(t_data *dat, t_exec *exec)
 {
+	int	tmp;
+
 	dup_pipes(exec);
-	redirects(exec, false);
+	tmp = redirects(exec);
+	if (tmp != 0)
+		exit (1);
 	if (exec->my_node->argv[0] == NULL)
 		exit(EXIT_SUCCESS);
 	forked_builtin(dat, exec);
 	find_path(exec);
 	execve(exec->cmd, exec->my_node->argv, dat->envp);
-	exit(EXIT_SUCCESS);
+	if (errno == 13)
+	{
+		ft_printf_err("%s: Is a directory\n", exec->my_node->argv[0]);
+		exit(126);
+	}
+	ft_printf_err("%s: command not found\n", exec->my_node->argv[0]);
+	exit(127);
 }
 
+static void	create_forks_close_pipe(int pipe[2])
+{
+	close(pipe[0]);
+	close(pipe[1]);
+}
+
+// TODO: erro checking when calling pipe()
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
@@ -148,13 +85,12 @@ void	create_forks(t_data *dat, t_exec *exec)
 	while (tmp)
 	{
 		if (tmp->next != NULL)
-			pipe(tmp->pipe);
-		// Do I need this???
-		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 		{
-			close(tmp->prev->prev->pipe[0]);
-			close(tmp->prev->prev->pipe[1]);
+			if (pipe(tmp->pipe) != 0)
+				ft_printf_err("broken pipe\n");
 		}
+		if (tmp->prev != NULL && tmp->prev->prev != NULL)
+			create_forks_close_pipe(tmp->prev->prev->pipe);
 		exec->my_node = tmp;
 		tmp->pid = fork();
 		if (tmp->pid == -1)
@@ -162,10 +98,7 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->pid == 0)
 			exec_fork(dat, exec);
 		if (tmp->next == NULL && tmp->prev)
-		{
-			close(tmp->prev->pipe[0]);
-			close(tmp->prev->pipe[1]);
-		}
+			create_forks_close_pipe(tmp->prev->pipe);
 		tmp = tmp->next;
 	}
 }

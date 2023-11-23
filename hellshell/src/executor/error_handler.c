@@ -19,42 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	msg_err_exit(char *msg1, char *msg2, int errnum)
-{
-	if (msg2 == NULL)
-		ft_printf_err("%s: %s\n", msg1, strerror(errnum));
-	else
-		ft_printf_err("%s: %s: %s\n", msg1, msg2, \
-		strerror(errnum));
-	exit(errnum);
-}
-
-void	msg_err_noexit(char *msg1, char *msg2, int errnum)
-{
-	if (msg2 == NULL)
-		ft_printf_err("%s: %s\n", msg1, strerror(errnum));
-	else
-		ft_printf_err("%s: %s: %s\n", msg1, msg2, \
-		strerror(errnum));
-}
-
-void	msg_err_cust_exit(char *msg1, char *msg2, char *errmsg, int errnum)
-{
-	if (msg2 == NULL)
-		ft_printf_err("%s: %s\n", msg1, errmsg);
-	else
-		ft_printf_err("%s: %s: %s\n", msg1, msg2, errmsg);
-	exit(errnum);
-}
-
-void	msg_err_cust_noexit(char *msg1, char *msg2, char *errmsg)
-{
-	if (msg2 == NULL)
-		ft_printf_err("%s: %s\n", msg1, errmsg);
-	else
-		ft_printf_err("%s: %s: %s\n", msg1, msg2, errmsg);
-}
-
 void	assign_exit_val(t_envlst *exit_code, int errnum)
 {
 	free(exit_code->value);

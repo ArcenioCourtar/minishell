@@ -17,11 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// For tester compatibility
-// if (!isatty(STDIN_FILENO))
-// 		rl_outstream = stdin;
-
-void	free_current_input_data(t_data *data)
+static void	free_current_input_data(t_data *data)
 {
 	int	i;
 
@@ -39,10 +35,26 @@ void	free_current_input_data(t_data *data)
 	free(data->tokens);
 }
 
-/** readline return values
- * 	returns NULL if EOF is encountered and input is empty
- * 	EOF is treated as newline is string is not empty
- */
+static int	executor_wrapper(t_data	*dat)
+{
+	finalize_cmd_list(dat->cmd_lst);
+	executor(dat);
+	return (ft_atoi(dat->exit_code->value));
+}
+
+static void	readline_wrapper(t_data	*dat, int exit_status)
+{
+	if (exit_status)
+		dat->input = readline("\e[1;31m➤\e[0m hellshell-0.2.1$ ");
+	else
+		dat->input = readline("\e[1;32m➤\e[0m hellshell-0.2.1$ ");
+}
+
+/*
+	readline return values
+	returns NULL if EOF is encountered and input is empty
+	EOF is treated as newline if string is not empty
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	dat;
@@ -55,22 +67,14 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		signals_interactive_mode();
-		if (exit_status)
-			dat.input = readline("\e[1;31m➤ \e[0mhellshell-0.2.1$ ");
-		else
-			dat.input = readline("\e[1;32m➤ \e[0mhellshell-0.2.1$ ");
+		readline_wrapper(&dat, exit_status);
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
 		lexer(&dat);
-		// print_token_list(dat);
 		exit_status = parser(&dat);
 		if (!exit_status)
-		{
-			// printf_cmd_table(dat.cmd_lst);
-			finalize_cmd_list(dat.cmd_lst);
-			executor(&dat);
-		}
+			exit_status = executor_wrapper(&dat);
 		free_current_input_data(&dat);
 	}
 	exit(EXIT_SUCCESS);

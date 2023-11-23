@@ -64,7 +64,7 @@ char	*getvar(t_data *data, char *to_expand, bool in_quotes)
 		return (expand_question_join(data, to_expand));
 	var_value = envlst_iter(data->envlist, to_expand);
 	if (!var_value)
-		var_value = envlst_iter(data->varlist, to_expand);
+		var_value = envlst_iter(data->exit_code, to_expand);
 	if (!var_value)
 	{
 		if (!in_quotes)

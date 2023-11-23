@@ -16,9 +16,10 @@ NAME 		=	minishell
 
 SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
+				builtins/builtin_cd_pwd.c				\
 				builtins/builtin_env_variable_helpers.c \
-				builtins/builtin_cd_echo_exit_pwd.c 	\
-				builtins/builtin_env_var_assign.c 		\
+				builtins/builtin_echo_exit.c 			\
+				builtins/builtin_env.c 		\
 				builtins/builtin_export_unset.c			\
 				builtins/builtin_commons.c				\
 				\
@@ -45,6 +46,9 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				executor/exec_cleanup.c		\
 				executor/exec_prep.c		\
 				executor/forked_process.c	\
+				executor/path_handling.c	\
+				executor/redirects.c		\
+				executor/executor_utils.c	\
 				\
 				err_handling/ft_fd_printf_utils.c \
 				err_handling/ft_fd_printf.c \
@@ -53,7 +57,6 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
 				signals.c					\
 				\
-				testing.c
 
 SRC_DIR	= src
 OBJ_DIR	= obj
@@ -107,4 +110,4 @@ fsan debug: re
 .PHONY: all lib tmp clean fclean re fsan debug
 
 valg: all
-	valgrind --suppressions=./vg_suppr/suppr_readline.log --leak-check=full ./minishell
+	valgrind --leak-check=full ./minishell

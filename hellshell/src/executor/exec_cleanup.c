@@ -19,6 +19,24 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void	bash_status_filter(int *status)
+{
+	*status = WEXITSTATUS(*status);
+	if (*status != 0)
+	{
+		if (*status == 126)
+			*status = 126;
+		else if (*status == 127)
+			*status = 127;
+		else if (*status == 2)
+			*status = 2;
+		else
+			*status = 1;
+	}
+	else
+		*status = 0;
+}
+
 void	wait_for_all(t_data *dat)
 {
 	int			status;
@@ -31,15 +49,10 @@ void	wait_for_all(t_data *dat)
 		tmp = tmp->next;
 	}
 	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) != 0)
-			status = 1;
-		else
-			status = 0;
-	}
+		bash_status_filter(&status);
 	else
 		status = 128 + WTERMSIG(status);
-	assign_exit_val(dat->varlist, status);
+	assign_exit_val(dat->exit_code, status);
 }
 
 void	close_all_pipes(t_data *dat)
