@@ -55,9 +55,4 @@ void	restore_old_fds(t_exec *exec);
 void	save_old_fds(t_exec *exec);
 bool	check_builtin(t_data *dat, t_cmdlst *node);
 
-void	msg_err_exit(char *msg1, char *msg2, int errnum);
-void	msg_err_noexit(char *msg1, char *msg2, int errnum);
-void	msg_err_cust_exit(char *msg1, char *msg2, char *errmsg, int errnum);
-void	msg_err_cust_noexit(char *msg1, char *msg2, char *errmsg);
-
 #endif

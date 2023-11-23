@@ -57,7 +57,13 @@ void	exec_fork(t_data *dat, t_exec *exec)
 	forked_builtin(dat, exec);
 	find_path(exec);
 	execve(exec->cmd, exec->my_node->argv, dat->envp);
-	exit(EXIT_SUCCESS);
+	if (errno == 13)
+	{
+		ft_printf_err("%s: Is a directory\n", exec->my_node->argv[0]);
+		exit(126);
+	}
+	ft_printf_err("%s: command not found\n", exec->my_node->argv[0]);
+	exit(127);
 }
 
 void	create_forks(t_data *dat, t_exec *exec)

@@ -51,7 +51,10 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 	t_envlst	*node;
 
 	if (exec->my_node->argv[1] == NULL)
+	{
+		assign_exit_val(dat->exit_code, 0);
 		return ;
+	}
 	if (!identifier_check(exec->my_node->argv[1]))
 	{
 		ft_printf_err("%s: invalid parameter name\n", exec->my_node->argv[1]);

@@ -25,7 +25,9 @@ static void	absolute_path_wrapper(t_exec *exec, char *command)
 	if (access(command, X_OK) == -1)
 	{
 		ft_printf_err("hellshell: %s: %s\n", command, strerror(errno));
-		exit(EXIT_FAILURE);
+		if (errno == 13)
+			exit(126);
+		exit(127);
 	}
 }
 
@@ -46,7 +48,9 @@ static bool	relative_path_wrapper(t_exec *exec, char *command)
 			if (access(exec->cmd, X_OK) == 0)
 				return (true);
 			ft_printf_err("hellshell: %s: %s\n", command, strerror(errno));
-			exit(EXIT_FAILURE);
+			if (errno == 13)
+				exit(126);
+			exit(127);
 		}
 		i++;
 	}
