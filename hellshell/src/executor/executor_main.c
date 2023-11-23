@@ -24,7 +24,7 @@ void	exec_parent_wrapper(t_data *dat, t_exec *exec)
 	int		tmp;
 
 	save_old_fds(exec);
-	tmp = redirects(exec, true);
+	tmp = redirects(exec);
 	if (tmp != 0)
 	{
 		if (tmp != ENOENT)

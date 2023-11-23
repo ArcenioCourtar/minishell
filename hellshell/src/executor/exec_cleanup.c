@@ -28,6 +28,8 @@ void	bash_status_filter(int *status)
 			*status = 126;
 		else if (*status == 127)
 			*status = 127;
+		else if (*status == 2)
+			*status = 2;
 		else
 			*status = 1;
 	}

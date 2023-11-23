@@ -50,8 +50,12 @@ void	dup_pipes(t_exec *exec)
 
 void	exec_fork(t_data *dat, t_exec *exec)
 {
+	int	tmp;
+
 	dup_pipes(exec);
-	redirects(exec, false);
+	tmp = redirects(exec);
+	if (tmp != 0)
+		exit (1);
 	if (exec->my_node->argv[0] == NULL)
 		exit(EXIT_SUCCESS);
 	forked_builtin(dat, exec);
@@ -66,6 +70,12 @@ void	exec_fork(t_data *dat, t_exec *exec)
 	exit(127);
 }
 
+static void	create_forks_close_pipe(int pipe[2])
+{
+	close(pipe[0]);
+	close(pipe[1]);
+}
+
 // TODO: erro checking when calling pipe()
 void	create_forks(t_data *dat, t_exec *exec)
 {
@@ -75,12 +85,12 @@ void	create_forks(t_data *dat, t_exec *exec)
 	while (tmp)
 	{
 		if (tmp->next != NULL)
-			pipe(tmp->pipe);
-		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 		{
-			close(tmp->prev->prev->pipe[0]);
-			close(tmp->prev->prev->pipe[1]);
+			if (pipe(tmp->pipe) != 0)
+				ft_printf_err("broken pipe\n");
 		}
+		if (tmp->prev != NULL && tmp->prev->prev != NULL)
+			create_forks_close_pipe(tmp->prev->prev->pipe);
 		exec->my_node = tmp;
 		tmp->pid = fork();
 		if (tmp->pid == -1)
@@ -88,10 +98,7 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->pid == 0)
 			exec_fork(dat, exec);
 		if (tmp->next == NULL && tmp->prev)
-		{
-			close(tmp->prev->pipe[0]);
-			close(tmp->prev->pipe[1]);
-		}
+			create_forks_close_pipe(tmp->prev->pipe);
 		tmp = tmp->next;
 	}
 }

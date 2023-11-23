@@ -19,17 +19,11 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-static int	red_in_wrapper(t_cmdlst *node, bool parent, int i)
+static int	red_in_wrapper(t_cmdlst *node, int i)
 {
 	node->fd_in = open(node->redirect[i].name, O_RDONLY);
 	if (node->fd_in == -1)
 	{
-		if (!parent)
-		{
-			ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
-			strerror(errno));
-			exit(EXIT_FAILURE);
-		}
 		ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
 		strerror(errno));
 		return (errno);
@@ -37,7 +31,7 @@ static int	red_in_wrapper(t_cmdlst *node, bool parent, int i)
 	return (0);
 }
 
-static int	red_out_wrapper(t_cmdlst *node, bool parent, int i)
+static int	red_out_wrapper(t_cmdlst *node, int i)
 {
 	if (node->redirect[i].type == REDOUT)
 		node->fd_out = open(node->redirect[i].name, O_WRONLY | O_CREAT | \
@@ -47,12 +41,6 @@ static int	red_out_wrapper(t_cmdlst *node, bool parent, int i)
 		O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (node->fd_out == -1)
 	{
-		if (!parent)
-		{
-			ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
-			strerror(errno));
-			exit(EXIT_FAILURE);
-		}
 		ft_printf_err("hellshell: %s: %s\n", node->redirect[i].name, \
 		strerror(errno));
 		return (errno);
@@ -62,7 +50,7 @@ static int	red_out_wrapper(t_cmdlst *node, bool parent, int i)
 
 // parent boolean is there to signify if the redirects are run from the
 // parent process or not. If they are, don't exit.
-int	redirects(t_exec *exec, bool parent)
+int	redirects(t_exec *exec)
 {
 	t_cmdlst	*node;
 	int			i;
@@ -75,13 +63,13 @@ int	redirects(t_exec *exec, bool parent)
 	{
 		if (node->redirect[i].type == REDIN)
 		{
-			if (red_in_wrapper(node, parent, i) != 0)
+			if (red_in_wrapper(node, i) != 0)
 				return (errno);
 		}
 		if (node->redirect[i].type == REDOUT || \
 		node->redirect[i].type == REDAPPEND)
 		{
-			if (red_out_wrapper(node, parent, i) != 0)
+			if (red_out_wrapper(node, i) != 0)
 				return (errno);
 		}
 		i++;
