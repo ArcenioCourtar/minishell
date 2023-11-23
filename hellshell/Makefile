@@ -102,7 +102,7 @@ re: fclean all
 
 fsan: CFLAGS += -fsanitize=address
 debug: CFLAGS += -g
-asan tsan debug: re
+fsan debug: re
 
 .PHONY: all lib tmp clean fclean re fsan debug
 
