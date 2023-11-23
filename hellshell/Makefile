@@ -16,9 +16,10 @@ NAME 		=	minishell
 
 SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				\
+				builtins/builtin_cd_pwd.c				\
 				builtins/builtin_env_variable_helpers.c \
-				builtins/builtin_cd_echo_exit_pwd.c 	\
-				builtins/builtin_env_var_assign.c 		\
+				builtins/builtin_echo_exit.c 			\
+				builtins/builtin_env.c 		\
 				builtins/builtin_export_unset.c			\
 				builtins/builtin_commons.c				\
 				\
@@ -109,4 +110,4 @@ asan tsan debug: re
 .PHONY: all lib tmp clean fclean re fsan debug
 
 valg: all
-	valgrind --suppressions=../valgrind_suppr.log --leak-check=full ./minishell
+	valgrind --leak-check=full ./minishell

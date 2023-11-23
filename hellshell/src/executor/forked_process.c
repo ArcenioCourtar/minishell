@@ -66,6 +66,7 @@ void	exec_fork(t_data *dat, t_exec *exec)
 	exit(127);
 }
 
+// TODO: erro checking when calling pipe()
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;

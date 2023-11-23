@@ -27,7 +27,10 @@ void	exec_parent_wrapper(t_data *dat, t_exec *exec)
 	tmp = redirects(exec, true);
 	if (tmp != 0)
 	{
-		assign_exit_val(exec->exit_code, tmp);
+		if (tmp != ENOENT)
+			assign_exit_val(exec->exit_code, 2);
+		else
+			assign_exit_val(exec->exit_code, 1);
 		return ;
 	}
 	run_builtin(dat, exec);
