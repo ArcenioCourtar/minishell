@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 static int	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
-											enum e_cmd_type type)
+														enum e_cmd_type type)
 {
 	t_cmdlst	*new_node;
 	int			ret_value;
@@ -30,6 +30,19 @@ static int	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 		return (ret_value);
 	argv_to_node(token, new_node);
 	return (ret_value);
+}
+
+static int	iterate_token(t_toklst **token)
+{
+	if (!*token)
+		return (1);
+	if ((*token)->type == TOK_PIPE)
+		*token = (*token)->next;
+	while (*token && (*token)->type == TOK_SPACE)
+		*token = (*token)->next;
+	if (!*token)
+		return (1);
+	return (0);
 }
 
 int	create_cmd_lst(t_data *data)
@@ -48,13 +61,7 @@ int	create_cmd_lst(t_data *data)
 			token_lstdel_node(&current_token);
 			*(data->t_lst) = current_token;
 		}
-		if (!current_token)
-			break ;
-		if (current_token->type == TOK_PIPE)
-			current_token = current_token->next;
-		while (current_token && current_token->type == TOK_SPACE)
-			current_token = current_token->next;
-		if (!current_token)
+		if (iterate_token(&current_token))
 			break ;
 		ret_value = parse_chunk(current_token, data->cmd_lst, type);
 		if (ret_value)

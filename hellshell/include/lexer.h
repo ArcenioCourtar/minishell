@@ -16,6 +16,8 @@
 # include <errno.h>
 # include <string.h>
 
+# define UNEXP_TOK_ERROR "syntax error near unexpected token"
+
 enum e_delims {
 	DEL_DQUOTE = '"',
 	DEL_SQUOTE = '\'',
