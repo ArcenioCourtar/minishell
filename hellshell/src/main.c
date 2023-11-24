@@ -17,6 +17,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+/**
+ * @brief frees the current input data
+ * @param data pointer to the program data struct
+ */
 static void	free_current_input_data(t_data *data)
 {
 	int	i;
