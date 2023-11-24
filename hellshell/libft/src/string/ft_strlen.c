@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/06 14:34:49 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/04/03 16:13:15 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
+/**
+ * @brief Counts the number of characters in a string
+ * @param s The string to count
+ * @return The number of characters in the string
+ */
+size_t	ft_strlen(const char *s)
+{
+	size_t	count;
 
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+	count = 0;
+	while (s && s[count])
+		count++;
+	return (count);
+}

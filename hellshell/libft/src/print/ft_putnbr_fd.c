@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_putnbr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/18 17:32:54 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/18 17:54:47 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+/**
+ * @brief Writes a number to a file descriptor
+ * @param n The number to write
+ * @param fd The file descriptor to write to
+ */
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
+		ft_putstr_fd("-2147483648", fd);
+	else
+	{
+		if (n < 0)
+		{
+			ft_putchar_fd('-', fd);
+			n = -n;
+		}
+		if (n >= 10)
+			ft_putnbr_fd(n / 10, fd);
+		ft_putchar_fd((n % 10) + '0', fd);
+	}
+}

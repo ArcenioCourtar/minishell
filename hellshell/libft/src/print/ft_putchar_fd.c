@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_putchar_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/18 17:13:35 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/18 17:18:15 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+/**
+ * @brief Writes a character to a file descriptor
+ * @param c The character to write
+ * @param fd The file descriptor to write to
+ */
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}

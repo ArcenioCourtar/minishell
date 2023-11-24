@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_abs.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/04/24 17:33:01 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/04/24 17:33:15 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-
-# include <unistd.h>
-# include <stdarg.h>
-
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+/**
+ * @brief Returns the absolute value of an integer
+ * @param i The integer to return the absolute value of
+ */
+int	ft_abs(int i)
+{
+	if (i < 0)
+		return (-i);
+	return (i);
+}

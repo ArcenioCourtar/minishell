@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_lstlast.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/19 17:40:10 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/19 17:48:37 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+/**
+ * @brief Returns the last element of a list
+ * @param lst The beginning of the list
+ * @return The last element of the list
+ */
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (0);
+	else if (!lst->next)
+		return (lst);
+	else
+		while (lst->next)
+			lst = lst->next;
+	return (lst);
+}

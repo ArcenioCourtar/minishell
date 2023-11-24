@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_lstnew.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2022/10/19 16:34:53 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2022/10/20 15:26:30 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
+/**
+ * @brief Allocates and returns a new node of a list
+ * @param content The content to create the new node with
+ * @return A pointer to the new node
+ */
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*newlst;
 
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+	newlst = (t_list *)malloc(sizeof(t_list));
+	if (newlst == 0)
+		return (0);
+	newlst->content = content;
+	newlst->next = 0;
+	return (newlst);
+}

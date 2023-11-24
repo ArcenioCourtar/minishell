@@ -23,9 +23,6 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*read_to_stash(int fd, char *stash);
-char	*stash_to_line(char *stash);
-char	*next_call_stash(char *stash);
 
 char	*ft_strjoinfree(char *s1, char *s2);
 int		newline_checker(char *str);

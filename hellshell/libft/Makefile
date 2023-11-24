@@ -6,93 +6,84 @@
 #    By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/06 13:32:03 by ovan-rhe      #+#    #+#                  #
-#    Updated: 2023/06/20 13:35:47 by ovan-rhe      ########   odam.nl          #
+#    Updated: 2023/05/08 16:58:24 by ovan-rhe      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 	= libft.a
+#--VARIABLES--------------------------------------------------------------------
 
-SRC_FILES =	free_double_array.c \
-			ft_abs.c \
-			ft_atoi_safe.c \
-			ft_atoi.c \
-			ft_atol.c \
-			ft_bzero.c \
-			ft_calloc.c \
-			ft_error.c \
-			ft_isalnum.c \
-			ft_isalpha.c \
-			ft_isascii.c \
-			ft_isdigit.c \
-			ft_isprint.c \
-			ft_iswhitespace.c \
-			ft_memchr.c \
-			ft_memcmp.c \
-			ft_memcpy.c \
-			ft_memmove.c \
-			ft_memset.c \
-			ft_strchr.c \
-			ft_strdup.c \
-			ft_strlcat.c \
-			ft_strlcpy.c \
-			ft_strlen.c \
-			ft_strncmp.c \
-			ft_strnstr.c \
-			ft_strrchr.c \
-			ft_tolower.c \
-			ft_toupper.c \
-			ft_substr.c \
-			ft_strjoin.c \
-			ft_strjoin_free.c \
-			ft_strtrim.c \
-			ft_split.c \
-			ft_itoa.c \
-			ft_putchar_fd.c \
-			ft_putstr_fd.c \
-			ft_putendl_fd.c \
-			ft_putnbr_fd.c \
-			ft_striteri.c \
-			ft_strmapi.c \
-			get_next_line.c \
-			get_next_line_utils.c \
-			ft_printf.c \
-			ft_printnbr.c \
-			ft_printstr.c \
-			print_hex.c \
-			ft_printchar.c \
-			ft_lstnew.c \
-			ft_lstadd_front.c \
-			ft_lstsize.c \
-			ft_lstlast.c \
-			ft_lstadd_back.c \
-			ft_lstdelone.c \
-			ft_lstclear.c \
-			ft_lstiter.c \
-			ft_lstmap.c
+NAME = libft.a
 
-SRC 	= $(addprefix src/, $(SRC_FILES))
-OBJS 	= $(SRC:.c=.o)
+SRC_FILES =	alloc_free/free_double_array.c	alloc_free/ft_calloc.c 				\
+			\
+			char_check/ft_isalnum.c	char_check/ft_isalpha.c						\
+			char_check/ft_isascii.c	char_check/ft_isdigit.c						\
+			char_check/ft_isprint.c	char_check/ft_iswhitespace.c				\
+			\
+			char_operation/ft_tolower.c	char_operation/ft_toupper.c				\
+			\
+			get_next_line/get_next_line.c	get_next_line/get_next_line_utils.c	\
+			\
+			int/ft_abs.c	int/ft_itoa.c 										\
+			\
+			linked_list/ft_lstnew.c		linked_list/ft_lstadd_front.c			\
+			linked_list/ft_lstsize.c	linked_list/ft_lstlast.c				\
+			linked_list/ft_lstmap.c		linked_list/ft_lstdelone.c				\
+			linked_list/ft_lstclear.c	linked_list/ft_lstiter.c				\
+			linked_list/ft_lstadd_back.c										\
+			\
+			mem_operation/ft_memchr.c	mem_operation/ft_memcmp.c				\
+			mem_operation/ft_memcpy.c	mem_operation/ft_memmove.c				\
+			mem_operation/ft_memset.c 	mem_operation/ft_bzero.c				\
+			\
+			print/ft_printf.c	print/ft_printnbr.c		print/ft_printstr.c		\
+			print/print_hex.c	print/ft_printchar.c	print/ft_putchar_fd.c	\
+			print/ft_error.c	print/ft_putendl_fd.c	print/ft_putnbr_fd.c	\
+			print/ft_putstr_fd.c												\
+			\
+			str_to_num/ft_atoi_safe.c	str_to_num/ft_atoi.c					\
+			str_to_num/ft_atol.c 												\
+			\
+			string/ft_strchr.c	string/ft_strdup.c	string/ft_strlcat.c			\
+			string/ft_strlcpy.c	string/ft_strlen.c	string/ft_strncmp.c			\
+			string/ft_strnstr.c	string/ft_strrchr.c	string/ft_striteri.c		\
+			string/ft_strtrim.c	string/ft_strjoin.c	string/ft_strjoin_free.c	\
+			string/ft_strmapi.c	string/ft_split.c	string/ft_substr.c
+
+SRC_DIR	= src
+OBJ_DIR	= obj
+INC_DIR	= include
+
+OBJ_FILES	= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+DEP_FILES	= $(OBJ_FILES:.o=.d)
+
+SRC_SUBDIR	= $(shell find $(SRC_DIR) -type d)
+OBJ_SUBDIR	= $(subst $(SRC_DIR), $(OBJ_DIR), $(SRC_SUBDIR))
 		
-CFLAGS	= -Wall -Wextra -Werror
-HEADERS	= -I include
-CC		= gcc
-RM		= rm -f
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror -MMD -MP
 
+#--RULES------------------------------------------------------------------------
 
-all: $(NAME)
+all: objdir $(NAME)
 
-$(NAME): $(OBJS)
-	@ar -rcs $@ $^
+$(NAME): $(OBJ_FILES)
+	ar -rcs $@ $^
 
-%.o: %.c
-	@$(CC) $(CFLAGS) $(HEADERS) -o $@ -c $<
+objdir:
+	mkdir -p $(OBJ_SUBDIR)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
+
+-include $(DEP_FILES)
 
 clean:
-	@$(RM) $(OBJS)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@$(RM) $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all objdir clean fclean re

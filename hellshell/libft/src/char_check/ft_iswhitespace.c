@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_printf.h                                        :+:    :+:            */
+/*   ft_iswhitespace.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ovan-rhe <ovan-rhe@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/25 16:11:30 by ovan-rhe      #+#    #+#                 */
-/*   Updated: 2022/10/31 14:00:45 by ovan-rhe      ########   odam.nl         */
+/*   Created: 2023/10/26 15:02:35 by ovan-rhe      #+#    #+#                 */
+/*   Updated: 2023/10/26 15:02:35 by ovan-rhe      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdarg.h>
-
-int		ft_printf(const char *s, ...);
-int		ft_printnbr(long int n);
-void	ft_printchar(char c);
-int		ft_printstr(char *s);
-int		print_hex(unsigned long long hex, char x);
-
-#endif
+/**
+ * @brief Checks if a character is a whitespace character
+ * @param c The character to check
+ * @return 1 if the character is a whitespace character, 0 if not
+ */
+int	ft_iswhitespace(int c)
+{
+	if (c == '\f' || c == '\n' || c == '\r' || \
+		c == '\t' || c == '\v' || c == ' ')
+		return (1);
+	return (0);
+}
