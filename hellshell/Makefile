@@ -38,6 +38,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				parser/free_list_functions.c	\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
+				parser/quote_join.c			\
 				parser/quotes.c				\
 				\
 				executor/error_handler.c	\
