@@ -69,9 +69,12 @@ typedef struct s_cmdlst
 int			create_cmd_lst(t_data *data);
 
 //--new node====================================================================
+
 int			redirects_to_node(t_toklst *token, t_cmdlst *node);
 void		argv_to_node(t_toklst *token, t_cmdlst *node);
+
 ////--utils=====================================================================
+
 int			argv_count(t_toklst *t_lst);
 int			count_redirs(t_toklst *token);
 bool		is_redirect(enum e_token_type type);
@@ -79,14 +82,18 @@ void		print_redirect_error(t_toklst *token);
 void		skip_redirects(t_toklst **token);
 
 //--quotes======================================================================
+
 void		handle_quotes(t_data *data, t_toklst **token);
 void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 
 //--expansion===================================================================
+
 void		expansion(t_data *data, t_toklst **token);
 bool		check_for_dollar(char *token);
 char		*getvar(t_data *data, char *to_expand, bool in_quotes);
+
 ////--quotes====================================================================
+
 void		expand_in_quotes(t_data *data, t_toklst *token);
 int			count_dollar_signs(char *token);
 int			exp_strlen(char *token, char **expansions);
@@ -94,16 +101,15 @@ void		cpy_expansion(char **exp_str, int *i, char *expansion);
 bool		is_valid_var(char c);
 
 //--command list functions======================================================
+
 t_cmdlst	*cmdlst_new_node(void);
 void		cmdlst_add_back(t_cmdlst **cmd_lst_head, t_cmdlst *new_node);
 
 //--rest========================================================================
+
 void		add_to_free_lst(t_data *data, char *content);
 void		token_lstfree(t_toklst **t_lst);
 void		token_lstdel_node(t_toklst **token);
 int			syntax_error_checks(t_data *data);
-
-//--testing=====================================================================
-void		printf_cmd_table(t_cmdlst **cmd_table_head);
 
 #endif

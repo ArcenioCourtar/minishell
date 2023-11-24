@@ -27,32 +27,6 @@ static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)
 	(*token)->type = type;
 }
 
-void	quote_join(t_data *data, t_toklst **token, bool joinaddback)
-{
-	if (!*token)
-		return ;
-	if (joinaddback)
-	{
-		(*token)->prev->token = ft_strjoin((*token)->prev->token, \
-														(*token)->token);
-		add_to_free_lst(data, (*token)->prev->token);
-		if ((*token)->next)
-		{
-			token_lstdel_node(token);
-			*token = (*token)->prev;
-		}
-		else
-			token_lstdel_node(token);
-	}
-	else
-	{
-		(*token)->token = ft_strjoin((*token)->token, (*token)->next->token);
-		add_to_free_lst(data, (*token)->token);
-		*token = (*token)->next;
-		token_lstdel_node(token);
-	}
-}
-
 static void	handle_empty_quotes(t_data *data, t_toklst **token)
 {
 	if ((*token)->next->type == TOK_NAME)
@@ -71,7 +45,7 @@ static void	handle_empty_quotes(t_data *data, t_toklst **token)
 	}
 }
 
-bool	valid_join_front(t_toklst *token)
+static bool	valid_join_front(t_toklst *token)
 {
 	if (!token->next)
 		return (false);
@@ -99,11 +73,7 @@ static void	modify_quote_token(t_data *data, t_toklst **token, \
 			expansion(data, token);
 	}
 	if (st_space == NOSPACE)
-	{			
 		quote_join(data, token, true);
-		// if ((*token)->prev && (*token)->next)
-		// 	*token = (*token)->prev;
-	}
 	if (valid_join_front(*token))
 	{
 		quote_join(data, token, false);
@@ -112,14 +82,6 @@ static void	modify_quote_token(t_data *data, t_toklst **token, \
 		return ;
 	}
 }
-
-/**
- * if no space in front
- * 		join in front
- * if no space in back
- * 		join in back
- * else if no space in 
- */
 
 void	handle_quotes(t_data *data, t_toklst **token)
 {
