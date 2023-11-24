@@ -42,14 +42,6 @@ static int	executor_wrapper(t_data	*dat)
 	return (ft_atoi(dat->exit_code->value));
 }
 
-static void	readline_wrapper(t_data	*dat, int exit_status)
-{
-	if (exit_status)
-		dat->input = readline("\e[1;31m➤\e[0m hellshell-0.2.1$ ");
-	else
-		dat->input = readline("\e[1;32m➤\e[0m hellshell-0.2.1$ ");
-}
-
 /*
 	readline return values
 	returns NULL if EOF is encountered and input is empty
@@ -67,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		signals_interactive_mode();
-		readline_wrapper(&dat, exit_status);
+		dat.input = readline("➤ hellshell-0.2.1$ ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
