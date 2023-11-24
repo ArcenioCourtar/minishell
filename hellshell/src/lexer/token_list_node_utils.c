@@ -12,13 +12,19 @@
 
 #include "lexer.h"
 #include "libft.h"
+#include <stdbool.h>
 
-static int	is_equal_token(char *token)
+/**
+ * @brief checks if the token contains an equal sign
+ * @param token pointer to the token to check
+ * @return true if the token contains an equal sign, else false
+ */
+static bool	is_equal_token(char *token)
 {
 	int	i;
 
 	if (!ft_isalpha(token[0]))
-		return (0);
+		return (false);
 	i = 0;
 	while (token[i])
 	{
@@ -27,17 +33,22 @@ static int	is_equal_token(char *token)
 		i++;
 	}
 	if (token[i] != '=')
-		return (0);
+		return (false);
 	i--;
 	while (i >= 0)
 	{
 		if (!ft_isalnum(token[i]) && token[i] != '_')
-			return (0);
+			return (false);
 		i--;
 	}
-	return (1);
+	return (true);
 }
 
+/**
+ * @brief gets the type of the token
+ * @param token pointer to the token to check
+ * @return type of the token
+ */
 enum e_token_type	get_token_type(char *token)
 {
 	if (token[0] == TOK_DQUOTE || token[0] == TOK_SQUOTE || \

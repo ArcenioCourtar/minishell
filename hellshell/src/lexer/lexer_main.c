@@ -14,6 +14,11 @@
 #include "libft.h"
 #include "lexer.h"
 
+/**
+ * @brief counts the number of tokens in the input
+ * @param input pointer to the input string
+ * @return number of tokens
+ */
 static int	token_counter(char *input)
 {
 	int	i;
@@ -38,6 +43,12 @@ static int	token_counter(char *input)
 	return (count);
 }
 
+/**
+ * @brief inserts a token in the token array
+ * @param input pointer to the input string
+ * @param tokens pointer to the token array
+ * @param token_count number of tokens
+ */
 static void	insert_tokens_in_array(char *input, char **tokens, int token_count)
 {
 	int	i;
@@ -66,6 +77,12 @@ static void	insert_tokens_in_array(char *input, char **tokens, int token_count)
 	tokens[i] = NULL;
 }
 
+/**
+ * @brief converts the input string to a token array
+ * @param data pointer to the data struct
+ * @param input pointer to the input string
+ * @return pointer to the token array
+ */
 static char	**input_to_token_array(t_data *data, char *input)
 {
 	char	**tokens;
@@ -80,6 +97,11 @@ static char	**input_to_token_array(t_data *data, char *input)
 	return (tokens);
 }
 
+/**
+ * @brief converts the token array to a token list
+ * @param data pointer to the data struct
+ * @param tokens pointer to the token array
+ */
 static void	token_array_to_list(t_data *data, char **tokens)
 {
 	int			i;
@@ -98,6 +120,10 @@ static void	token_array_to_list(t_data *data, char **tokens)
 	}
 }
 
+/**
+ * @brief the lexer function
+ * @param data pointer to the data struct
+ */
 void	lexer(t_data *data)
 {
 	data->tokens = input_to_token_array(data, data->input);

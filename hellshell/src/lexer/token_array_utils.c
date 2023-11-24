@@ -13,6 +13,11 @@
 #include "libft.h"
 #include "lexer.h"
 
+/**
+ * @brief checks if the input is a delimiter
+ * @param c character to check
+ * @return value of delimiter macro if the input is a delimiter, else -1
+ */
 int	is_delimiter(char c)
 {
 	int			i;
@@ -31,6 +36,12 @@ int	is_delimiter(char c)
 	return (-1);
 }
 
+/**
+ * @brief jumps over delimiters
+ * @param input pointer to the input string
+ * @param i pointer to the index of the input string
+ * @param curr_char_type type of the current character
+ */
 void	jump_delimiters(char *input, int *i, int curr_char_type)
 {
 	if (curr_char_type == DEL_DQUOTE || curr_char_type == DEL_SQUOTE)
@@ -46,6 +57,14 @@ void	jump_delimiters(char *input, int *i, int curr_char_type)
 	(*i)++;
 }
 
+/**
+ * @brief gets the length of a token
+ * @param input pointer to the input string
+ * @param j pointer to the index of the input string
+ * @param curr_char_type type of the current character
+ * @param substr_start index of the start of the token
+ * @return length of the token
+ */
 static int	get_quote_token_len(char *input, int *j, \
 						int curr_char_type, int substr_start)
 {
@@ -58,6 +77,13 @@ static int	get_quote_token_len(char *input, int *j, \
 	return (substr_len);
 }
 
+/**
+ * @brief gets the length of a token containing only spaces
+ * @param input pointer to the input string
+ * @param j pointer to the index of the input string
+ * @param substr_start index of the start of the token
+ * @return length of the token
+ */
 static int	get_space_token_len(char *input, int *j, int substr_start)
 {
 	int	substr_len;
@@ -69,6 +95,13 @@ static int	get_space_token_len(char *input, int *j, int substr_start)
 	return (substr_len);
 }
 
+/**
+ * @brief inserts a token in the token array
+ * @param input pointer to the input string
+ * @param tokens_node pointer to the token array
+ * @param j pointer to the index of the input string
+ * @param curr_char_type type of the current character
+ */
 void	insert_non_text_tokens(char *input, char **tokens_node, \
 								int *j, int curr_char_type)
 {

@@ -13,6 +13,11 @@
 #include "lexer.h"
 #include "libft.h"
 
+/**
+ * @brief creates a new token list node
+ * @param token pointer to the token string
+ * @return pointer to the new node
+ */
 t_toklst	*token_lstnew_node(char *token)
 {
 	t_toklst	*new_node;
@@ -27,6 +32,11 @@ t_toklst	*token_lstnew_node(char *token)
 	return (new_node);
 }
 
+/**
+ * @brief returns the last node of the token list
+ * @param t_lst pointer to the first node of the token list
+ * @return pointer to the last node of the token list
+ */
 static t_toklst	*token_lstlast(t_toklst *t_lst)
 {
 	if (!t_lst)
@@ -39,6 +49,11 @@ static t_toklst	*token_lstlast(t_toklst *t_lst)
 	return (t_lst);
 }
 
+/**
+ * @brief adds a new node to the end of the token list
+ * @param t_lst_head pointer to the first node of the token list
+ * @param new_node pointer to the new node to add
+ */
 void	token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node)
 {
 	t_toklst	*tmp;
@@ -56,6 +71,10 @@ void	token_lstadd_back(t_toklst **t_lst_head, t_toklst *new_node)
 	}
 }
 
+/**
+ * @brief frees the token list
+ * @param t_lst pointer to the first node of the token list
+ */
 void	token_lstfree(t_toklst **t_lst)
 {
 	t_toklst	*tmp;
@@ -68,6 +87,10 @@ void	token_lstfree(t_toklst **t_lst)
 	}
 }
 
+/**
+ * @brief deletes a node from the token list
+ * @param token pointer to the node to delete
+ */
 void	token_lstdel_node(t_toklst **token)
 {
 	t_toklst	*current_tok;
