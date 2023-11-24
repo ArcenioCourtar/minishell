@@ -14,10 +14,12 @@
 #include "lexer.h"
 #include "libft.h"
 
-// iterates over [str] with [i]
-// to check if quote [type] is closed
-// returns 1 for unclosed quotes
-// returns 0 for closed quotes
+/**
+ * @brief iterates over a string to check if a quote is closed
+ * @param str string to iterate over
+ * @param type type of quote to check
+ * @param i pointer to the index of the string
+ */
 static int	iter_quoted_str(char *str, enum e_token_type type, int *i)
 {
 	enum e_token_type	state;
@@ -34,9 +36,12 @@ static int	iter_quoted_str(char *str, enum e_token_type type, int *i)
 	return (0);
 }
 
-// iterates over [str] with [i]
-// to check for repeated (returns 124) or empty (returns 1) pipes
-// returns 0 for no errors
+/**
+ * @brief iterates over a string to check for repeated or empty pipes
+ * @param str string to iterate over
+ * @param i pointer to the index of the string
+ * @return 0 for no errors, 124 for repeated pipes, 1 for empty pipes
+ */
 static int	iter_pipe_str(char *str, int *i)
 {
 	(*i)++;
@@ -50,10 +55,12 @@ static int	iter_pipe_str(char *str, int *i)
 	return (0);
 }
 
-// checks for syntax errors in [input_str] regarding pipes and quotes
-// returns 39(') or 34(") in case of unclosed quotes
-// returns 124 or 1 in case of error regarding '|'
-// returns 0 on succes
+/**
+ * @brief checks for syntax errors in a string regarding pipes and quotes
+ * @param input_str string to check
+ * @return 39(') or 34(") in case of unclosed quotes, 
+ * 124 for repeated pipes or 1 for empty pipes, 0 on succes
+ */
 static int	pipe_quote_check(char *input_str)
 {
 	int	i;
@@ -86,6 +93,12 @@ static int	pipe_quote_check(char *input_str)
 // returns error number for corresponding syntax error
 // regarding pipes and quotes
 // and prints corresponding error message
+/**
+ * @brief prints error message corresponding to a syntax error
+ * @param data pointer to the program data struct
+ * @return 39(') or 34(") in case of unclosed quotes, 
+ * 124 for repeated pipes or 1 for empty pipes, 0 on succes
+ */
 int	syntax_error_checks(t_data *data)
 {
 	int	errnumber;
@@ -100,7 +113,10 @@ int	syntax_error_checks(t_data *data)
 	return (errnumber);
 }
 
-// prints error message corresponding to a redirect error in [token]
+/**
+ * @brief prints error message corresponding to a redirect error in a token
+ * @param token token where error occured (NULL if newline)
+ */
 void	print_redirect_error(t_toklst *token)
 {
 	if (token)

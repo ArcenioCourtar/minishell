@@ -15,6 +15,11 @@
 #include "lexer.h"
 #include "libft.h"
 
+/**
+ * @brief checks if a token contains a dollar sign
+ * @param token pointer to the token to check
+ * @return true if the token contains a dollar sign, else false
+ */
 bool	check_for_dollar(char *token)
 {
 	int	i;
@@ -29,6 +34,12 @@ bool	check_for_dollar(char *token)
 	return (false);
 }
 
+/**
+ * @brief iterates over the environment list to find the variable to expand
+ * @param lst pointer to the environment list
+ * @param to_expand pointer to the variable to expand
+ * @return pointer to the expanded variable or NULL if not found
+ */
 static char	*envlst_iter(t_envlst *lst, char *to_expand)
 {
 	int	i;
@@ -45,6 +56,12 @@ static char	*envlst_iter(t_envlst *lst, char *to_expand)
 	return (NULL);
 }
 
+/**
+ * @brief expands the question mark variable
+ * @param data pointer to the program data struct
+ * @param to_expand pointer to the variable to expand
+ * @return pointer to the expanded variable
+ */
 char	*expand_question_join(t_data *data, char *to_expand)
 {
 	char	*expanded;
@@ -56,6 +73,13 @@ char	*expand_question_join(t_data *data, char *to_expand)
 	return (expanded);
 }
 
+/**
+ * @brief expands the variable
+ * @param data pointer to the program data struct
+ * @param to_expand pointer to the variable to expand
+ * @param in_quotes true if the variable is in quotes, else false
+ * @return pointer to the expanded variable
+ */
 char	*getvar(t_data *data, char *to_expand, bool in_quotes)
 {
 	char	*var_value;
@@ -80,6 +104,11 @@ char	*getvar(t_data *data, char *to_expand, bool in_quotes)
 	return (var_value);
 }
 
+/**
+ * @brief expands the variable in a token
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to expand
+ */
 void	expansion(t_data *data, t_toklst **token)
 {
 	if ((*token)->type == TOK_DQUOTE)

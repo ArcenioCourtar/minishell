@@ -14,6 +14,12 @@
 #include "parser.h"
 #include "exit_codes.h"
 
+/**
+ * @brief checks for syntax errors, handles expansions and quotes and creates
+ * the command list
+ * @param data pointer to the data struct
+ * @return 0 for no errors, 1 for syntax errors
+ */
 int	parser(t_data *data)
 {
 	t_toklst	*tmp;

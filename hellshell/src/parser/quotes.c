@@ -14,6 +14,12 @@
 #include "lexer.h"
 #include "libft.h"
 
+/**
+ * @brief trims the quotes from the token
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to trim
+ * @param type type of quote to trim
+ */
 static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)
 {
 	char	*tmp;
@@ -27,6 +33,12 @@ static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)
 	(*token)->type = type;
 }
 
+/**
+ * @brief checks if the token contains a dollar sign
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to check
+ * @return true if the token contains a dollar sign, else false
+ */
 static void	handle_empty_quotes(t_data *data, t_toklst **token)
 {
 	if ((*token)->next->type == TOK_NAME)
@@ -45,6 +57,11 @@ static void	handle_empty_quotes(t_data *data, t_toklst **token)
 	}
 }
 
+/**
+ * @brief checks if the token should be joined to the previous token
+ * @param token pointer to the token to check
+ * @return true if the token should be joined to the previous token, else false
+ */
 static bool	valid_join_front(t_toklst *token)
 {
 	if (!token->next)
@@ -58,6 +75,13 @@ static bool	valid_join_front(t_toklst *token)
 	return (true);
 }
 
+/**
+ * @brief modifies the token depending on the type of quote
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to modify
+ * @param type type of quote to modify
+ * @param st_space type of space before the token
+ */
 static void	modify_quote_token(t_data *data, t_toklst **token, \
 							enum e_token_type type, enum e_st_space st_space)
 {
@@ -83,6 +107,11 @@ static void	modify_quote_token(t_data *data, t_toklst **token, \
 	}
 }
 
+/**
+ * @brief handles quotes accordingly
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to handle
+ */
 void	handle_quotes(t_data *data, t_toklst **token)
 {
 	enum e_st_space	st_space;

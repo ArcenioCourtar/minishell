@@ -15,6 +15,12 @@
 #include "libft.h"
 #include "exit_codes.h"
 
+/**
+ * @brief assigns the name of a redirection to a command list node
+ * @param token pointer to the first token of the command
+ * @param node pointer to the command list node
+ * @param i index of the redirection
+ */
 static int	assign_redirect_name(t_toklst *token, t_cmdlst *node, int i)
 {
 	while (token && token->type == TOK_SPACE)
@@ -30,6 +36,13 @@ static int	assign_redirect_name(t_toklst *token, t_cmdlst *node, int i)
 	return (0);
 }
 
+/**
+ * @brief loops over the redirections in a command and assigns them to a node
+ * @param token pointer to the first token of the command
+ * @param command pointer to the command list node
+ * @param rdr_count number of redirections in the command
+ * @return 0 for no errors, 1 for syntax errors
+ */
 static int	loop_redirs_to_node(t_toklst *token, t_cmdlst *command, \
 																int rdr_count)
 {
@@ -52,6 +65,12 @@ static int	loop_redirs_to_node(t_toklst *token, t_cmdlst *command, \
 	return (ret_value);
 }
 
+/**
+ * @brief assigns the redirections in a command to a command list node
+ * @param token pointer to the first token of the command
+ * @param node pointer to the command list node
+ * @return 0 for no errors, 1 for syntax errors
+ */
 int	redirects_to_node(t_toklst *token, t_cmdlst *node)
 {
 	int	ret_value;
@@ -69,6 +88,11 @@ int	redirects_to_node(t_toklst *token, t_cmdlst *node)
 	return (ret_value);
 }
 
+/**
+ * @brief loops over the arguments in a command and assigns them to a node
+ * @param token pointer to the first token of the command
+ * @param node pointer to the command list node
+ */
 void	argv_to_node(t_toklst *token, t_cmdlst *node)
 {
 	t_toklst	*tmp;

@@ -13,6 +13,11 @@
 #include "libft.h"
 #include <stdbool.h>
 
+/**
+ * @brief checks if a character is a valid variable character
+ * @param c character to check
+ * @return true if the character is a valid variable character, else false
+ */
 bool	is_valid_var(char c)
 {
 	if (!ft_iswhitespace(c) && (ft_isalnum(c) || c == '_' || c == '?'))
@@ -20,6 +25,11 @@ bool	is_valid_var(char c)
 	return (false);
 }
 
+/**
+ * @brief counts the number of dollar signs in a token
+ * @param token pointer to the token to check
+ * @return number of dollar signs
+ */
 int	count_dollar_signs(char *token)
 {
 	int	i;
@@ -40,6 +50,12 @@ int	count_dollar_signs(char *token)
 	return (count);
 }
 
+/**
+ * @brief counts the length of the expanded string
+ * @param token pointer to the token to expand
+ * @param expansions array of expansions
+ * @return length of the expanded string
+ */
 int	exp_strlen(char *token, char **expansions)
 {
 	int	i;
@@ -68,6 +84,12 @@ int	exp_strlen(char *token, char **expansions)
 	return (len);
 }
 
+/**
+ * @brief copies an expansion to the expanded string
+ * @param exp_str pointer to the array of expanded strings
+ * @param i pointer to the index of the expanded string
+ * @param expansion pointer to the expansion to copy
+ */
 void	cpy_expansion(char **exp_str, int *i, char *expansion)
 {
 	int	j;

@@ -15,6 +15,13 @@
 #include "parser.h"
 #include <stdlib.h>
 
+/**
+ * @brief parses a chunk of tokens into a command list node
+ * @param token pointer to the first token of the command
+ * @param cmd_lst_head pointer to the head of the command list
+ * @param type type of the command
+ * @return 0 for no errors, 1 for syntax errors
+ */
 static int	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 														enum e_cmd_type type)
 {
@@ -32,6 +39,11 @@ static int	parse_chunk(t_toklst *token, t_cmdlst **cmd_lst_head, \
 	return (ret_value);
 }
 
+/**
+ * @brief iterates over the token to find the next command
+ * @param token pointer to the first token of the command
+ * @return 1 if there are no more commands, 0 otherwise
+ */
 static int	iterate_token(t_toklst **token)
 {
 	if (!*token)
@@ -45,6 +57,11 @@ static int	iterate_token(t_toklst **token)
 	return (0);
 }
 
+/**
+ * @brief creates the command list
+ * @param data pointer to the program data struct
+ * @return 0 for no errors, 1 for syntax errors
+ */
 int	create_cmd_lst(t_data *data)
 {
 	t_toklst		*current_token;

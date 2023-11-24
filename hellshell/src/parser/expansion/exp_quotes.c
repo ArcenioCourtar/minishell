@@ -15,6 +15,12 @@
 #include "lexer.h"
 #include "libft.h"
 
+/**
+ * @brief gets the expanded variable
+ * @param data pointer to the data struct
+ * @param token pointer to the token to expand
+ * @param i pointer to the index of the token
+ */
 static char	*get_var_string(t_data *data, char *token, int *i)
 {
 	int		start;
@@ -35,6 +41,12 @@ static char	*get_var_string(t_data *data, char *token, int *i)
 	return (expanded);
 }
 
+/**
+ * @brief gets the expansion of a token if it's a valid variable
+ * @param data pointer to the data struct
+ * @param token pointer to the token to expand
+ * @return pointer to the expanded token or NULL if not found
+ */
 char	*get_expansion(t_data *data, char *token)
 {
 	static int	i;
@@ -53,6 +65,12 @@ char	*get_expansion(t_data *data, char *token)
 	return (expanded);
 }
 
+/**
+ * @brief initializes three integers to zero
+ * @param i1 pointer to the first integer
+ * @param i2 pointer to the second integer
+ * @param i3 pointer to the third integer
+ */
 static void	init_ints_zero(int *i1, int *i2, int *i3)
 {
 	*i1 = 0;
@@ -60,6 +78,12 @@ static void	init_ints_zero(int *i1, int *i2, int *i3)
 	*i3 = 0;
 }
 
+/**
+ * @brief expands the token with the expansions
+ * @param token pointer to the token to expand
+ * @param expansions array of expansions
+ * @return pointer to the expanded token
+ */
 char	*add_expans_to_token(char *token, char **expansions)
 {
 	char	*exp_str;
@@ -89,6 +113,11 @@ char	*add_expans_to_token(char *token, char **expansions)
 	return (exp_str);
 }
 
+/**
+ * @brief expands the variables in a quotes token
+ * @param data pointer to the data struct
+ * @param token pointer to the token to expand
+ */
 void	expand_in_quotes(t_data *data, t_toklst *token)
 {
 	int		i;

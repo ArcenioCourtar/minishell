@@ -15,6 +15,11 @@
 #include "libft.h"
 #include "lexer.h"
 
+/**
+ * @brief counts the number of redirections in a command
+ * @param token pointer to the first token of the command
+ * @return number of redirections
+ */
 int	count_redirs(t_toklst *token)
 {
 	t_toklst	*tmp;
@@ -38,6 +43,10 @@ int	count_redirs(t_toklst *token)
 	return (count);
 }
 
+/**
+ * @brief skips over a redirection and spaces in a command
+ * @param token pointer to the first token of the command
+ */
 void	skip_redirects(t_toklst **token)
 {
 	*token = (*token)->next;
@@ -46,6 +55,11 @@ void	skip_redirects(t_toklst **token)
 	*token = (*token)->next;
 }
 
+/**
+ * @brief counts the number of arguments in a command
+ * @param t_lst pointer to the first token of the command
+ * @return number of arguments
+ */
 int	argv_count(t_toklst *t_lst)
 {
 	int	count;
@@ -66,6 +80,11 @@ int	argv_count(t_toklst *t_lst)
 	return (count);
 }
 
+/**
+ * @brief checks if the token is a redirection
+ * @param type type of the token
+ * @return true if the token is a redirection, false otherwise
+ */
 bool	is_redirect(enum e_token_type type)
 {
 	if (type == TOK_REDIN || type == TOK_REDOUT || \
