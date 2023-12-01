@@ -19,3 +19,5 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+// I'll move the heredoc functions here later to make everything norm :)
+// Note that this file is currently also not in the Makefile

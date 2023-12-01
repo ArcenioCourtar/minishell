@@ -54,15 +54,20 @@ int	redirects(t_exec *exec)
 {
 	t_cmdlst	*node;
 	int			i;
+	bool		hd_last;
 
 	node = exec->my_node;
-	if (node->redirect == NULL)
+	hd_last = false;
+	if (node->redirect == NULL)	
 		return (0);
 	i = 0;
 	while (node->redirect[i].name)
 	{
+		if (node->redirect[i].type == HEREDOC)
+			hd_last = true;
 		if (node->redirect[i].type == REDIN)
 		{
+			hd_last = false;
 			if (red_in_wrapper(node, i) != 0)
 				return (errno);
 		}
@@ -74,7 +79,12 @@ int	redirects(t_exec *exec)
 		}
 		i++;
 	}
-	dup2(node->fd_in, STDIN_FILENO);
+	if (hd_last == true)
+	{
+		dup2(node->heredoc[0], STDIN_FILENO);
+	}
+	else
+		dup2(node->fd_in, STDIN_FILENO);
 	dup2(node->fd_out, STDOUT_FILENO);
 	return (0);
 }

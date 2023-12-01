@@ -63,7 +63,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		signals_interactive_mode();
-		dat.input = readline("➤ hellshell-0.2.1$ ");
+		dat.input = readline("➤ hellshell-0.9$ ");
 		if (!dat.input)
 			break ;
 		add_history(dat.input);
