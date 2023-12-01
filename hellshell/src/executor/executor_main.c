@@ -47,6 +47,48 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	wait_for_all(dat);
 }
 
+void	run_heredoc(t_data *dat, t_exec *exec)
+{
+	(void) dat;
+	printf("heredoc number %i\n", exec->heredoc_num + 1);
+	exit(EXIT_SUCCESS);
+}
+
+void	create_heredocs(t_data *dat, t_exec *exec)
+{
+	t_cmdlst	*node;
+	int			i;
+	pid_t		pid;
+
+	node = exec->my_node;
+	exec->heredoc_num = 0;
+	if (node->redirect == NULL)
+		return ;
+	while (node)
+	{
+		i = 0;
+		while (node->redirect[i].name)
+		{
+			if (node->redirect[i].type == HEREDOC)
+			{
+				pid = fork();
+				if (pid == -1)
+					exit(EXIT_FAILURE);
+				if (pid == 0)
+					run_heredoc(dat, exec);
+				exec->heredoc_num++;
+			}
+			i++;
+		}
+		node = node->next;
+	}
+	while (exec->heredoc_num > 0)
+	{
+		wait(NULL);
+		exec->heredoc_num--;
+	}
+}
+
 /*
 	program flow notes:
 	heredocs are generated and run before any other actions.
@@ -56,12 +98,13 @@ void	executor(t_data *dat)
 {
 	t_exec	exec;
 
+	signals_in_process();
 	if (*(dat->cmd_lst) == NULL)
 		return ;
 	exec.exit_code = dat->exit_code;
 	exec.fork_num = count_forks(dat->cmd_lst);
-	signals_in_process();
 	exec.my_node = *(dat->cmd_lst);
+	create_heredocs(dat, &exec);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
 	{
 		exec_parent_wrapper(dat, &exec);

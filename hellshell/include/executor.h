@@ -33,6 +33,7 @@ typedef struct s_exec
 	char				*cmd;
 	t_cmdlst			*my_node;
 	int					in_out_fd[2];
+	int					heredoc_num;
 }	t_exec;
 
 bool	check_path(char *path);
