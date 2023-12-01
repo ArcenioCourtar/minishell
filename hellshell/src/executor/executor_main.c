@@ -49,19 +49,44 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 
 void	run_heredoc(t_data *dat, t_exec *exec)
 {
+	char	*input;
+
 	(void) dat;
-	printf("heredoc number %i\n", exec->heredoc_num + 1);
+	(void) exec;
+	input = readline("> ");
+	write(STDERR_FILENO, input, ft_strlen(input));
+	write(STDERR_FILENO, "\n", 1);
 	exit(EXIT_SUCCESS);
+}
+
+int	count_heredocs(t_cmdlst *node)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	while (node)
+	{
+		i = 0;
+		while (node->redirect[i].name)
+		{
+			if (node->redirect[i].type == HEREDOC)
+				count++;
+			i++;
+		}
+		node = node->next;
+	}
+	return (count);
 }
 
 void	create_heredocs(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*node;
 	int			i;
+	// int			count;
 	pid_t		pid;
 
 	node = exec->my_node;
-	exec->heredoc_num = 0;
 	if (node->redirect == NULL)
 		return ;
 	while (node)
@@ -76,16 +101,11 @@ void	create_heredocs(t_data *dat, t_exec *exec)
 					exit(EXIT_FAILURE);
 				if (pid == 0)
 					run_heredoc(dat, exec);
-				exec->heredoc_num++;
+				wait(NULL);
 			}
 			i++;
 		}
 		node = node->next;
-	}
-	while (exec->heredoc_num > 0)
-	{
-		wait(NULL);
-		exec->heredoc_num--;
 	}
 }
 
