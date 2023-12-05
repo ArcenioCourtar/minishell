@@ -19,7 +19,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void	run_heredoc(t_data *dat, t_cmdlst *node, char *delim)
+void	run_heredoc(t_data *dat, t_cmdlst *node, char *delim, \
+enum e_redir_type type)
 {
 	char	*input;
 
@@ -27,12 +28,17 @@ void	run_heredoc(t_data *dat, t_cmdlst *node, char *delim)
 	while (1)
 	{
 		input = readline("> ");
+		if (!input)
+			break ;
 		if (ft_strlen(delim) == 0 && ft_strlen(input) == 0)
 			break ;
 		if (ft_strncmp(delim, input, ft_strlen(delim) + 1) == 0)
 			break ;
+		if (type == HEREDOC_EXP)
+			ft_printf_err("expansion code here\n");
 		write(node->heredoc[1], input, ft_strlen(input));
 		write(node->heredoc[1], "\n", 1);
+		free(input);
 	}
 	exit(EXIT_SUCCESS);
 }
@@ -41,7 +47,8 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 {
 	pid_t		pid;
 
-	if (node->redirect[i].type == HEREDOC_EXP)
+	if (node->redirect[i].type == HEREDOC_EXP || \
+	node->redirect[i].type == HEREDOC_NOEXP)
 	{
 		if (*doc_ready == true)
 			close(node->heredoc[0]);
@@ -52,7 +59,8 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 		if (pid == -1)
 			exit(EXIT_FAILURE);
 		if (pid == 0)
-			run_heredoc(dat, node, node->redirect[i].name);
+			run_heredoc(dat, node, node->redirect[i].name, \
+			node->redirect[i].type);
 		wait(NULL);
 		close(node->heredoc[1]);
 	}
