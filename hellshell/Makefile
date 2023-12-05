@@ -35,6 +35,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				parser/expansion/exp_quotes.c		\
 				parser/expansion/exp_quotes_utils.c	\
 				parser/expansion/exp_main.c			\
+				parser/expansion/exp_utils.c		\
 				parser/free_list_functions.c	\
 				parser/parser_error.c		\
 				parser/parser_main.c		\
@@ -57,8 +58,7 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				err_handling/ft_printf_err_utils.c \
 				err_handling/ft_printf_err.c \
 				\
-				signals.c					\
-				\
+				signals.c
 
 SRC_DIR	= src
 OBJ_DIR	= obj

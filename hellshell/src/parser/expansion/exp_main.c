@@ -111,6 +111,8 @@ char	*getvar(t_data *data, char *to_expand, bool in_quotes)
  */
 void	expansion(t_data *data, t_toklst **token)
 {
+	if (heredoc_exception(data, token))
+		return ;
 	if ((*token)->type == TOK_DQUOTE)
 		expand_in_quotes(data, *token);
 	else if ((*token)->type == TOK_DOLLAR)

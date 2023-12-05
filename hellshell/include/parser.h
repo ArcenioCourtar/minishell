@@ -42,7 +42,8 @@ enum e_redir_type
 	REDIN = '<',
 	REDOUT = '>',
 	REDAPPEND = '>' / 2,
-	HEREDOC = '<' / 2
+	HEREDOC_EXP = '<' / 2,
+	HEREDOC_NOEXP = '<' + '"'
 };
 
 typedef struct s_redirect
@@ -91,6 +92,7 @@ void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 void		expansion(t_data *data, t_toklst **token);
 bool		check_for_dollar(char *token);
 char		*getvar(t_data *data, char *to_expand, bool in_quotes);
+int			heredoc_exception(t_data *data, t_toklst **token);
 
 ////--quotes====================================================================
 
@@ -99,6 +101,7 @@ int			count_dollar_signs(char *token);
 int			exp_strlen(char *token, char **expansions);
 void		cpy_expansion(char **exp_str, int *i, char *expansion);
 bool		is_valid_var(char c);
+void		trim_quotes(t_data *data, t_toklst **token, enum e_token_type type);
 
 //--command list functions======================================================
 
