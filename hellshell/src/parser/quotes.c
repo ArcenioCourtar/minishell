@@ -20,7 +20,7 @@
  * @param token pointer to the token to trim
  * @param type type of quote to trim
  */
-static void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)
+void	trim_quotes(t_data *data, t_toklst **token, enum e_token_type type)
 {
 	char	*tmp;
 	char	trim[2];
