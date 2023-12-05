@@ -82,7 +82,7 @@ static void	hd_loop(t_data *dat, t_exec *exec)
 	{
 		i = 0;
 		doc_ready = false;
-		while (node->redirect[i].name)
+		while (node->redirect && node->redirect[i].name)
 		{
 			hd_create(dat, node, i, &doc_ready);
 			if (node->argv[0] == NULL)
