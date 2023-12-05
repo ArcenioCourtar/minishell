@@ -47,11 +47,11 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	wait_for_all(dat);
 }
 
-/*
-	program flow notes:
-	heredocs are generated and run before any other actions.
-	Any error involving redirects prevents the associated command from running
-*/
+/**
+ * @brief function that handles heredocs, builtins, external programs and
+ * redirects.
+ * @param dat main data structure
+ */
 void	executor(t_data *dat)
 {
 	t_exec	exec;

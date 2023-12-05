@@ -96,7 +96,7 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 		wait(NULL);
 		close(node->heredoc[1]);
 	}
-	else if (node->redirect[i].type == REDIN && *doc_ready == true)
+	else if ((node->redirect[i].type == REDIN && *doc_ready == true))
 	{
 		*doc_ready = false;
 		close(node->heredoc[0]);
@@ -114,9 +114,11 @@ static void	hd_loop(t_data *dat, t_exec *exec)
 	{
 		i = 0;
 		doc_ready = false;
-		while (node->redirect[i].name)
+		while (node->redirect && node->redirect[i].name)
 		{
 			hd_create(dat, node, i, &doc_ready);
+			if (node->argv[0] == NULL)
+				close(node->heredoc[0]);
 			i++;
 		}
 		node = node->next;
