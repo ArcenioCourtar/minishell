@@ -44,7 +44,7 @@ static void	oldpwd_assignment(t_data *dat, char *buffer)
 
 void	builtin_pwd(t_data *dat, t_exec *exec)
 {
-	char	buffer[PATH_MAX];
+	char	buffer[PATH_MAX + 1];
 
 	(void) exec;
 	if (getcwd(buffer, PATH_MAX) == NULL)
@@ -59,7 +59,7 @@ void	builtin_pwd(t_data *dat, t_exec *exec)
 	}
 }
 
-bool	cd_error(t_data *dat, t_exec *exec, char *buffer)
+static bool	cd_error(t_data *dat, t_exec *exec, char *buffer)
 {
 	if (exec->my_node->argv[2])
 	{
@@ -85,7 +85,7 @@ bool	cd_error(t_data *dat, t_exec *exec, char *buffer)
 
 void	builtin_cd(t_data *dat, t_exec *exec)
 {
-	char		buffer[PATH_MAX];
+	char		buffer[PATH_MAX + 1];
 
 	if (!exec->my_node->argv[1])
 	{
