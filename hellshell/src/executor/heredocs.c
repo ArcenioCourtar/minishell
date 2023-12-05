@@ -41,7 +41,7 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 {
 	pid_t		pid;
 
-	if (node->redirect[i].type == HEREDOC)
+	if (node->redirect[i].type == HEREDOC_EXP)
 	{
 		if (*doc_ready == true)
 			close(node->heredoc[0]);

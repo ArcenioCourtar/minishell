@@ -51,7 +51,7 @@ static int	red_out_wrapper(t_cmdlst *node, int i)
 // last minute norm necessities :(
 static int	wrapper_wrapper(t_cmdlst *node, int i, bool *hd_last)
 {
-	if (node->redirect[i].type == HEREDOC)
+	if (node->redirect[i].type == HEREDOC_EXP)
 		*hd_last = true;
 	if (node->redirect[i].type == REDIN)
 	{
