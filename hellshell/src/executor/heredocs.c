@@ -103,7 +103,7 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 	}
 }
 
-static void	hd_loop(t_data *dat, t_exec *exec)
+void	create_heredocs(t_data *dat, t_exec *exec)
 {
 	int			i;
 	bool		doc_ready;
@@ -117,17 +117,13 @@ static void	hd_loop(t_data *dat, t_exec *exec)
 		while (node->redirect && node->redirect[i].name)
 		{
 			hd_create(dat, node, i, &doc_ready);
-			if (node->argv[0] == NULL)
+			if (node->argv[0] == NULL && doc_ready == true)
+			{
+				doc_ready = false;
 				close(node->heredoc[0]);
+			}
 			i++;
 		}
 		node = node->next;
 	}
-}
-
-void	create_heredocs(t_data *dat, t_exec *exec)
-{
-	if (exec->my_node->redirect == NULL)
-		return ;
-	hd_loop(dat, exec);
 }
