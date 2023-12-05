@@ -36,8 +36,6 @@ static char	*get_var_string(t_data *data, char *token, int *i)
 		ft_error(errno, strerror(errno));
 	expanded = getvar(data, to_expand, true);
 	free(to_expand);
-	if (!token[*i])
-		*i = 0;
 	return (expanded);
 }
 
@@ -47,7 +45,7 @@ static char	*get_var_string(t_data *data, char *token, int *i)
  * @param token pointer to the token to expand
  * @return pointer to the expanded token or NULL if not found
  */
-char	*get_expansion(t_data *data, char *token)
+char	*get_expansion(t_data *data, char *token, int exp_i, int dol_count)
 {
 	static int	i;
 	char		*expanded;
@@ -62,6 +60,8 @@ char	*get_expansion(t_data *data, char *token)
 		}
 		i++;
 	}
+	if (exp_i == dol_count - 1)
+		i = 0;
 	return (expanded);
 }
 
@@ -133,7 +133,7 @@ void	expand_in_quotes(t_data *data, t_toklst *token)
 	i = 0;
 	while (i < dol_count)
 	{
-		expansions[i] = get_expansion(data, token->token);
+		expansions[i] = get_expansion(data, token->token, i, dol_count);
 		i++;
 	}
 	expansions[i] = "\0";

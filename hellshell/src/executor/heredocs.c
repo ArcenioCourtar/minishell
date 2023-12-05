@@ -19,10 +19,37 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+char	*heredoc_expansion(t_data *data, char *to_expand)
+{
+	int		i;
+	char	**expansions;
+	int		dol_count;
+	char	*expansion;
+
+	dol_count = count_dollar_signs(to_expand);
+	if (dol_count == 0)
+		return (NULL);
+	expansions = (char **)malloc(sizeof(char *) * (dol_count + 1));
+	if (!expansions)
+		ft_error(errno, strerror(errno));
+	i = 0;
+	while (i < dol_count)
+	{
+		expansions[i] = get_expansion(data, to_expand, i, dol_count);
+		i++;
+	}
+	expansions[i] = "\0";
+	expansion = NULL;
+	expansion = add_expans_to_token(to_expand, expansions);
+	free(expansions);
+	return (expansion);
+}
+
 void	run_heredoc(t_data *dat, t_cmdlst *node, char *delim, \
 enum e_redir_type type)
 {
 	char	*input;
+	char	*expanded;
 
 	(void) dat;
 	while (1)
@@ -34,9 +61,14 @@ enum e_redir_type type)
 			break ;
 		if (ft_strncmp(delim, input, ft_strlen(delim) + 1) == 0)
 			break ;
-		if (type == HEREDOC_EXP)
-			ft_printf_err("expansion code here\n");
-		write(node->heredoc[1], input, ft_strlen(input));
+		if (type == HEREDOC_EXP && count_dollar_signs(input) > 0)
+		{
+			expanded = heredoc_expansion(dat, input);
+			write(node->heredoc[1], expanded, ft_strlen(expanded));
+			free(expanded);
+		}
+		else
+			write(node->heredoc[1], input, ft_strlen(input));
 		write(node->heredoc[1], "\n", 1);
 		free(input);
 	}
