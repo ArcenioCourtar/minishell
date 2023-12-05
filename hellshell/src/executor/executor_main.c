@@ -47,66 +47,6 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	wait_for_all(dat);
 }
 
-void	run_heredoc(t_data *dat, t_exec *exec, t_cmdlst *node, char *keyword)
-{
-	char	*input;
-
-	(void) dat;
-	(void) exec;
-	while (1)
-	{
-		input = readline("> ");
-		if (ft_strlen(keyword) == 0 && ft_strlen(input) == 0)
-			break ;
-		if (ft_strncmp(keyword, input, ft_strlen(keyword) + 1) == 0)
-			break ;
-		write(node->heredoc[1], input, ft_strlen(input));
-		write(node->heredoc[1], "\n", 1);
-	}
-	exit(EXIT_SUCCESS);
-}
-
-void	create_heredocs(t_data *dat, t_exec *exec)
-{
-	t_cmdlst	*node;
-	int			i;
-	pid_t		pid;
-	bool		doc_ready;
-
-	node = exec->my_node;
-	doc_ready = false;
-	if (node->redirect == NULL)
-		return ;
-	while (node)
-	{
-		i = 0;
-		while (node->redirect[i].name)
-		{
-			if (node->redirect[i].type == HEREDOC)
-			{
-				if (doc_ready == true)
-					close(node->heredoc[0]);
-				doc_ready = true;
-				pipe(node->heredoc);
-				pid = fork();
-				if (pid == -1)
-					exit(EXIT_FAILURE);
-				if (pid == 0)
-					run_heredoc(dat, exec, node, node->redirect[i].name);
-				wait(NULL);
-				close(node->heredoc[1]);
-			}
-			else if (node->redirect[i].type == REDIN && doc_ready == true)
-			{
-				doc_ready = false;
-				close(node->heredoc[0]);
-			}
-			i++;
-		}
-		node = node->next;
-	}
-}
-
 /*
 	program flow notes:
 	heredocs are generated and run before any other actions.

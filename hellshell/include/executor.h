@@ -53,5 +53,6 @@ void	find_path(t_exec *exec);
 void	restore_old_fds(t_exec *exec);
 void	save_old_fds(t_exec *exec);
 bool	check_builtin(t_data *dat, t_cmdlst *node);
+void	create_heredocs(t_data *dat, t_exec *exec);
 
 #endif
