@@ -27,11 +27,11 @@ static int	assign_redirect_name(t_toklst *token, t_cmdlst *node, int i)
 		token = token->next;
 	if (token && token->type == TOK_NAME)
 		node->redirect[i].name = token->token;
-	else if (token && node->redirect[i].type == HEREDOC_EXP \
-			&& (token->type == TOK_DQUOTE || token->type == TOK_SQUOTE))
+	else if (token && (token->type == TOK_DQUOTE || token->type == TOK_SQUOTE))
 	{
 		node->redirect[i].name = token->token;
-		node->redirect[i].type = HEREDOC_NOEXP;
+		if (node->redirect[i].type == HEREDOC_EXP)
+			node->redirect[i].type = HEREDOC_NOEXP;
 	}
 	else
 	{
