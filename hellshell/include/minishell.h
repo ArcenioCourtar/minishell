@@ -95,4 +95,8 @@ void		to_freelstfree(t_freelst **lst);
 int			ft_fd_printf(int fd, const char *s, ...);
 int			ft_printf_err(const char *s, ...);
 
+void		signals_interactive(int signum);
+void		signals_heredoc_new(int signum);
+void		signals_other(int signum);
+
 #endif

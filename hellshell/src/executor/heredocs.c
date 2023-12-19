@@ -51,12 +51,14 @@ enum e_redir_type type)
 	char	*input;
 	char	*expanded;
 
-	signals_heredoc();
 	while (1)
 	{
 		input = readline("> ");
 		if (!input)
+		{
+			printf("heredoc delimited by EOF\n");
 			break ;
+		}
 		if (ft_strlen(delim) == 0 && ft_strlen(input) == 0)
 			break ;
 		if (ft_strncmp(delim, input, ft_strlen(delim) + 1) == 0)
@@ -116,6 +118,8 @@ void	create_heredocs(t_data *dat, t_exec *exec)
 		doc_ready = false;
 		while (node->redirect && node->redirect[i].name)
 		{
+			if (g_signal == SIGINT)
+				break ;
 			hd_create(dat, node, i, &doc_ready);
 			if (node->argv[0] == NULL && doc_ready == true)
 			{

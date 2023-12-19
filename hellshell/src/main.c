@@ -17,7 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int	g_signal;
+int	g_signal = 0;
 
 /**
  * @brief frees the current input data
@@ -65,10 +65,15 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		g_signal = 0;
-		signals_interactive_mode();
+		signal(SIGINT, signals_interactive);
+		signal(SIGQUIT, SIG_IGN);
 		dat.input = readline("➤ hellshell-0.9$ ");
+		signal(SIGINT, SIG_IGN);
 		if (!dat.input)
+		{
+			printf("exit\n");
 			break ;
+		}
 		add_history(dat.input);
 		lexer(&dat);
 		exit_status = parser(&dat);

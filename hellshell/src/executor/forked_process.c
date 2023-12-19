@@ -52,7 +52,6 @@ void	exec_fork(t_data *dat, t_exec *exec)
 {
 	int	tmp;
 
-	signals_in_process();
 	dup_pipes(exec);
 	tmp = redirects(exec);
 	if (tmp != 0)
@@ -85,6 +84,8 @@ void	create_forks(t_data *dat, t_exec *exec)
 	tmp = *(dat->cmd_lst);
 	while (tmp)
 	{
+		if (g_signal == SIGINT)
+			break ;
 		if (tmp->next != NULL)
 		{
 			if (pipe(tmp->pipe) != 0)
@@ -97,7 +98,10 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->pid == -1)
 			exit(EXIT_FAILURE);
 		if (tmp->pid == 0)
+		{
+			signal(SIGQUIT, SIG_DFL);
 			exec_fork(dat, exec);
+		}
 		if (tmp->next == NULL && tmp->prev)
 			create_forks_close_pipe(tmp->prev->pipe);
 		tmp = tmp->next;
