@@ -51,7 +51,7 @@ enum e_redir_type type)
 	char	*input;
 	char	*expanded;
 
-	(void) dat;
+	signals_heredoc();
 	while (1)
 	{
 		input = readline("> ");
@@ -93,8 +93,8 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 		if (pid == 0)
 			run_heredoc(dat, node, node->redirect[i].name, \
 			node->redirect[i].type);
-		wait(NULL);
 		close(node->heredoc[1]);
+		wait(NULL);
 	}
 	else if ((node->redirect[i].type == REDIN && *doc_ready == true))
 	{

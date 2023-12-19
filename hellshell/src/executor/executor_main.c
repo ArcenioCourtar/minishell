@@ -56,7 +56,6 @@ void	executor(t_data *dat)
 {
 	t_exec	exec;
 
-	signals_in_process();
 	if (*(dat->cmd_lst) == NULL)
 		return ;
 	exec.exit_code = dat->exit_code;

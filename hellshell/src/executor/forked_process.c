@@ -52,6 +52,7 @@ void	exec_fork(t_data *dat, t_exec *exec)
 {
 	int	tmp;
 
+	signals_in_process();
 	dup_pipes(exec);
 	tmp = redirects(exec);
 	if (tmp != 0)
