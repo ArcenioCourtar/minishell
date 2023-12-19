@@ -17,6 +17,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int	g_signal;
+
 /**
  * @brief frees the current input data
  * @param data pointer to the program data struct
@@ -62,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 	init_dat(&dat, envp);
 	while (1)
 	{
+		g_signal = 0;
 		signals_interactive_mode();
 		dat.input = readline("➤ hellshell-0.9$ ");
 		if (!dat.input)

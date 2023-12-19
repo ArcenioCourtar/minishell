@@ -22,7 +22,7 @@ enum					e_token_type;
 
 enum e_st_space
 {
-	SPACE,
+	SPAEC,
 	NOSPACE,
 	FIRST
 };

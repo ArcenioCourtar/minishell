@@ -13,12 +13,13 @@
 #include <stdio.h>
 #include <signal.h>
 #include <readline/readline.h>
+#include "minishell.h"
 
 // handles CTRL+C in process
 // breaks out of any existing loop
 static void	sigint_handler_in_process(int signum)
 {
-	(void)signum;
+	g_signal = signum;
 	printf("\n");
 }
 
@@ -26,6 +27,7 @@ static void	sigint_handler_in_process(int signum)
 // breaks out of any existing loop and prints signal code
 static void	sigquit_handler_in_process(int signum)
 {
+	g_signal = signum;
 	printf("Quit: %i\n", signum);
 }
 
@@ -33,7 +35,7 @@ static void	sigquit_handler_in_process(int signum)
 // displays a new prompt on a newline and clears current rl buffer
 static void	sigint_handler(int signum)
 {
-	(void)signum;
+	g_signal = signum;
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();

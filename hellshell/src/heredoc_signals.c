@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <readline/readline.h>
+#include "minishell.h"
 
 /**
  * Handles CTRL+C (SIGINT) in open heredoc
@@ -21,7 +22,7 @@
  */
 static void	sigint_handler_heredoc(int signum)
 {
-	(void)signum;
+	g_signal = signum;
 	exit(EXIT_SUCCESS);
 }
 

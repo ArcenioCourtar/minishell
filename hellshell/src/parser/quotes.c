@@ -117,7 +117,7 @@ void	handle_quotes(t_data *data, t_toklst **token)
 	enum e_st_space	st_space;
 
 	if ((*token)->prev && (*token)->prev->type == TOK_SPACE)
-		st_space = SPACE;
+		st_space = SPAEC;
 	else if ((*token)->prev && !is_redirect((*token)->prev->type) \
 								&& (*token)->prev->type != TOK_PIPE)
 		st_space = NOSPACE;
