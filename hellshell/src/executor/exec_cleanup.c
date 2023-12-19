@@ -52,6 +52,8 @@ void	wait_for_all(t_data *dat)
 		bash_status_filter(&status);
 	else
 		status = 128 + WTERMSIG(status);
+	if (g_signal == SIGINT)
+		status = 128 + 2;
 	assign_exit_val(dat->exit_code, status);
 }
 

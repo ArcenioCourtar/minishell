@@ -93,8 +93,11 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 		if (pid == -1)
 			exit(EXIT_FAILURE);
 		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
 			run_heredoc(dat, node, node->redirect[i].name, \
 			node->redirect[i].type);
+		}
 		close(node->heredoc[1]);
 		wait(NULL);
 	}

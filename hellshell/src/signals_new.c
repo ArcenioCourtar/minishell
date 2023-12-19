@@ -24,11 +24,6 @@ void	signals_interactive(int signum)
 	rl_redisplay();
 }
 
-void	signals_heredoc_new(int signum)
-{
-	g_signal = signum;
-}
-
 void	signals_other(int signum)
 {
 	g_signal = signum;

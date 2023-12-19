@@ -52,6 +52,8 @@ void	exec_fork(t_data *dat, t_exec *exec)
 {
 	int	tmp;
 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	dup_pipes(exec);
 	tmp = redirects(exec);
 	if (tmp != 0)
@@ -76,7 +78,6 @@ static void	create_forks_close_pipe(int pipe[2])
 	close(pipe[1]);
 }
 
-// TODO: erro checking when calling pipe()
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;

@@ -48,6 +48,13 @@ static int	executor_wrapper(t_data	*dat)
 	return (ft_atoi(dat->exit_code->value));
 }
 
+void	redisplay_prompt(void)
+{
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+}
+
 /*
 	readline return values
 	returns NULL if EOF is encountered and input is empty
@@ -64,11 +71,13 @@ int	main(int argc, char **argv, char **envp)
 	init_dat(&dat, envp);
 	while (1)
 	{
+		if (g_signal)
+			redisplay_prompt();
 		g_signal = 0;
 		signal(SIGINT, signals_interactive);
 		signal(SIGQUIT, SIG_IGN);
 		dat.input = readline("➤ hellshell-0.9$ ");
-		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, signals_other);
 		if (!dat.input)
 		{
 			printf("exit\n");
