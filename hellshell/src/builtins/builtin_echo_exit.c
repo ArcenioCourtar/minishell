@@ -66,6 +66,7 @@ void	builtin_exit(t_data *dat, t_exec *exec)
 {
 	int	exit_val;
 
+	restore_old_fds(exec);
 	if (!exec->my_node->argv[1])
 		exit(EXIT_SUCCESS);
 	if (exec->my_node->argv[2])
