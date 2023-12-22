@@ -88,7 +88,7 @@ static int	get_space_token_len(char *input, int *j, int substr_start)
 {
 	int	substr_len;
 
-	while (input[*j] && input[*j] == DEL_SPACE)
+	while (input[*j] && ft_iswhitespace(input[*j]))
 		(*j)++;
 	substr_len = (*j) - substr_start;
 	(*j)--;

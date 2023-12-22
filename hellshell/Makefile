@@ -53,10 +53,10 @@ SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
 				executor/executor_utils.c	\
 				executor/heredocs.c			\
 				\
-				err_handling/ft_fd_printf_utils.c \
-				err_handling/ft_fd_printf.c \
-				err_handling/ft_printf_err_utils.c \
-				err_handling/ft_printf_err.c \
+				err_handling/ft_fd_printf_utils.c	\
+				err_handling/ft_fd_printf.c 		\
+				err_handling/ft_printf_err_utils.c	\
+				err_handling/ft_printf_err.c		\
 				\
 				signals.c
 
