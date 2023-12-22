@@ -47,6 +47,19 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	wait_for_all(dat);
 }
 
+void	cleanup_heredoc_pipes(t_exec *exec)
+{
+	t_cmdlst	*node;
+
+	node = exec->first_node;
+	while (node)
+	{
+		if (node->hd_used == true)
+			close(node->heredoc[0]);
+		node = node->next;
+	}
+}
+
 /**
  * @brief function that handles heredocs, builtins, external programs and
  * redirects.
@@ -61,12 +74,11 @@ void	executor(t_data *dat)
 	exec.exit_code = dat->exit_code;
 	exec.fork_num = count_forks(dat->cmd_lst);
 	exec.my_node = *(dat->cmd_lst);
+	exec.first_node = *(dat->cmd_lst);
 	create_heredocs(dat, &exec);
 	if (check_builtin(dat, exec.my_node) && exec.fork_num == 1)
-	{
 		exec_parent_wrapper(dat, &exec);
-		return ;
-	}
 	else
 		exec_child_wrapper(dat, &exec);
+	cleanup_heredoc_pipes(&exec);
 }

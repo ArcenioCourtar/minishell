@@ -116,4 +116,4 @@ valg: all
 
 valgfd: all
 	valgrind --leak-check=full --child-silent-after-fork=yes --track-fds=yes \
-	./minishell
+	--track-origins=yes ./minishell

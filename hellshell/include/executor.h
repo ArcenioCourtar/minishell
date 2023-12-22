@@ -32,6 +32,7 @@ typedef struct s_exec
 	bool				path_avail;
 	char				*cmd;
 	t_cmdlst			*my_node;
+	t_cmdlst			*first_node;
 	int					in_out_fd[2];
 }	t_exec;
 

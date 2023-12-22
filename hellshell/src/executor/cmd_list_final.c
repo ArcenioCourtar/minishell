@@ -36,6 +36,7 @@ void	finalize_cmd_list(t_cmdlst **list)
 		return ;
 	while (tmp)
 	{
+		tmp->hd_used = false;
 		tmp->fd_in = STDIN_FILENO;
 		tmp->fd_out = STDOUT_FILENO;
 		tmp->abs_path = check_path(tmp->argv[0]);

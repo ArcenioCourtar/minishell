@@ -90,7 +90,10 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->next != NULL)
 		{
 			if (pipe(tmp->pipe) != 0)
+			{
 				ft_printf_err("broken pipe\n");
+				exit(EXIT_FAILURE);
+			}
 		}
 		if (tmp->prev != NULL && tmp->prev->prev != NULL)
 			create_forks_close_pipe(tmp->prev->prev->pipe);
@@ -99,10 +102,7 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->pid == -1)
 			exit(EXIT_FAILURE);
 		if (tmp->pid == 0)
-		{
-			signal(SIGQUIT, SIG_DFL);
 			exec_fork(dat, exec);
-		}
 		if (tmp->next == NULL && tmp->prev)
 			create_forks_close_pipe(tmp->prev->pipe);
 		tmp = tmp->next;
