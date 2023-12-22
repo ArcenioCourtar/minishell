@@ -74,8 +74,7 @@ int	main(int argc, char **argv, char **envp)
 		if (g_signal)
 			redisplay_prompt();
 		g_signal = 0;
-		signal(SIGINT, signals_interactive);
-		signal(SIGQUIT, SIG_IGN);
+		signals_interactive_mode();
 		dat.input = readline("➤ hellshell-0.9$ ");
 		signal(SIGINT, signals_other);
 		if (!dat.input)
