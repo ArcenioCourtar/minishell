@@ -31,7 +31,5 @@ void		builtin_exit(t_data *dat, t_exec *exec);
 void		builtin_export(t_data *dat, t_exec *exec);
 void		builtin_unset(t_data *dat, t_exec *exec);
 void		builtin_echo(t_data *dat, t_exec *exec);
-void		builtin_var_assign(t_data *dat, t_exec *exec);
-void		builtin_var(t_data *dat, t_exec *exec);
 
 #endif

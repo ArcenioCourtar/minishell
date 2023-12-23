@@ -38,7 +38,7 @@ void	builtin_export(t_data *dat, t_exec *exec)
 	if (new == NULL)
 	{
 		new = newnode_env(exec->my_node->argv[1]);
-		envlst_addback(dat->envlist, new);
+		envlst_addback(&(dat->envlist), new);
 	}
 	else
 		change_existing_val(new, exec->my_node->argv[1]);
@@ -64,7 +64,8 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 	node = check_var_existence(dat->envlist, exec->my_node->argv[1]);
 	if (node)
 	{
-		envlst_free_node(node);
+		envlst_free_node_new(&(dat->envlist), node);
+		printf("env ptr: %p\n", dat->envlist);
 		dat->envp = set_envp(dat->envlist, dat->envp);
 		if (!dat->envp)
 			exit(EXIT_FAILURE);

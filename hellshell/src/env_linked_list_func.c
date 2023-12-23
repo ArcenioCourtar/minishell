@@ -18,17 +18,38 @@
 #include <readline/history.h>
 
 // add node to the back of list
-void	envlst_addback(t_envlst *list, t_envlst *new)
+void	envlst_addback(t_envlst **list, t_envlst *new)
 {
-	while (list->next)
-		list = list->next;
-	list->next = new;
-	new->prev = list;
+	if (*list == NULL)
+	{
+		*list = new;
+		return ;
+	}
+	while ((*list)->next)
+		*list = (*list)->next;
+	(*list)->next = new;
+	new->prev = *list;
 }
 
 // free target node and connect adjacent nodes
-void	envlst_free_node(t_envlst *del)
+void	envlst_free_node(t_envlst **del)
 {
+	if ((*del)->next)
+		(*del)->next->prev = (*del)->prev;
+	if ((*del)->prev)
+		(*del)->prev->next = (*del)->next;
+	free((*del)->name);
+	free((*del)->value);
+	free((*del));
+	*del = NULL;
+}
+
+void	envlst_free_node_new(t_envlst **list, t_envlst *del)
+{
+	if (del == NULL || *list == NULL)
+		return ;
+	if (del == *list)
+		*list = del->next;
 	if (del->next)
 		del->next->prev = del->prev;
 	if (del->prev)
@@ -36,17 +57,6 @@ void	envlst_free_node(t_envlst *del)
 	free(del->name);
 	free(del->value);
 	free(del);
-}
-
-// move target node from one list to the other (or to the back of a list
-// it's already in if you want)
-void	envlst_move_node(t_envlst *node, t_envlst *dst)
-{
-	if (node->next)
-		node->next->prev = node->prev;
-	if (node->prev)
-		node->prev->next = node->next;
-	envlst_addback(dst, node);
 }
 
 // take a string in a "name=value" format and create a new node

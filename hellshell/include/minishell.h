@@ -72,10 +72,8 @@ void		print_history_list(t_hislst **history_list);
 t_envlst	*init_envlst(char **envp);
 t_envlst	*newnode_env(char *envp);
 t_envlst	*newnode_env_alt(char *name, char *value);
-void		envlst_addback(t_envlst *list, t_envlst *new);
-void		envlst_move_node(t_envlst *node, t_envlst *dst);
-void		envlst_free_node(t_envlst *del);
-void		varlst_add_back(t_data *data, t_envlst *new_node);
+void		envlst_addback(t_envlst **list, t_envlst *new);
+void		envlst_free_node(t_envlst **del);
 char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);
 
@@ -85,7 +83,6 @@ int			parser(t_data *data);
 void		cmdlst_free(t_data *data);
 
 void		signals_interactive_mode(void);
-void		signals_in_process(void);
 
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
@@ -95,8 +92,8 @@ void		to_freelstfree(t_freelst **lst);
 int			ft_fd_printf(int fd, const char *s, ...);
 int			ft_printf_err(const char *s, ...);
 
-void		signals_interactive(int signum);
-void		signals_heredoc_new(int signum);
 void		signals_other(int signum);
+
+void		envlst_free_node_new(t_envlst **list, t_envlst *del);
 
 #endif
