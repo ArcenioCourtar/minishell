@@ -42,7 +42,6 @@ void	exec_child_wrapper(t_data *dat, t_exec *exec)
 	if (!find_pathvar(dat->envp, exec))
 		exit(EXIT_FAILURE);
 	create_forks(dat, exec);
-	close_all_pipes(dat);
 	free_path_list(exec);
 	wait_for_all(dat);
 }

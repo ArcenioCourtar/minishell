@@ -60,19 +60,6 @@ void	wait_for_all(t_data *dat)
 	assign_exit_val(dat->exit_code, status);
 }
 
-void	close_all_pipes(t_data *dat)
-{
-	t_cmdlst	*tmp;
-
-	tmp = *(dat->cmd_lst);
-	while (tmp->next != NULL)
-	{
-		close(tmp->pipe[0]);
-		close(tmp->pipe[1]);
-		tmp = tmp->next;
-	}
-}
-
 void	free_path_list(t_exec *exec)
 {
 	int	i;

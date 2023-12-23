@@ -65,6 +65,7 @@ typedef struct s_cmdlst
 	int					fd_out;
 	bool				abs_path;
 	bool				hd_used;
+	bool				pipe_used;
 	pid_t				pid;
 }	t_cmdlst;
 
