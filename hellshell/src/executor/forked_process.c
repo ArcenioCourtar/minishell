@@ -123,5 +123,6 @@ void	create_forks(t_data *dat, t_exec *exec)
 			create_forks_close_pipe(tmp->prev);
 		tmp = tmp->next;
 	}
-	sigint_pipe_cleanup(exec->first_node);
+	if (g_signal == SIGINT)
+		sigint_pipe_cleanup(exec->first_node);
 }
