@@ -84,6 +84,11 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			break ;
 		}
+		if (g_signal)
+		{
+			assign_exit_val(dat.exit_code, 130);
+			g_signal = 0;
+		}
 		add_history(dat.input);
 		lexer(&dat);
 		exit_status = parser(&dat);

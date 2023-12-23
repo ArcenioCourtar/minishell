@@ -19,7 +19,7 @@
 // displays a new prompt on a newline and clears current rl buffer
 static void	sigint_handler(int signum)
 {
-	(void) signum;
+	g_signal = signum;
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
