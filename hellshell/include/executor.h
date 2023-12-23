@@ -32,6 +32,7 @@ typedef struct s_exec
 	bool				path_avail;
 	char				*cmd;
 	t_cmdlst			*my_node;
+	t_cmdlst			*first_node;
 	int					in_out_fd[2];
 }	t_exec;
 
@@ -47,7 +48,7 @@ void	run_builtin(t_data *dat, t_exec *exec);
 int		redirects(t_exec *exec);
 void	assign_exit_val(t_envlst *exit_code, int errnum);
 void	wait_for_all(t_data *dat);
-void	close_all_pipes(t_data *dat);
+void	pipe_cleanup(t_data *dat);
 void	free_path_list(t_exec *exec);
 void	find_path(t_exec *exec);
 void	restore_old_fds(t_exec *exec);

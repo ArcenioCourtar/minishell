@@ -85,13 +85,13 @@ lib:
 	$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(LIBS)
 
 objdir:
 	@mkdir -p $(OBJSUBD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
 
 -include $(DEP_FILES)
 
@@ -113,3 +113,7 @@ fsan debug: re
 
 valg: all
 	valgrind --leak-check=full ./minishell
+
+valgfd: all
+	valgrind --leak-check=full --child-silent-after-fork=yes --track-fds=yes \
+	--track-origins=yes ./minishell
