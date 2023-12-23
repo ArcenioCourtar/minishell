@@ -26,13 +26,6 @@ typedef struct s_exec	t_exec;
 typedef struct s_cmdlst	t_cmdlst;
 typedef void			(*t_builtin_func)(t_data *, t_exec *);
 
-typedef struct s_hislst
-{
-	int				n;
-	char			*command;
-	struct s_hislst	*next;
-}	t_hislst;
-
 typedef struct s_freelst
 {
 	char				*string;
@@ -48,7 +41,6 @@ typedef struct s_data
 	char				**tokens;
 	int					tok_count;
 	struct s_toklst		**t_lst;
-	struct s_hislst		**h_lst;
 	struct s_cmdlst		**cmd_lst;
 	char				builtin_index[BT_NUM][10];
 	t_builtin_func		builtin_ptrs[BT_NUM];
@@ -63,11 +55,6 @@ typedef struct s_envlst
 	struct s_envlst		*next;
 	struct s_envlst		*prev;
 }	t_envlst;
-
-/* history------------------------------------------------------------------- */
-t_hislst	**init_history_list(void);
-void		add_to_history_list(t_hislst **history_list, char *input);
-void		print_history_list(t_hislst **history_list);
 
 t_envlst	*init_envlst(char **envp);
 t_envlst	*newnode_env(char *envp);

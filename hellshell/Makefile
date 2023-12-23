@@ -14,7 +14,7 @@
 
 NAME 		=	minishell
 
-SRC_FILES	= 	main.c history.c environment.c init.c env_linked_list_func.c\
+SRC_FILES	= 	main.c environment.c init.c env_linked_list_func.c\
 				\
 				builtins/builtin_cd_pwd.c				\
 				builtins/builtin_env_variable_helpers.c \
