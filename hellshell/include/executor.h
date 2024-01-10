@@ -48,6 +48,10 @@ void	create_forks(t_data *dat, t_exec *exec);
 void	exec_fork(t_data *dat, t_exec *exec);
 void	run_builtin(t_data *dat, t_exec *exec);
 void	create_heredocs(t_data *dat, t_exec *exec);
+void	pipe_error(void);
+void	sigint_pipe_cleanup(t_cmdlst *node);
+void	post_fork_checks(t_data *dat, t_exec *exec, t_cmdlst *tmp);
+void	create_forks_close_pipe(t_cmdlst *node);
 
 bool	check_path(char *path);
 bool	find_pathvar(char **envp, t_exec *exec);
@@ -56,5 +60,6 @@ bool	check_builtin(t_data *dat, t_cmdlst *node);
 int		count_forks(t_cmdlst **list);
 int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
 int		redirects(t_exec *exec);
+int		heredoc_break_conditions(char *input, char *delim);
 
 #endif

@@ -26,3 +26,23 @@ void	assign_exit_val(t_envlst *exit_code, int errnum)
 	if (!exit_code->value)
 		exit(EXIT_FAILURE);
 }
+
+void	pipe_error(void)
+{
+	ft_printf_err("Broken pipe\n");
+	exit(EXIT_FAILURE);
+}
+
+void	sigint_pipe_cleanup(t_cmdlst *node)
+{
+	while (node)
+	{
+		if (node->pipe_used == true)
+		{
+			node->pipe_used = false;
+			close(node->pipe[0]);
+			close(node->pipe[1]);
+		}
+		node = node->next;
+	}
+}

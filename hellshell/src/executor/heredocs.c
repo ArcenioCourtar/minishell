@@ -55,14 +55,7 @@ enum e_redir_type type)
 	while (1)
 	{
 		input = readline("> ");
-		if (!input)
-		{
-			printf("heredoc delimited by EOF\n");
-			break ;
-		}
-		if (ft_strlen(delim) == 0 && ft_strlen(input) == 0)
-			break ;
-		if (ft_strncmp(delim, input, ft_strlen(delim) + 1) == 0)
+		if (heredoc_break_conditions(input, delim) == 1)
 			break ;
 		if (type == HEREDOC_EXP && count_dollar_signs(input) > 0)
 		{
@@ -89,10 +82,7 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, t_cmdlst **doc_ready)
 			close(node->heredoc[0]);
 		*doc_ready = node;
 		if (pipe(node->heredoc) == -1)
-		{
-			ft_printf_err("Broken pipe\n");
-			exit(EXIT_FAILURE);
-		}
+			pipe_error();
 		pid = fork();
 		if (pid == -1)
 			exit(EXIT_FAILURE);

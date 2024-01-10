@@ -72,27 +72,6 @@ void	exec_fork(t_data *dat, t_exec *exec)
 	exit(127);
 }
 
-static void	create_forks_close_pipe(t_cmdlst *node)
-{
-	node->pipe_used = false;
-	close(node->pipe[0]);
-	close(node->pipe[1]);
-}
-
-void	sigint_pipe_cleanup(t_cmdlst *node)
-{
-	while (node)
-	{
-		if (node->pipe_used == true)
-		{
-			node->pipe_used = false;
-			close(node->pipe[0]);
-			close(node->pipe[1]);
-		}
-		node = node->next;
-	}
-}
-
 void	create_forks(t_data *dat, t_exec *exec)
 {
 	t_cmdlst	*tmp;
@@ -115,12 +94,7 @@ void	create_forks(t_data *dat, t_exec *exec)
 			create_forks_close_pipe(tmp->prev->prev);
 		exec->my_node = tmp;
 		tmp->pid = fork();
-		if (tmp->pid == -1)
-			exit(EXIT_FAILURE);
-		if (tmp->pid == 0)
-			exec_fork(dat, exec);
-		if (tmp->next == NULL && tmp->prev)
-			create_forks_close_pipe(tmp->prev);
+		post_fork_checks(dat, exec, tmp);
 		tmp = tmp->next;
 	}
 	if (g_signal == SIGINT)
