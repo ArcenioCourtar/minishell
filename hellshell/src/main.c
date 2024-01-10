@@ -55,7 +55,6 @@ void	redisplay_prompt(void)
 	rl_on_new_line();
 }
 
-
 // TODO <<h cat | cat into SIGINT exits our minishell
 /*
 	readline return values
