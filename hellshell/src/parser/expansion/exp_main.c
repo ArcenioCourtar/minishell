@@ -131,7 +131,8 @@ void	expansion(t_data *data, t_toklst **token)
 			token_lstdel_node(token);
 			if (ft_strlen((*token)->token) == 0)
 				(*token)->type = TOK_INVALID;
-			if ((*token) && (*token)->prev && (*token)->prev->type != TOK_SPACE)
+			if ((*token) && (*token)->prev && (*token)->prev->type \
+			!= TOK_SPACE && !is_redirect((*token)->prev->type))
 				quote_join(data, token, true);
 		}
 	}
