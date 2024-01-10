@@ -18,12 +18,6 @@
 # include <stdio.h>
 # include <stdbool.h>
 
-// return address of node with same name, or NULL if it doesn't exist
-t_envlst	*check_var_existence(t_envlst *list, char *var);
-bool		change_existing_val(t_envlst *node, char *var);
-bool		change_existing_val_alt(t_envlst *node, char *val);
-bool		identifier_check(char *arg);
-
 void		builtin_env(t_data *dat, t_exec *exec);
 void		builtin_pwd(t_data *dat, t_exec *exec);
 void		builtin_cd(t_data *dat, t_exec *exec);
@@ -31,7 +25,11 @@ void		builtin_exit(t_data *dat, t_exec *exec);
 void		builtin_export(t_data *dat, t_exec *exec);
 void		builtin_unset(t_data *dat, t_exec *exec);
 void		builtin_echo(t_data *dat, t_exec *exec);
-void		builtin_var_assign(t_data *dat, t_exec *exec);
-void		builtin_var(t_data *dat, t_exec *exec);
+
+bool		change_existing_val(t_envlst *node, char *var);
+bool		change_existing_val_alt(t_envlst *node, char *val);
+bool		identifier_check(char *arg);
+
+t_envlst	*check_var_existence(t_envlst *list, char *var);
 
 #endif

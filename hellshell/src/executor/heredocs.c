@@ -51,6 +51,7 @@ enum e_redir_type type)
 	char	*input;
 	char	*expanded;
 
+	signal(SIGINT, SIG_DFL);
 	while (1)
 	{
 		input = readline("> ");
@@ -77,33 +78,33 @@ enum e_redir_type type)
 	exit(EXIT_SUCCESS);
 }
 
-static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
+static void	hd_create(t_data *dat, t_cmdlst *node, int i, t_cmdlst **doc_ready)
 {
 	pid_t		pid;
 
 	if (node->redirect[i].type == HEREDOC_EXP || \
 	node->redirect[i].type == HEREDOC_NOEXP)
 	{
-		if (*doc_ready == true)
+		if (*doc_ready)
 			close(node->heredoc[0]);
-		*doc_ready = true;
+		*doc_ready = node;
 		if (pipe(node->heredoc) == -1)
+		{
 			ft_printf_err("Broken pipe\n");
+			exit(EXIT_FAILURE);
+		}
 		pid = fork();
 		if (pid == -1)
 			exit(EXIT_FAILURE);
 		if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
 			run_heredoc(dat, node, node->redirect[i].name, \
 			node->redirect[i].type);
-		}
 		close(node->heredoc[1]);
 		wait(NULL);
 	}
-	else if ((node->redirect[i].type == REDIN && *doc_ready == true))
+	else if ((node->redirect[i].type == REDIN && *doc_ready))
 	{
-		*doc_ready = false;
+		*doc_ready = NULL;
 		close(node->heredoc[0]);
 	}
 }
@@ -111,26 +112,28 @@ static void	hd_create(t_data *dat, t_cmdlst *node, int i, bool *doc_ready)
 void	create_heredocs(t_data *dat, t_exec *exec)
 {
 	int			i;
-	bool		doc_ready;
+	t_cmdlst	*doc_ready;
 	t_cmdlst	*node;
 
 	node = exec->my_node;
 	while (node)
 	{
 		i = 0;
-		doc_ready = false;
+		doc_ready = NULL;
 		while (node->redirect && node->redirect[i].name)
 		{
 			if (g_signal == SIGINT)
 				break ;
 			hd_create(dat, node, i, &doc_ready);
-			if (node->argv[0] == NULL && doc_ready == true)
+			if (node->argv[0] == NULL && doc_ready)
 			{
-				doc_ready = false;
+				doc_ready = NULL;
 				close(node->heredoc[0]);
 			}
 			i++;
 		}
+		if (doc_ready)
+			doc_ready->hd_used = true;
 		node = node->next;
 	}
 }

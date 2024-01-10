@@ -32,28 +32,29 @@ typedef struct s_exec
 	bool				path_avail;
 	char				*cmd;
 	t_cmdlst			*my_node;
+	t_cmdlst			*first_node;
 	int					in_out_fd[2];
 }	t_exec;
 
-bool	check_path(char *path);
 void	finalize_cmd_list(t_cmdlst **list);
 void	executor(t_data *dat);
-bool	find_pathvar(char **envp, t_exec *exec);
-int		count_forks(t_cmdlst **list);
-void	create_forks(t_data *dat, t_exec *exec);
-void	exec_fork(t_data *dat, t_exec *exec);
-int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
-void	run_builtin(t_data *dat, t_exec *exec);
-int		redirects(t_exec *exec);
 void	assign_exit_val(t_envlst *exit_code, int errnum);
 void	wait_for_all(t_data *dat);
-void	close_all_pipes(t_data *dat);
 void	free_path_list(t_exec *exec);
 void	find_path(t_exec *exec);
 void	restore_old_fds(t_exec *exec);
 void	save_old_fds(t_exec *exec);
-bool	check_builtin(t_data *dat, t_cmdlst *node);
+void	create_forks(t_data *dat, t_exec *exec);
+void	exec_fork(t_data *dat, t_exec *exec);
+void	run_builtin(t_data *dat, t_exec *exec);
 void	create_heredocs(t_data *dat, t_exec *exec);
-void	signals_heredoc(void);
+
+bool	check_path(char *path);
+bool	find_pathvar(char **envp, t_exec *exec);
+bool	check_builtin(t_data *dat, t_cmdlst *node);
+
+int		count_forks(t_cmdlst **list);
+int		is_builtin(char builtin_index[BT_NUM][10], char *arg);
+int		redirects(t_exec *exec);
 
 #endif

@@ -68,13 +68,13 @@ CFLAGS	= -Wall -Wextra -Werror -MMD -MP
 all: objdir $(NAME)
 
 $(NAME): $(OBJ_FILES)
-	ar -rcs $@ $^
+	@ar -rcs $@ $^
 
 objdir:
-	mkdir -p $(OBJ_SUBDIR)
+	@mkdir -p $(OBJ_SUBDIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
 
 -include $(DEP_FILES)
 

@@ -72,10 +72,25 @@ void	exec_fork(t_data *dat, t_exec *exec)
 	exit(127);
 }
 
-static void	create_forks_close_pipe(int pipe[2])
+static void	create_forks_close_pipe(t_cmdlst *node)
 {
-	close(pipe[0]);
-	close(pipe[1]);
+	node->pipe_used = false;
+	close(node->pipe[0]);
+	close(node->pipe[1]);
+}
+
+void	sigint_pipe_cleanup(t_cmdlst *node)
+{
+	while (node)
+	{
+		if (node->pipe_used == true)
+		{
+			node->pipe_used = false;
+			close(node->pipe[0]);
+			close(node->pipe[1]);
+		}
+		node = node->next;
+	}
 }
 
 void	create_forks(t_data *dat, t_exec *exec)
@@ -90,21 +105,24 @@ void	create_forks(t_data *dat, t_exec *exec)
 		if (tmp->next != NULL)
 		{
 			if (pipe(tmp->pipe) != 0)
+			{
 				ft_printf_err("broken pipe\n");
+				exit(EXIT_FAILURE);
+			}
 		}
+		tmp->pipe_used = true;
 		if (tmp->prev != NULL && tmp->prev->prev != NULL)
-			create_forks_close_pipe(tmp->prev->prev->pipe);
+			create_forks_close_pipe(tmp->prev->prev);
 		exec->my_node = tmp;
 		tmp->pid = fork();
 		if (tmp->pid == -1)
 			exit(EXIT_FAILURE);
 		if (tmp->pid == 0)
-		{
-			signal(SIGQUIT, SIG_DFL);
 			exec_fork(dat, exec);
-		}
 		if (tmp->next == NULL && tmp->prev)
-			create_forks_close_pipe(tmp->prev->pipe);
+			create_forks_close_pipe(tmp->prev);
 		tmp = tmp->next;
 	}
+	if (g_signal == SIGINT)
+		sigint_pipe_cleanup(exec->first_node);
 }

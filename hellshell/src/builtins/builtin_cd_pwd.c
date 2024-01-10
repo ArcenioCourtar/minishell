@@ -38,7 +38,7 @@ static void	oldpwd_assignment(t_data *dat, char *buffer)
 			ft_printf_err("Hellshell: %s\n", strerror(errno));
 			exit(EXIT_FAILURE);
 		}
-		envlst_addback(dat->envlist, oldpwd);
+		envlst_addback(&(dat->envlist), oldpwd);
 	}
 }
 

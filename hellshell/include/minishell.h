@@ -26,13 +26,6 @@ typedef struct s_exec	t_exec;
 typedef struct s_cmdlst	t_cmdlst;
 typedef void			(*t_builtin_func)(t_data *, t_exec *);
 
-typedef struct s_hislst
-{
-	int				n;
-	char			*command;
-	struct s_hislst	*next;
-}	t_hislst;
-
 typedef struct s_freelst
 {
 	char				*string;
@@ -48,7 +41,6 @@ typedef struct s_data
 	char				**tokens;
 	int					tok_count;
 	struct s_toklst		**t_lst;
-	struct s_hislst		**h_lst;
 	struct s_cmdlst		**cmd_lst;
 	char				builtin_index[BT_NUM][10];
 	t_builtin_func		builtin_ptrs[BT_NUM];
@@ -64,18 +56,11 @@ typedef struct s_envlst
 	struct s_envlst		*prev;
 }	t_envlst;
 
-/* history------------------------------------------------------------------- */
-t_hislst	**init_history_list(void);
-void		add_to_history_list(t_hislst **history_list, char *input);
-void		print_history_list(t_hislst **history_list);
-
 t_envlst	*init_envlst(char **envp);
 t_envlst	*newnode_env(char *envp);
 t_envlst	*newnode_env_alt(char *name, char *value);
-void		envlst_addback(t_envlst *list, t_envlst *new);
-void		envlst_move_node(t_envlst *node, t_envlst *dst);
-void		envlst_free_node(t_envlst *del);
-void		varlst_add_back(t_data *data, t_envlst *new_node);
+void		envlst_addback(t_envlst **list, t_envlst *new);
+void		envlst_free_node(t_envlst **del);
 char		**set_envp(t_envlst *envlist, char **envp);
 void		init_dat(t_data *dat, char **envp);
 
@@ -85,7 +70,6 @@ int			parser(t_data *data);
 void		cmdlst_free(t_data *data);
 
 void		signals_interactive_mode(void);
-void		signals_in_process(void);
 
 /* init---------------------------------------------------------------------- */
 t_cmdlst	**init_command_list(void);
@@ -95,8 +79,8 @@ void		to_freelstfree(t_freelst **lst);
 int			ft_fd_printf(int fd, const char *s, ...);
 int			ft_printf_err(const char *s, ...);
 
-void		signals_interactive(int signum);
-void		signals_heredoc_new(int signum);
 void		signals_other(int signum);
+
+void		envlst_free_node_new(t_envlst **list, t_envlst *del);
 
 #endif

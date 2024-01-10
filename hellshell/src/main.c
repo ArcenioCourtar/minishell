@@ -55,6 +55,8 @@ void	redisplay_prompt(void)
 	rl_on_new_line();
 }
 
+
+// TODO <<h cat | cat into SIGINT exits our minishell
 /*
 	readline return values
 	returns NULL if EOF is encountered and input is empty
@@ -81,6 +83,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("exit\n");
 			break ;
+		}
+		if (g_signal)
+		{
+			assign_exit_val(dat.exit_code, 130);
+			g_signal = 0;
 		}
 		add_history(dat.input);
 		lexer(&dat);

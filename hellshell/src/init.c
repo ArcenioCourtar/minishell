@@ -46,7 +46,6 @@ void	init_dat(t_data *dat, char **envp)
 	dat->envlist = init_envlst(envp);
 	dat->envp = NULL;
 	dat->envp = set_envp(dat->envlist, dat->envp);
-	dat->h_lst = init_history_list();
 	dat->cmd_lst = init_command_list();
 	dat->exit_code = newnode_env("?=0");
 	dat->free_lst = (t_freelst **)ft_calloc(1, sizeof(t_freelst *));
@@ -54,15 +53,4 @@ void	init_dat(t_data *dat, char **envp)
 		ft_error(errno, strerror(errno));
 	init_builtins_list(dat->builtin_index);
 	init_builtin_ptrs(dat->builtin_ptrs);
-}
-
-t_hislst	**init_history_list(void)
-{
-	t_hislst	**new_hlst;
-
-	new_hlst = (t_hislst **)malloc(sizeof(t_hislst *));
-	if (!new_hlst)
-		ft_error(errno, strerror(errno));
-	*new_hlst = NULL;
-	return (new_hlst);
 }

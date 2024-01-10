@@ -43,31 +43,21 @@ void	wait_for_all(t_data *dat)
 	t_cmdlst	*tmp;
 
 	tmp = *(dat->cmd_lst);
-	while (tmp != NULL)
-	{
-		waitpid(tmp->pid, &status, 0);
-		tmp = tmp->next;
-	}
-	if (WIFEXITED(status))
-		bash_status_filter(&status);
-	else
-		status = 128 + WTERMSIG(status);
 	if (g_signal == SIGINT)
 		status = 128 + 2;
-	assign_exit_val(dat->exit_code, status);
-}
-
-void	close_all_pipes(t_data *dat)
-{
-	t_cmdlst	*tmp;
-
-	tmp = *(dat->cmd_lst);
-	while (tmp->next != NULL)
+	else
 	{
-		close(tmp->pipe[0]);
-		close(tmp->pipe[1]);
-		tmp = tmp->next;
+		while (tmp != NULL)
+		{
+			waitpid(tmp->pid, &status, 0);
+			tmp = tmp->next;
+		}
+		if (WIFEXITED(status))
+			bash_status_filter(&status);
+		else
+			status = 128 + WTERMSIG(status);
 	}
+	assign_exit_val(dat->exit_code, status);
 }
 
 void	free_path_list(t_exec *exec)
