@@ -65,7 +65,6 @@ void	builtin_unset(t_data *dat, t_exec *exec)
 	if (node)
 	{
 		envlst_free_node_new(&(dat->envlist), node);
-		printf("env ptr: %p\n", dat->envlist);
 		dat->envp = set_envp(dat->envlist, dat->envp);
 		if (!dat->envp)
 			exit(EXIT_FAILURE);
