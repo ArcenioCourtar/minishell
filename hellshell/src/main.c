@@ -48,11 +48,26 @@ static int	executor_wrapper(t_data	*dat)
 	return (ft_atoi(dat->exit_code->value));
 }
 
-void	redisplay_prompt(void)
+static void	redisplay_prompt(void)
 {
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
+}
+
+static int	main_wrapper(t_data dat)
+{
+	if (!dat.input)
+	{
+		printf("exit\n");
+		return (1);
+	}
+	if (g_signal)
+	{
+		assign_exit_val(dat.exit_code, 130);
+		g_signal = 0;
+	}
+	return (0);
 }
 
 /*
@@ -75,18 +90,10 @@ int	main(int argc, char **argv, char **envp)
 			redisplay_prompt();
 		g_signal = 0;
 		signals_interactive_mode();
-		dat.input = readline("➤ hellshell-0.9$ ");
+		dat.input = readline("➤ hellshell-1.0$ ");
 		signal(SIGINT, signals_other);
-		if (!dat.input)
-		{
-			printf("exit\n");
+		if (main_wrapper(dat))
 			break ;
-		}
-		if (g_signal)
-		{
-			assign_exit_val(dat.exit_code, 130);
-			g_signal = 0;
-		}
 		add_history(dat.input);
 		lexer(&dat);
 		exit_status = parser(&dat);
