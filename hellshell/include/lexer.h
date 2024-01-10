@@ -18,7 +18,8 @@
 
 # define UNEXP_TOK_ERROR "syntax error near unexpected token"
 
-enum e_delims {
+enum e_delims
+{
 	DEL_DQUOTE = '"',
 	DEL_SQUOTE = '\'',
 	DEL_PIPE = '|',
@@ -28,7 +29,8 @@ enum e_delims {
 	DEL_SPACE = ' '
 };
 
-enum e_token_type {
+enum e_token_type
+{
 	TOK_INVALID,
 	TOK_DQUOTE = '"',
 	TOK_SQUOTE = '\'',
