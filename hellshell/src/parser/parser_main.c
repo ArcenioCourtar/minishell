@@ -27,7 +27,7 @@ static void	parser_wrapper(t_toklst *tmp, t_data *data)
 		else
 		{
 			if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-			{	
+			{
 				if (!handle_quotes(data, &tmp))
 					tmp = tmp->next;
 			}
