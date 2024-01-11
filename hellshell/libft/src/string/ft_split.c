@@ -68,7 +68,7 @@ static int	insert_word(char const *s, char c, char **str_arr, size_t w_count)
 			j++;
 		}
 	}
-	str_arr[j] = 0;
+	str_arr[j] = NULL;
 	return (1);
 }
 
