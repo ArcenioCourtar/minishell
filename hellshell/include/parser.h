@@ -86,7 +86,7 @@ void		skip_redirects(t_toklst **token);
 
 //--quotes======================================================================
 
-void		handle_quotes(t_data *data, t_toklst **token);
+int			handle_quotes(t_data *data, t_toklst **token);
 void		quote_join(t_data *data, t_toklst **token, bool joinaddback);
 
 //--expansion===================================================================

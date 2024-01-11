@@ -14,6 +14,29 @@
 #include "parser.h"
 #include "exit_codes.h"
 
+static void	parser_wrapper(t_toklst *tmp, t_data *data)
+{
+	while (tmp)
+	{
+		if (tmp->type == TOK_DOLLAR)
+		{
+			expansion(data, &tmp);
+			if (tmp && !tmp->prev)
+				*(data->t_lst) = tmp;
+		}
+		else
+		{
+			if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
+			{	
+				if (!handle_quotes(data, &tmp))
+					tmp = tmp->next;
+			}
+			else
+				tmp = tmp->next;
+		}
+	}
+}
+
 /**
  * @brief checks for syntax errors, handles expansions and quotes and creates
  * the command list
@@ -30,20 +53,6 @@ int	parser(t_data *data)
 		return (ERR_SYNTAX);
 	}
 	tmp = *(data->t_lst);
-	while (tmp)
-	{
-		if (tmp->type == TOK_DOLLAR)
-		{
-			expansion(data, &tmp);
-			if (tmp && !tmp->prev)
-				*(data->t_lst) = tmp;
-		}
-		else
-		{
-			if (tmp->type == TOK_DQUOTE || tmp->type == TOK_SQUOTE)
-				handle_quotes(data, &tmp);
-			tmp = tmp->next;
-		}
-	}
+	parser_wrapper(tmp, data);
 	return (create_cmd_lst(data));
 }
