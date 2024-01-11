@@ -47,6 +47,7 @@ void	builtin_pwd(t_data *dat, t_exec *exec)
 	char	buffer[PATH_MAX + 1];
 
 	(void) exec;
+	ft_bzero(buffer, PATH_MAX + 1);
 	if (getcwd(buffer, PATH_MAX) == NULL)
 	{
 		ft_printf_err("Hellshell: %s\n", strerror(errno));
@@ -69,9 +70,9 @@ static bool	cd_error(t_data *dat, t_exec *exec, char *buffer)
 	}
 	if (getcwd(buffer, PATH_MAX) == NULL)
 	{
-		ft_printf_err("Hellshell: %s\n", strerror(errno));
-		assign_exit_val(dat->exit_code, 1);
-		return (true);
+		ft_printf_err("cd: error retrieving current directory: %s\n", \
+		strerror(errno));
+		buffer[0] = '\0';
 	}
 	if (chdir(exec->my_node->argv[1]) == -1)
 	{
@@ -87,14 +88,18 @@ void	builtin_cd(t_data *dat, t_exec *exec)
 {
 	char		buffer[PATH_MAX + 1];
 
+	ft_bzero(buffer, PATH_MAX + 1);
 	if (!exec->my_node->argv[1])
 	{
-		return ;
 		assign_exit_val(dat->exit_code, 0);
+		return ;
 	}
 	if (cd_error(dat, exec, buffer))
 		return ;
-	oldpwd_assignment(dat, buffer);
-	dat->envp = set_envp(dat->envlist, dat->envp);
+	if (buffer[0] != '\0')
+	{
+		oldpwd_assignment(dat, buffer);
+		dat->envp = set_envp(dat->envlist, dat->envp);
+	}
 	assign_exit_val(dat->exit_code, 0);
 }
