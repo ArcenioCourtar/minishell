@@ -97,6 +97,8 @@ char		*getvar(t_data *data, char *to_expand, bool in_quotes);
 int			heredoc_exception(t_data *data, t_toklst **token);
 char		*get_expansion(t_data *data, char *token, int exp_i, int dol_count);
 char		*add_expans_to_token(char *token, char **expansions);
+bool		check_for_spaces(char *var_value);
+void		split_expansion(t_data *data, t_toklst **token);
 
 ////--quotes====================================================================
 

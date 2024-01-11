@@ -35,73 +35,35 @@ bool	check_for_dollar(char *token)
 }
 
 /**
- * @brief iterates over the environment list to find the variable to expand
- * @param lst pointer to the environment list
- * @param to_expand pointer to the variable to expand
- * @return pointer to the expanded variable or NULL if not found
+ * @brief Handles a token accordingly depending on type or place in list
+ * @param data pointer to the program data struct
+ * @param token pointer to the token to expand
  */
-static char	*envlst_iter(t_envlst *lst, char *to_expand)
+static void	expansion_wrapper(t_data *data, t_toklst **token)
 {
-	int	i;
-
-	while (lst)
+	if (!(*token)->next || (*token)->next->type == TOK_SPACE)
 	{
-		i = 0;
-		while (lst->name[i] && to_expand[i] && lst->name[i] == to_expand[i])
-			i++;
-		if (lst->name[i] == to_expand[i])
-			return (lst->value);
-		lst = lst->next;
+		(*token)->type = TOK_NAME;
+		*token = (*token)->next;
 	}
-	return (NULL);
-}
-
-/**
- * @brief expands the question mark variable
- * @param data pointer to the program data struct
- * @param to_expand pointer to the variable to expand
- * @return pointer to the expanded variable
- */
-char	*expand_question_join(t_data *data, char *to_expand)
-{
-	char	*expanded;
-	char	*exit_code;
-
-	exit_code = getvar(data, "?", false);
-	expanded = ft_strjoin(exit_code, to_expand + 1);
-	add_to_free_lst(data, expanded);
-	return (expanded);
-}
-
-/**
- * @brief expands the variable
- * @param data pointer to the program data struct
- * @param to_expand pointer to the variable to expand
- * @param in_quotes true if the variable is in quotes, else false
- * @return pointer to the expanded variable
- */
-char	*getvar(t_data *data, char *to_expand, bool in_quotes)
-{
-	char	*var_value;
-
-	if (to_expand[0] == '?' && to_expand[1] != '\0')
-		return (expand_question_join(data, to_expand));
-	var_value = envlst_iter(data->envlist, to_expand);
-	if (!var_value)
-		var_value = envlst_iter(data->exit_code, to_expand);
-	if (!var_value)
+	else if ((*token)->next->type == TOK_DQUOTE \
+				|| (*token)->next->type == TOK_SQUOTE)
+		token_lstdel_node(token);
+	else
 	{
-		if (!in_quotes)
-			return ("\0");
+		(*token)->next->token = getvar(data, (*token)->next->token, false);
+		token_lstdel_node(token);
+		if (ft_strlen((*token)->token) == 0)
+			(*token)->type = TOK_INVALID;
 		else
 		{
-			var_value = ft_calloc(1, sizeof(char));
-			if (!var_value)
-				ft_error(errno, strerror(errno));
-			add_to_free_lst(data, var_value);
+			if (check_for_spaces((*token)->token))
+				split_expansion(data, token);
+			if ((*token) && (*token)->prev && (*token)->prev->type != TOK_SPACE \
+			&& !is_redirect((*token)->prev->type))
+				quote_join(data, token, true);
 		}
 	}
-	return (var_value);
 }
 
 /**
@@ -116,24 +78,5 @@ void	expansion(t_data *data, t_toklst **token)
 	if ((*token)->type == TOK_DQUOTE)
 		expand_in_quotes(data, *token);
 	else if ((*token)->type == TOK_DOLLAR)
-	{
-		if (!(*token)->next || (*token)->next->type == TOK_SPACE)
-		{
-			(*token)->type = TOK_NAME;
-			*token = (*token)->next;
-		}
-		else if ((*token)->next->type == TOK_DQUOTE \
-					|| (*token)->next->type == TOK_SQUOTE)
-			token_lstdel_node(token);
-		else
-		{
-			(*token)->next->token = getvar(data, (*token)->next->token, false);
-			token_lstdel_node(token);
-			if (ft_strlen((*token)->token) == 0)
-				(*token)->type = TOK_INVALID;
-			if ((*token) && (*token)->prev && (*token)->prev->type \
-			!= TOK_SPACE && !is_redirect((*token)->prev->type))
-				quote_join(data, token, true);
-		}
-	}
+		expansion_wrapper(data, token);
 }
