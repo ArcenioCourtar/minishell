@@ -48,9 +48,11 @@ void	init_dat(t_data *dat, char **envp)
 	dat->envp = set_envp(dat->envlist, dat->envp);
 	dat->cmd_lst = init_command_list();
 	dat->exit_code = newnode_env("?=0");
+	if (!dat->exit_code)
+		ft_error(errno, "malloc\n");
 	dat->free_lst = (t_freelst **)ft_calloc(1, sizeof(t_freelst *));
 	if (!dat->free_lst)
-		ft_error(errno, strerror(errno));
+		ft_error(errno, "malloc\n");
 	init_builtins_list(dat->builtin_index);
 	init_builtin_ptrs(dat->builtin_ptrs);
 }
