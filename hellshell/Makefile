@@ -110,7 +110,7 @@ fsan: CFLAGS += -fsanitize=address
 debug: CFLAGS += -g
 fsan debug: re
 
-.PHONY: all lib tmp clean fclean re fsan debug
+.PHONY: all lib tmp clean fclean re fsan debug valg valgfd run
 
 valg: all
 	valgrind --leak-check=full ./minishell
@@ -118,3 +118,6 @@ valg: all
 valgfd: all
 	valgrind --leak-check=full --child-silent-after-fork=yes --track-fds=yes \
 	--track-origins=yes ./minishell
+
+run: all
+	./minishell

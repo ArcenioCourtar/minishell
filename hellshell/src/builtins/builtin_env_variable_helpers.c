@@ -21,7 +21,7 @@
 // var can be both just a name or "NAME=value".
 t_envlst	*check_var_existence(t_envlst *list, char *var)
 {
-	int			namelen;
+	unsigned int	namelen;
 
 	if (ft_strchr(var, '=') == NULL)
 		namelen = ft_strlen(var);
@@ -29,7 +29,8 @@ t_envlst	*check_var_existence(t_envlst *list, char *var)
 		namelen = ft_strchr(var, '=') - var;
 	while (list)
 	{
-		if (ft_strncmp(var, list->name, namelen) == 0)
+		if (ft_strncmp(var, list->name, namelen) == 0 && \
+		namelen == ft_strlen(list->name))
 			return (list);
 		list = list->next;
 	}

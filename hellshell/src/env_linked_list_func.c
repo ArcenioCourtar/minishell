@@ -20,15 +20,18 @@
 // add node to the back of list
 void	envlst_addback(t_envlst **list, t_envlst *new)
 {
+	t_envlst *tmp;
+
 	if (*list == NULL)
 	{
 		*list = new;
 		return ;
 	}
-	while ((*list)->next)
-		*list = (*list)->next;
-	(*list)->next = new;
-	new->prev = *list;
+	tmp = *list;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	new->prev = tmp;
 }
 
 // free target node and connect adjacent nodes
