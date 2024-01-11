@@ -20,7 +20,7 @@
 // add node to the back of list
 void	envlst_addback(t_envlst **list, t_envlst *new)
 {
-	t_envlst *tmp;
+	t_envlst	*tmp;
 
 	if (*list == NULL)
 	{
