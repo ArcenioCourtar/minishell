@@ -35,6 +35,7 @@ SRC_FILES	= 	main.c environment.c init.c env_linked_list_func.c\
 				parser/expansion/exp_quotes.c		\
 				parser/expansion/exp_quotes_utils.c	\
 				parser/expansion/exp_main.c			\
+				parser/expansion/exp_split.c		\
 				parser/expansion/exp_utils.c		\
 				parser/free_list_functions.c	\
 				parser/parser_error.c		\

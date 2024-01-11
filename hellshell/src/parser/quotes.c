@@ -82,14 +82,14 @@ static bool	valid_join_front(t_toklst *token)
  * @param type type of quote to modify
  * @param st_space type of space before the token
  */
-static void	modify_quote_token(t_data *data, t_toklst **token, \
+static int	modify_quote_token(t_data *data, t_toklst **token, \
 							enum e_token_type type, enum e_st_space st_space)
 {
 	trim_quotes(data, token, type);
 	if (!(*token)->token[0] && (*token)->prev && (*token)->next)
 	{
 		handle_empty_quotes(data, token);
-		return ;
+		return (1);
 	}
 	if (type == TOK_DQUOTE)
 	{
@@ -103,8 +103,8 @@ static void	modify_quote_token(t_data *data, t_toklst **token, \
 		quote_join(data, token, false);
 		if ((*token)->prev)
 			*token = (*token)->prev;
-		return ;
 	}
+	return (0);
 }
 
 /**
@@ -112,7 +112,7 @@ static void	modify_quote_token(t_data *data, t_toklst **token, \
  * @param data pointer to the program data struct
  * @param token pointer to the token to handle
  */
-void	handle_quotes(t_data *data, t_toklst **token)
+int	handle_quotes(t_data *data, t_toklst **token)
 {
 	enum e_st_space	st_space;
 
@@ -123,5 +123,5 @@ void	handle_quotes(t_data *data, t_toklst **token)
 		st_space = NOSPACE;
 	else
 		st_space = FIRST;
-	modify_quote_token(data, token, (*token)->type, st_space);
+	return (modify_quote_token(data, token, (*token)->type, st_space));
 }
